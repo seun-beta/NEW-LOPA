@@ -811,9 +811,54 @@ def calculate_event_freq():
 def calculate_cause_freq():
     conn = sqlite3.connect("lopa.db")
     cur = conn.cursor()
-    cur.execute("""
-                SELECT initial_frequency FROM Cause;
+    cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
+                FROM Cause
+                JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
                 """)
+    cause = cur.fetchall()
+
+    items = cause
+    total_count = 0
+    result = []
+    previous_id = None
+    current_result_index = 0
+    current_index = 0
+    for item in items:
+        cause = list(item)
+        current_id = cause[0]
+
+
+        if len(result) == 0:
+            result.append(cause[1] * cause[2])
+            previous_id = current_id
+            continue
+
+        if current_id == previous_id:
+            result[current_result_index] =  result[current_result_index] * cause[2]
+            current_index = current_index + 1
+        else:
+            result.append(cause[1] * cause[2])
+            current_result_index = current_result_index + 1
+
+        
+        previous_id = current_id
+
+
+    final_result = 0
+    for i in result:
+        final_result = final_result + i
+
+    top = Toplevel()
+    cause_freq_list = list()
+    cause_freq_res = ""
+    print_records = ""
+    for record in result:
+        print_records += str(record) +"\n"
+    records_label = Label(top, text=print_records)
+    records_label.grid(row=5, column=2, columnspan=2)
+
+
+
 
 
 
