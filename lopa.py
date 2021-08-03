@@ -480,7 +480,7 @@ def update():
         ))
 
         conn.commit()
-
+    top.destroy()
 
 
 def edit():
@@ -557,10 +557,15 @@ def edit():
         for i in consequence_id_data_editor:
             data = list(i)
             consequence_id_list_editor.append(data[0])
+            print(consequence_id_list_editor)
 
         clicked_consequence_editor = StringVar()
         if len(consequence_id_list_editor) < 1:
             clicked_consequence_editor.set("Create Consequence First")
+
+        elif consequence_id_list_editor is None:
+            clicked_consequence_editor.set("No Record  with id= "+ entry.get() +" in Database, please create one")
+            
             
         else:
             cur.execute("SELECT consequence_id FROM Event WHERE oid = " + entry.get())
@@ -583,7 +588,10 @@ def edit():
         records = cur.fetchall()
 
         for record in records:
-            event_description_editor.insert(0, record[0])
+            if len(record) < 1:
+                event_description_editor.insert(0, "No Record  with id= "+ entry.get() +" in Database, please create one")
+            else:
+                event_description_editor.insert(0, record[0])
 
     elif clicked.get() == "Cause":
         
@@ -794,9 +802,10 @@ def calculate_event_freq():
         final_result = final_result + i
 
 
-    # print(result)
+    print(result)
     cause_freq_result= Label(root, text="The Frequency of Event: "+ str(final_result), fg="green")
     cause_freq_result.grid(row=8, column=2)
+
 
 
 def calculate_cause_freq():
