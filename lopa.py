@@ -30,6 +30,13 @@ def new_event():
     event_description = Entry(top, width=30)
     event_description.grid(row=1, column=1, padx=10, pady=10)
 
+    
+    cause_id = Label(top, text="Cause ID:")
+    cause_id.grid(row=1, column=2, padx=10, pady=10)
+
+    consequence_id = Label(top, text="Consequence ID:")
+    consequence_id.grid(row=1, column=4, pady=10)
+
 
     # --------------------------------CAUSE ID Dropdown-------------------
     conn = sqlite3.connect("lopa.db")
@@ -48,12 +55,11 @@ def new_event():
     clicked_cause = StringVar()
     if len(cause_id_list) < 1:
         clicked_cause.set("Create Cause First")
+        cause_id_list = ["Create Cause First"]
         
     else:
         clicked_cause.set(cause_id_list[0])
 
-    cause_id = Label(top, text="Cause ID:")
-    cause_id.grid(row=1, column=2, padx=10, pady=10)
         
     cause_id_drop = OptionMenu(top, clicked_cause, *cause_id_list)
     cause_id_drop.grid(row=1, column=3, pady=10, padx=40)
@@ -77,12 +83,12 @@ def new_event():
     clicked_consequence = StringVar()
     if len(consequence_id_list) < 1:
         clicked_consequence.set("Create Consequence First")
+        consequence_id_list = ["Create Consequence First"]
         
     else:
         clicked_consequence.set(consequence_id_list[0])
 
-    consequence_id = Label(top, text="Consequence ID:")
-    consequence_id.grid(row=1, column=4, pady=10)
+
        
     consequence_id_drop = OptionMenu(top, clicked_consequence, *consequence_id_list)
     consequence_id_drop.grid(row=1, column=5, pady=10, padx=40)
@@ -211,6 +217,7 @@ def new_cause_barrier():
     clicked_cause = StringVar()
     if len(cause_id_list) < 1:
         clicked_cause.set("Create Cause First")
+        cause_id_list = ["Create Cause First"]
         
     else:
         clicked_cause.set(cause_id_list[0])
@@ -332,7 +339,7 @@ def new_consequence_barrier():
     clicked_consequence = StringVar()
     if len(consequence_id_list) < 1:
         clicked_consequence.set("Create Consequence First")
-        
+        consequence_id_list = ["Create Consequence First"]
     else:
         clicked_consequence.set(consequence_id_list[0])
 
@@ -533,6 +540,7 @@ def edit():
         clicked_cause_editor = StringVar()
         if len(cause_id_list_editor) < 1:
             clicked_cause_editor.set("Create Cause First")
+            cause_id_list_editor = ["Create Cause First"]
             
         else:
             cur.execute("SELECT cause_id FROM Event WHERE oid = " + entry.get())
@@ -557,15 +565,12 @@ def edit():
         for i in consequence_id_data_editor:
             data = list(i)
             consequence_id_list_editor.append(data[0])
-            print(consequence_id_list_editor)
+
 
         clicked_consequence_editor = StringVar()
         if len(consequence_id_list_editor) < 1:
             clicked_consequence_editor.set("Create Consequence First")
-
-        elif consequence_id_list_editor is None:
-            clicked_consequence_editor.set("No Record  with id= "+ entry.get() +" in Database, please create one")
-            
+            consequence_id_list_editor = ["Create Consequence First"]
             
         else:
             cur.execute("SELECT consequence_id FROM Event WHERE oid = " + entry.get())
@@ -657,6 +662,7 @@ def edit():
         clicked_cause_editor = StringVar()
         if len(cause_id_list_editor) < 1:
             clicked_cause_editor.set("Create Cause First")
+            cause_id_list_editor = ["Create Cause First"]
             
         else:
             cur.execute("SELECT cause_id FROM Event WHERE oid = " + entry.get())
@@ -732,6 +738,7 @@ def edit():
         clicked_consequence_editor = StringVar()
         if len(consequence_id_list_editor) < 1:
             clicked_consequence_editor.set("Create Consequence First")
+            consequence_id_list_editor = ["Create Consequence First"]
             
         else:
             cur.execute("SELECT consequence_id FROM Consequence_Barrier WHERE oid = " + entry.get())
