@@ -14,7 +14,7 @@
 
 ---
 
-<p align="center"> LOPA is a Graphical User Interface (GUI) used to evaluate high-consequence scenarios determining if the combination of probability of occurrence and severity of consequences meets a company’s risk tolerance.
+<p align="center">
     <br> 
 </p>
 
@@ -23,27 +23,25 @@
 - [About](#about)
 - [Tech](#tech)
 - [Installation](#installation)
-
 - [Built Using](#built_using)
-- [TODO](../TODO.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+LOPA is a Graphical User Interface (GUI) used to evaluate high-consequence scenarios determining if the combination of probability of occurrence and severity of consequences meets a company’s risk tolerance.
 
-### Tech <a name = "tech"></a>
+## Tech <a name = "tech"></a>
 
-ToDo List is written in Python3 and Bottle 0.13.  
+LOPA is written in Python 3  
   
 ## Installation  <a name = "installation"></a>
   
 #### Windows 10 Users
 
 Please install and set up the following packages first. Ugrade if you find the package already installed:  
-* Download [Python3](https://www.python.org/downloads/). It is advisable to install the package as an administrator. Click on the 'Add path' checkbox before moving on to the next step of the installation process. Run this command in your terminal to see the version you have installed.  
+* Download [Python 3](https://www.python.org/downloads/). It is advisable to install the package as an administrator. Click on the 'Add path' checkbox before moving on to the next step of the installation process. Run this command in your terminal to see the version you have installed.  
   ```sh
   python -V
   ```  
@@ -80,16 +78,18 @@ Please install and set up the following packages first. Ugrade if you find the p
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [Tkinter](https://docs.python.org/3/library/tkinter.html) - GUI
+- [Pillow](https://pillow.readthedocs.io/en/stable/) - Imaging Library
+- [SQLite](https://sqlite.org/index.html) - Database
+- [PyInstaller](https://www.pyinstaller.org/) - Package Bundler
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+- [@seun-beta](https://github.com/seun-beta) - Software Development
+- [@seun-beta](https://github.com/seun-beta) - Software Development
+- [@seun-beta](https://github.com/seun-beta) - Software Development
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
