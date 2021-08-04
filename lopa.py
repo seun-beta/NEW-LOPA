@@ -700,7 +700,7 @@ def edit():
         consequence_target_frequency_editor = Entry(top, width=30)
         consequence_target_frequency_editor.grid(row=2, column=1, padx=10, pady=10) 
 
-        cur.execute("SELECT description, initial_frequency, target_frequency FROM Cause WHERE oid = " + entry.get())
+        cur.execute("SELECT description, initial_frequency, target_frequency FROM Consequence WHERE oid = " + entry.get())
         records = cur.fetchall()
         for record in records:
             consequence_description_editor.insert(0, record[0])
