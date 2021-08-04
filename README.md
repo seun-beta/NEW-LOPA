@@ -3,29 +3,27 @@
  <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
 </p>
 
-<h3 align="center">Project Title</h3>
+<h3 align="center">Layer of Protection Analysis (LOPA)</h3>
 
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> LOPA is a Graphical User Interface (GUI) used to evaluate high-consequence scenarios determining if the combination of probability of occurrence and severity of consequences meets a company’s risk tolerance.
     <br> 
 </p>
 
 ## 📝 Table of Contents
 
 - [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
+- [Tech](#tech)
+- [Installation](#installation)
+
 - [Built Using](#built_using)
 - [TODO](../TODO.md)
 - [Contributing](../CONTRIBUTING.md)
@@ -36,63 +34,49 @@
 
 Write about 1-2 paragraphs describing the purpose of your project.
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+### Tech <a name = "tech"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+ToDo List is written in Python3 and Bottle 0.13.  
+  
+## Installation  <a name = "installation"></a>
+  
+#### Windows 10 Users
 
-### Prerequisites
+Please install and set up the following packages first. Ugrade if you find the package already installed:  
+* Download [Python3](https://www.python.org/downloads/). It is advisable to install the package as an administrator. Click on the 'Add path' checkbox before moving on to the next step of the installation process. Run this command in your terminal to see the version you have installed.  
+  ```sh
+  python -V
+  ```  
+* Download [pip](https://pip.pypa.io/en/latest/installing) and follow the instructions in the link as an installation guide.  
+* [SQLite3](https://sqlitebrowser.org/) (Ensure it is installed).
+* It is advisable to use bottle in a virtual environment. The README uses [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation) to create this virtual environment. You could use any virtualenv package of your choice but for Windows, install this wrapper with:
+  ```sh 
+  py -m pip install virtualenvwrapper-win 
+  ```
+  
+* Create a new virtual environment:
+  ```sh
+  mkvirtualenv <envname>
+  ```
+* Change your directory to the directory of the virtual environment
 
-What things you need to install the software and how to install them.
+* Activate the virtual environment with:
+  ```sh
+  <envname>\Scripts\activate
+  ```
+* Install requirements in the virtual environment created:
 
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## 🎈 Usage <a name="usage"></a>
-
-Add notes about how to use the system.
-
-## 🚀 Deployment <a name = "deployment"></a>
-
-Add additional notes about how to deploy this on a live system.
+  ```sh
+  pip install -r requirements.txt
+  ```
+* Run server to ensure everything is running properly.
+  ```sh
+  python lopa.py
+  ```
+* Deactivate the virtual environment with:
+  ```sh
+  deactivate
+  ```
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
