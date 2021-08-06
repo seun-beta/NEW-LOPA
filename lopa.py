@@ -875,6 +875,10 @@ def bowtie():
 
 
 
+    
+
+
+
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
@@ -904,7 +908,7 @@ query.grid(row=4, column=2)
 frame = LabelFrame(root, padx=10, pady=10, relief=SUNKEN, bd=5)
 frame.grid(padx=10, pady=20)
 
-bow_tie = Button(root, text="Create Bow Tie Diagram")
+bow_tie = Button(root, text="Create Bow Tie Diagram", command=bowtie)
 bow_tie.grid(row=0, column=0, padx=10, pady=10)
 
 event = Button(root, text="Create Event", bg="orange", command=new_event)
