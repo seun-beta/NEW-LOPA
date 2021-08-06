@@ -870,6 +870,11 @@ def calculate_cause_freq():
 
 
 
+def bowtie():
+    pass
+
+
+
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
