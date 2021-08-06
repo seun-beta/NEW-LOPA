@@ -1,4 +1,5 @@
 from tkinter import *
+import sqlite3
 
 
 
@@ -30,18 +31,36 @@ y1_line = 30
 x2_line = 70
 y2_line = 30
 
-for i in range(10):
+conn = sqlite3.connect("lopa.db")
+cur = conn.cursor()
+cur.execute("""SELECT cause_id FROM Cause;
+            """)
+data = cur.fetchall()
+print(data)
+
+for i in data:
+
+    for i in range(5):
     
-    square_canvas.create_line(x1_line, y1_line, x2_line, y2_line, fill="red")
-    x1_line = x2_square
-    x2_line = x1_line + 50
+        square_canvas.create_line(x1_line, y1_line, x2_line, y2_line, fill="red")
+        x1_line = x2_square
+        x2_line = x1_line + 50
 
 
-    
-    square_canvas.create_rectangle(x1_square, y1_square, x2_square, y2_square, fill="purple")
-    x1_square = x1_line + 40
-    x2_square = x1_square + 40
 
+        square_canvas.create_rectangle(x1_square, y1_square, x2_square, y2_square, fill="purple")
+        x1_square = x1_line + 40
+        x2_square = x1_square + 40
+
+    x1_square = 20 -20
+    y1_square = 40 -20
+    x2_square = 60 -20
+    y2_square = 20 -20
+
+    x1_line = 60 -20
+    y1_line = 30 -20
+    x2_line = 70 -20
+    y2_line = 30 -20
 
 
 
