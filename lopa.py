@@ -5,7 +5,9 @@ from datetime import *
 
 from db import create_table
 
+
 create_table()
+
 
 root = Tk()
 root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
@@ -868,16 +870,10 @@ def calculate_cause_freq():
 
 
 
-
-
 def bowtie():
     pass
 
-
-
     
-
-
 
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked = StringVar(root)
