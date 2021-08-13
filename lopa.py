@@ -2,11 +2,23 @@ from tkinter import *
 from PIL import ImageTk, Image
 import sqlite3
 from datetime import *
-
+import mysql.connector
 from db import create_table
 
 
 create_table()
+
+
+def db_conn():
+    conn = mysql.connector.connect(
+        host="lopasvr.mysql.database.azure.com",
+        user="lopasvr_user@lopasvr",
+        password="l0p@$vr_u$er",
+        database="lopaproject"
+    )
+
+    cur = conn.cursor()
+    return conn, cur
 
 
 root = Tk()
@@ -41,8 +53,7 @@ def new_event():
 
 
     # --------------------------------CAUSE ID Dropdown-------------------
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("""
             SELECT cause_id, description FROM Cause;
                 """)
@@ -69,9 +80,7 @@ def new_event():
 
   # --------------------------------CONSEQUENCE ID Dropdown-------------------
 
-
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("""
             SELECT consequence_id, description FROM Consequence;
                 """)
@@ -100,9 +109,7 @@ def new_event():
 
 
     def save_event():
-
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+        conn, cur = db_conn()
         cur.execute("INSERT INTO Event VALUES (null, ?, ?, ?)",(
                     event_description.get(),
                     clicked_cause.get(),
@@ -112,8 +119,6 @@ def new_event():
         success = Label(top, text="Added record successfully", fg="green")
         success.grid(row=4, column=3)
         conn.commit()
-        conn.close()
-
         event_description.delete(0, END)
     
 
@@ -156,8 +161,7 @@ def new_cause():
 
     def save_cause():
 
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+        conn, cur = db_conn()
         cur.execute("INSERT INTO Cause VALUES (null, ?, ?, ?, ?)",(
             cause_description.get(),
             cause_initial_frequency.get(),
@@ -169,8 +173,6 @@ def new_cause():
         success = Label(top, text="Added record successfully", fg="green")
         success.grid(row=7, column=1, columnspan=2)
         conn.commit()
-        conn.close()
-
 
         cause_description.delete(0, END)
         cause_initial_frequency.delete(0, END)
@@ -203,8 +205,7 @@ def new_cause_barrier():
     cause_barrier_pfd = Entry(top, width=30)
     cause_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
 
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("""
             SELECT cause_id, description FROM Cause;
                 """)
@@ -233,8 +234,7 @@ def new_cause_barrier():
 
     def save_cause_barrier():
     
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+        conn, cur = db_conn()
         cur.execute("INSERT INTO Cause_Barrier VALUES (null, ?, ?, ?)",(
             cause_barrier_description.get(),
             cause_barrier_pfd.get(),
@@ -244,8 +244,6 @@ def new_cause_barrier():
         success = Label(top, text="Added record successfully", fg="green")
         success.grid(row=4, column=1, columnspan=2)
         conn.commit()
-        conn.close()
-
 
         cause_barrier_description.delete(0, END)
         cause_barrier_pfd.delete(0, END)
@@ -274,8 +272,6 @@ def new_consequence():
     consequence_initial_frequency = Entry(top, width=30)
     consequence_initial_frequency.grid(row=2, column=1, padx=10, pady=10)
     
-
-
     consequence_target_frequency_label = Label(top, text="Target Frequency:")
     consequence_target_frequency_label.grid(row=3, column=0, padx=10, pady=10)
     consequence_target_frequency = Entry(top, width=30)
@@ -284,8 +280,7 @@ def new_consequence():
 
     def save_consequence():
         
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+        conn, cur = db_conn()
         cur.execute("INSERT INTO Consequence VALUES (null, ?, ?, ?)",(
             consequence_description.get(),
             consequence_initial_frequency.get(),
@@ -296,7 +291,7 @@ def new_consequence():
         success = Label(top, text="Added record successfully", fg="green")
         success.grid(row=5, column=1, columnspan=2)
         conn.commit()
-        conn.close()
+
 
         consequence_description.delete(0, END)
         consequence_initial_frequency.delete(0, END)
@@ -325,8 +320,7 @@ def new_consequence_barrier():
     consequence_barrier_pfd = Entry(top, width=30)
     consequence_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
 
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("""
             SELECT consequence_id, description FROM Consequence;
                 """)
@@ -354,8 +348,7 @@ def new_consequence_barrier():
 
     def save_consequence_barrier():
         
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+        conn, cur = db_conn()
         cur.execute("INSERT INTO Consequence_Barrier VALUES (null, ?, ?, ?)",(
            consequence_barrier_description.get(),
            consequence_barrier_pfd.get(),
@@ -365,7 +358,6 @@ def new_consequence_barrier():
         success = Label(top, text="Added record successfully", fg="green")
         success.grid(row=4, column=1, columnspan=2)
         conn.commit()
-        conn.close()
 
         consequence_barrier_description.delete(0, END)
         consequence_barrier_pfd.delete(0, END)
@@ -376,13 +368,11 @@ def new_consequence_barrier():
 def delete():
     global clicked
     global entry
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
 
     cur.execute("DELETE FROM "+clicked.get()+ " WHERE oid= " + entry.get())
 
     conn.commit()
-    conn.close()
 
 
     delete_success = Label(root, text=clicked.get() + " Item  with ID " + entry.get() + " sucessfully deleted", fg="green")
@@ -391,9 +381,8 @@ def delete():
 def query():
     top = Toplevel()
     top.title(clicked_query.get())
-    conn = sqlite3.connect("lopa.db")
 
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("SELECT * FROM " + clicked_query.get())
     records = cur.fetchall()
 
@@ -408,17 +397,14 @@ def query():
             records_label.grid(row=5, column=2, columnspan=2)
 
     conn.commit()
-    conn.close()
 
 
 
 def update():
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
 
     if clicked.get() == "Event":
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()  
+        conn, cur = db_conn()
 
         cur.execute(""" UPDATE Event
               SET description = ? ,
@@ -519,9 +505,7 @@ def edit():
     top = Toplevel()
     top.title("Edit " + clicked.get())
 
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
-
+    conn, cur = db_conn()
     if clicked.get() == "Event":
 
         event_description_editor = Entry(top, width=30)
@@ -647,8 +631,7 @@ def edit():
         cause_barrier_pfd_editor = Entry(top, width=30)
         cause_barrier_pfd_editor.grid(row=1, column=1, padx=10, pady=10)
 
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+        conn, cur = db_conn()
     # --------------------------------CAUSE ID Dropdown-------------------
         cur.execute("""
             SELECT cause_id, description FROM Cause;
@@ -722,9 +705,8 @@ def edit():
         consequence_barrier_pfd_label_editor.grid(row=2, column=0, padx=10, pady=10)
         consequence_barrier_pfd_editor = Entry(top, width=30)
         consequence_barrier_pfd_editor.grid(row=2, column=1, padx=10, pady=10)
-
-        conn = sqlite3.connect("lopa.db")
-        cur = conn.cursor()
+    
+        conn, cur = db_conn()
     # --------------------------------CONSEQUENCE ID Dropdown-------------------
         cur.execute("""
             SELECT consequence_id, description FROM Consequence;
@@ -771,8 +753,7 @@ def edit():
 
 
 def calculate_event_freq():
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
                 FROM Cause
                 JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
@@ -818,8 +799,7 @@ def calculate_event_freq():
 
 
 def calculate_cause_freq():
-    conn = sqlite3.connect("lopa.db")
-    cur = conn.cursor()
+    conn, cur = db_conn()
     cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
                 FROM Cause
                 JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
