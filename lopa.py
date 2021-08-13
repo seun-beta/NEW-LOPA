@@ -370,8 +370,12 @@ def delete():
     global clicked
     global entry
 
+    conn, cur = db_conn()
 
-    cur.execute("DELETE FROM "+clicked.get()+ " WHERE oid= " + entry.get())
+    gotten_id = clicked.get().lower() + "_id"
+
+
+    cur.execute("DELETE FROM "+clicked.get()+ " WHERE " + gotten_id + " = " + entry.get())
 
     conn.commit()
 
@@ -529,7 +533,7 @@ def edit():
             cause_id_list_editor = ["Create Cause First"]
             
         else:
-            cur.execute("SELECT cause_id FROM Event WHERE oid = " + entry.get())
+            cur.execute("SELECT cause_id FROM Event WHERE event_id = " + entry.get())
             cause = cur.fetchone()
  
             clicked_cause_editor.set(cause[0])
@@ -542,8 +546,7 @@ def edit():
 
 
         # --------------------------------CONSEQUENCE ID Dropdown-------------------
-        cur.execute("""
-                SELECT consequence_id, description FROM Consequence;
+        cur.execute("""SELECT consequence_id, description FROM Consequence;
                     """)
         consequence_id_data_editor = cur.fetchall()
 
@@ -559,7 +562,7 @@ def edit():
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("SELECT consequence_id FROM Event WHERE oid = " + entry.get())
+            cur.execute("SELECT consequence_id FROM Event WHERE event_id = " + entry.get())
             consequence = cur.fetchone()
  
             clicked_consequence_editor.set(consequence[0])
@@ -575,7 +578,7 @@ def edit():
         event_description_label_editor.grid(row=1, column=0)
 
 
-        cur.execute("SELECT description FROM Event WHERE oid = " + entry.get())
+        cur.execute("SELECT description FROM Event WHERE event_id = " + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -610,7 +613,7 @@ def edit():
         """
         
 
-        cur.execute("SELECT description, initial_frequency, target_frequency FROM Cause WHERE oid = " + entry.get())
+        cur.execute("SELECT description, initial_frequency, target_frequency FROM Cause WHERE cause_id = " + entry.get())
         records = cur.fetchall()
         for record in records:
             cause_description_editor.insert(0, record[0])
@@ -650,7 +653,7 @@ def edit():
             cause_id_list_editor = ["Create Cause First"]
             
         else:
-            cur.execute("SELECT cause_id FROM Event WHERE oid = " + entry.get())
+            cur.execute("SELECT cause_id FROM Event WHERE event_id = " + entry.get())
             cause = cur.fetchone()
  
             clicked_cause_editor.set(cause[0])
@@ -661,7 +664,7 @@ def edit():
         cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("SELECT description, pfd FROM Cause_Barrier WHERE oid = " + entry.get())
+        cur.execute("SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = " + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -685,7 +688,7 @@ def edit():
         consequence_target_frequency_editor = Entry(top, width=30)
         consequence_target_frequency_editor.grid(row=2, column=1, padx=10, pady=10) 
 
-        cur.execute("SELECT description, initial_frequency, target_frequency FROM Consequence WHERE oid = " + entry.get())
+        cur.execute("SELECT description, initial_frequency, target_frequency FROM Consequence WHERE consequence_id = " + entry.get())
         records = cur.fetchall()
         for record in records:
             consequence_description_editor.insert(0, record[0])
@@ -725,7 +728,7 @@ def edit():
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("SELECT consequence_id FROM Consequence_Barrier WHERE oid = " + entry.get())
+            cur.execute("SELECT consequence_id FROM Consequence_Barrier WHERE consequence_barrier_id = " + entry.get())
             consequence = cur.fetchone()
  
             clicked_consequence_editor.set(consequence[0])
@@ -736,7 +739,7 @@ def edit():
         consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("SELECT description, pfd FROM Consequence_Barrier WHERE oid = " + entry.get())
+        cur.execute("SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = " + entry.get())
         records = cur.fetchall()
 
         for record in records:
