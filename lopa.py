@@ -10,6 +10,8 @@ create_table()
 
 
 def db_conn():
+    global conn 
+    global cur
     conn = mysql.connector.connect(
         host="lopasvr.mysql.database.azure.com",
         user="lopasvr_user@lopasvr",
@@ -18,7 +20,11 @@ def db_conn():
     )
 
     cur = conn.cursor()
+    
     return conn, cur
+
+db_conn()
+
 
 
 root = Tk()
@@ -29,6 +35,7 @@ root.geometry("700x500")
 root.config(background='#394867')
 
 def new_event():
+    
     global save_event
     top = Toplevel(bg="orange")
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
@@ -53,7 +60,7 @@ def new_event():
 
 
     # --------------------------------CAUSE ID Dropdown-------------------
-    conn, cur = db_conn()
+
     cur.execute("""
             SELECT cause_id, description FROM Cause;
                 """)
@@ -80,7 +87,7 @@ def new_event():
 
   # --------------------------------CONSEQUENCE ID Dropdown-------------------
 
-    conn, cur = db_conn()
+
     cur.execute("""
             SELECT consequence_id, description FROM Consequence;
                 """)
@@ -109,8 +116,8 @@ def new_event():
 
 
     def save_event():
-        conn, cur = db_conn()
-        cur.execute("INSERT INTO Event VALUES (null, ?, ?, ?)",(
+
+        cur.execute("INSERT INTO Event VALUES (null, %s, %s, %s)",(
                     event_description.get(),
                     clicked_cause.get(),
                     clicked_consequence.get())
@@ -161,8 +168,7 @@ def new_cause():
 
     def save_cause():
 
-        conn, cur = db_conn()
-        cur.execute("INSERT INTO Cause VALUES (null, ?, ?, ?, ?)",(
+        cur.execute("INSERT INTO Cause VALUES (null, %s, %s, %s, %s)",(
             cause_description.get(),
             cause_initial_frequency.get(),
             cause_target_frequency.get(),
@@ -205,7 +211,6 @@ def new_cause_barrier():
     cause_barrier_pfd = Entry(top, width=30)
     cause_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
 
-    conn, cur = db_conn()
     cur.execute("""
             SELECT cause_id, description FROM Cause;
                 """)
@@ -234,8 +239,7 @@ def new_cause_barrier():
 
     def save_cause_barrier():
     
-        conn, cur = db_conn()
-        cur.execute("INSERT INTO Cause_Barrier VALUES (null, ?, ?, ?)",(
+        cur.execute("INSERT INTO Cause_Barrier VALUES (null, %s, %s, %s)",(
             cause_barrier_description.get(),
             cause_barrier_pfd.get(),
             clicked_cause.get())
@@ -279,9 +283,8 @@ def new_consequence():
 
 
     def save_consequence():
-        
-        conn, cur = db_conn()
-        cur.execute("INSERT INTO Consequence VALUES (null, ?, ?, ?)",(
+
+        cur.execute("INSERT INTO Consequence VALUES (null,%s, %s, %s)",(
             consequence_description.get(),
             consequence_initial_frequency.get(),
             consequence_target_frequency.get()
@@ -320,7 +323,6 @@ def new_consequence_barrier():
     consequence_barrier_pfd = Entry(top, width=30)
     consequence_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
 
-    conn, cur = db_conn()
     cur.execute("""
             SELECT consequence_id, description FROM Consequence;
                 """)
@@ -348,8 +350,7 @@ def new_consequence_barrier():
 
     def save_consequence_barrier():
         
-        conn, cur = db_conn()
-        cur.execute("INSERT INTO Consequence_Barrier VALUES (null, ?, ?, ?)",(
+        cur.execute("INSERT INTO Consequence_Barrier VALUES (null, %s, %s, %s)",(
            consequence_barrier_description.get(),
            consequence_barrier_pfd.get(),
            clicked_consequence.get())
@@ -368,7 +369,7 @@ def new_consequence_barrier():
 def delete():
     global clicked
     global entry
-    conn, cur = db_conn()
+
 
     cur.execute("DELETE FROM "+clicked.get()+ " WHERE oid= " + entry.get())
 
@@ -382,7 +383,6 @@ def query():
     top = Toplevel()
     top.title(clicked_query.get())
 
-    conn, cur = db_conn()
     cur.execute("SELECT * FROM " + clicked_query.get())
     records = cur.fetchall()
 
@@ -407,10 +407,10 @@ def update():
         conn, cur = db_conn()
 
         cur.execute(""" UPDATE Event
-              SET description = ? ,
-                  cause_id = ? ,
-                  consequence_id = ?
-              WHERE event_id = ? """, (
+              SET description = %s ,
+                  cause_id = %s ,
+                  consequence_id = %s
+              WHERE event_id = %s """, (
             event_description_editor.get(),
             clicked_cause_editor.get(),
             clicked_consequence_editor.get(),
@@ -419,10 +419,10 @@ def update():
         conn.commit() 
     elif clicked.get() == "Cause":
         cur.execute(""" UPDATE Cause
-              SET description = ? ,
-                  initial_frequency = ? ,
-                  target_frequency = ?
-              WHERE cause_id = ? """, (
+              SET description = %s ,
+                  initial_frequency = %s ,
+                  target_frequency = %s
+              WHERE cause_id = %s """, (
         cause_description_editor.get(),
         cause_initial_frequency_editor.get(),
         cause_target_frequency_editor.get(),
@@ -434,10 +434,10 @@ def update():
     elif clicked.get() == "Cause_Barrier":
 
         cur.execute(""" UPDATE Cause_Barrier
-              SET description = ? ,
-                  pfd = ? ,
-                  cause_id = ?
-              WHERE cause_barrier_id = ? """, (
+              SET description = %s ,
+                  pfd = %s ,
+                  cause_id = %s
+              WHERE cause_barrier_id = %s """, (
         cause_barrier_description_editor.get(),
         cause_barrier_pfd_editor.get(),
         clicked_cause_editor.get(),
@@ -449,10 +449,10 @@ def update():
     elif clicked.get() == "Consequence":
 
         cur.execute(""" UPDATE Consequence
-              SET description = ? ,
-                  initial_frequency = ? ,
-                  target_frequency = ?
-              WHERE consequence_id = ? """, (
+              SET description = %s ,
+                  initial_frequency = %s ,
+                  target_frequency = %s
+              WHERE consequence_id = %s """, (
         consequence_description_editor.get(),
         consequence_initial_frequency_editor.get(),
         consequence_target_frequency_editor.get(),
@@ -464,10 +464,10 @@ def update():
     elif clicked.get() == "Consequence_Barrier":
 
         cur.execute(""" UPDATE Consequence_Barrier
-              SET description = ? ,
-                  pfd = ? ,
-                  consequence_id = ?
-              WHERE consequence_barrier_id = ? """, (
+              SET description = %s ,
+                  pfd = %s ,
+                  consequence_id = %s
+              WHERE consequence_barrier_id = %s """, (
         consequence_barrier_description_editor.get(),
         consequence_barrier_pfd_editor.get(),
         clicked_consequence_editor.get(),
@@ -631,7 +631,7 @@ def edit():
         cause_barrier_pfd_editor = Entry(top, width=30)
         cause_barrier_pfd_editor.grid(row=1, column=1, padx=10, pady=10)
 
-        conn, cur = db_conn()
+
     # --------------------------------CAUSE ID Dropdown-------------------
         cur.execute("""
             SELECT cause_id, description FROM Cause;
@@ -706,7 +706,7 @@ def edit():
         consequence_barrier_pfd_editor = Entry(top, width=30)
         consequence_barrier_pfd_editor.grid(row=2, column=1, padx=10, pady=10)
     
-        conn, cur = db_conn()
+
     # --------------------------------CONSEQUENCE ID Dropdown-------------------
         cur.execute("""
             SELECT consequence_id, description FROM Consequence;
@@ -753,7 +753,7 @@ def edit():
 
 
 def calculate_event_freq():
-    conn, cur = db_conn()
+
     cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
                 FROM Cause
                 JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
@@ -799,7 +799,7 @@ def calculate_event_freq():
 
 
 def calculate_cause_freq():
-    conn, cur = db_conn()
+
     cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
                 FROM Cause
                 JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
