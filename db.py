@@ -1,57 +1,51 @@
-import sqlite3
+import mysql.connector
+
 
 def create_table():
+    conn = mysql.connector.connect(
+        host="lopasvr.mysql.database.azure.com",
+        user="lopasvr_user@lopasvr",
+        password="l0p@$vr_u$er",
+        database="lopaproject"
+    )
 
-    
-    conn = sqlite3.connect("lopa.db")
     cur = conn.cursor()
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Event" (
-        "event_id"	INTEGER NOT NULL UNIQUE PRIMARY KEY,
-        "description"	TEXT,
-        "cause_id"	INTEGER,
-        "consequence_id" INTEGER,
-        FOREIGN KEY("cause_id" ) REFERENCES "Cause"("cause_id")
-        );
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS Event (
+                event_id INT AUTO_INCREMENT PRIMARY KEY,
+                description TEXT,
+                cause_id INT,
+                consequence_id INT)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Cause" 
-        (
-        "cause_id"	INTEGER NOT NULL UNIQUE PRIMARY KEY,
-        "description"	TEXT,
-        "initial_frequency"	REAL,
-        "event_id"	INTEGER,
-        "target_frequency"	REAL
-
-        );
+    cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
+                cause_id INT AUTO_INCREMENT PRIMARY KEY,
+                description TEXT,
+                initial_frequency REAL,
+                event_id INT,
+                target_frequency REAL)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Cause_Barrier" 
-        (
-        "cause_barrier_id"	INTEGER NOT NULL UNIQUE PRIMARY KEY,
-        "description"	TEXT,
-        "pfd"	REAL,
-        "cause_id"	INTEGER,
-        FOREIGN KEY("cause_id") REFERENCES "Cause"("cause_id")
-        );
+    cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
+                cause_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
+                description TEXT,
+                pfd REAL,
+                cause_id INT)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Consequence"
-        (
-        "consequence_id"	INTEGER NOT NULL UNIQUE PRIMARY KEY,
-        "description"	TEXT,
-        "initial_frequency"	REAL,
-        "target_frequency"	REAL
-        );
+    cur.execute("""CREATE TABLE IF NOT EXISTS Consequence (
+                consequence_id INT AUTO_INCREMENT PRIMARY KEY,
+                description TEXT,
+                initial_frequency REAL,
+                target_frequency REAL)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Consequence_Barrier" 
-        (
-        "consequence_barrier_id" INTEGER NOT NULL UNIQUE PRIMARY KEY,
-        "description"	TEXT,
-        "pfd"	REAL,
-        "consequence_id"	INTEGER
-        );
+    cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
+                consequence_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
+                description TEXT,
+                pfd REAL,
+                consequence_id INT)
     """)
 
     conn.commit()
