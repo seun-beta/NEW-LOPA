@@ -373,6 +373,7 @@ def delete():
     conn, cur = db_conn()
 
     gotten_id = clicked.get().lower() + "_id"
+    print(gotten_id)
 
 
     cur.execute("DELETE FROM "+clicked.get()+ " WHERE " + gotten_id + " = " + entry.get())
