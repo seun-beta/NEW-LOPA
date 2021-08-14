@@ -3,7 +3,7 @@
  <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
 </p>
 
-<h3 align="center">Layer of Protection Analysis (LOPA)</h3>
+<h3 align="center">Layer of Protection Analysis API (<strong>LOPA API</strong>)</h3>
 
 <div align="center">
 
@@ -29,13 +29,16 @@
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
+
 ## 🧐 About <a name = "about"></a>
 
-LOPA is a Graphical User Interface (GUI) used to evaluate high-consequence scenarios determining if the combination of probability of occurrence and severity of consequences meets a company’s risk tolerance.
+LOPA API for Layer of Protection Analysis API is the Bowtie Diagram API for LOPA.
+
+LOPA is a Graphical User Interface (GUI) used to evaluate high-consequence scenarios determining if the combination of probability of occurrence and severity of consequences meets a company’s risk tolerance. 
 
 ## Tech <a name = "tech"></a>
 
-LOPA is written in Python 3  
+LOPA API is written in [Python 3](https://www.python.org) and [Django Rest Framework](http://www.django-rest-framework.org/)
   
 ## Installation  <a name = "installation"></a>
   
@@ -47,8 +50,8 @@ Please install and set up the following packages first. Ugrade if you find the p
   python -V
   ```  
 * Download [pip](https://pip.pypa.io/en/latest/installing) and follow the instructions in the link as an installation guide.  
-* [SQLite3](https://sqlitebrowser.org/) (Ensure it is installed).
-* It is advisable to use bottle in a virtual environment. The README uses [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation) to create this virtual environment. You could use any virtualenv package of your choice but for Windows, install this wrapper with:
+
+* It is advisable to use LOPA API in a virtual environment. The README uses [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html#basic-installation) to create this virtual environment. You could use any virtualenv package of your choice but for Windows, install this wrapper with:
   ```sh 
   py -m pip install virtualenvwrapper-win 
   ```
@@ -77,17 +80,36 @@ Please install and set up the following packages first. Ugrade if you find the p
   deactivate
   ```
 
+
+## Usage
+* Start the application `$ python manage.py runserver`
+* Use `Postman` to consume available endpoints
+* A user can:
+  * Get all Events
+  * Get all Causes
+  * Get all Cause Barriers
+  * Get all Consequences
+  * Get all Consequence Barriers
+
+## Endpoints
+| Request type      | Endpoint          | Action |
+| ------------- |:-------------:| -----:|
+| GET         | /event/ | Get all Events|
+| GET         | /cause/  | Get all Causes |
+| GET         | /cause_barrier/ | Get all Cause Barriers |
+| GET          | /consequence/     | Get all Consequences
+| GET        | /consequence_barrier/ | Get all Consequence Barriers |
+
+
+
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [Tkinter](https://docs.python.org/3/library/tkinter.html) - GUI
-- [Pillow](https://pillow.readthedocs.io/en/stable/) - Imaging Library
-- [SQLite](https://sqlite.org/index.html) - Database
-- [PyInstaller](https://www.pyinstaller.org/) - Package Bundler
+- [Django Rest Framework](http://www.django-rest-framework.org/) - API
+- [MySQL](https://www.mysql.com/) - Database
+
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@seun-beta](https://github.com/seun-beta) - Software Development
-- [@seun-beta](https://github.com/seun-beta) - Software Development
 - [@seun-beta](https://github.com/seun-beta) - Software Development
 
 
