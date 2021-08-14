@@ -8,7 +8,6 @@ class CauseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cause
-
         fields = "__all__"
 
 
@@ -34,7 +33,7 @@ class ConsequenceBarrierSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Event
         fields = "__all__"
