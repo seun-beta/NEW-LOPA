@@ -799,8 +799,25 @@ cause_barrier.grid(row=4, column=0, padx=10, pady=10)
 consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier)
 consequence_barrier.grid(row=5, column=0, padx=10, pady=10)
 
-draw_diagram = Button(root, text="Draw Diagram")
+
+def diagram():
+    from tkinterweb import HtmlFrame #import the HTML browser
+    try:
+        import tkinter as tk #python3
+    except ImportError:
+        import Tkinter as tk #python2
+
+        root = tk.Tk() #create the tkinter window
+        frame = HtmlFrame(root) #create HTML browser
+
+        frame.load_website("http://tkhtml.tcl.tk/tkhtml.html") #load a website
+        frame.grid(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
+        root.mainloop()
+
+draw_diagram = Button(root, text="Draw Diagram", command=diagram)
 draw_diagram.grid(row=6, column=0, padx=10, pady=10)
+
+
 
 
 mainloop()
