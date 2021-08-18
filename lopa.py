@@ -755,110 +755,6 @@ def edit():
     conn.commit()
     conn.close()
 
-
-def calculate_event_freq():
-
-    cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
-                FROM Cause
-                JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
-                """)
-    cause = cur.fetchall()
-
-    items = cause
-    total_count = 0
-    result = []
-    previous_id = None
-    current_result_index = 0
-    current_index = 0
-    for item in items:
-        cause = list(item)
-        current_id = cause[0]
-
-
-        if len(result) == 0:
-            result.append(cause[1] * cause[2])
-            previous_id = current_id
-            continue
-
-        if current_id == previous_id:
-            result[current_result_index] =  result[current_result_index] * cause[2]
-            current_index = current_index + 1
-        else:
-            result.append(cause[1] * cause[2])
-            current_result_index = current_result_index + 1
-
-        
-        previous_id = current_id
-
-
-    final_result = 0
-    for i in result:
-        final_result = final_result + i
-
-
-    print(result)
-    cause_freq_result= Label(root, text="The Frequency of Event: "+ str(final_result), fg="green")
-    cause_freq_result.grid(row=8, column=2)
-
-
-
-def calculate_cause_freq():
-
-    cur.execute("""SELECT  Cause.cause_id ,Cause.initial_frequency, Cause_Barrier.pfd
-                FROM Cause
-                JOIN Cause_Barrier ON Cause.cause_id=Cause_Barrier.cause_id;
-                """)
-    cause = cur.fetchall()
-
-    items = cause
-    total_count = 0
-    result = []
-    previous_id = None
-    current_result_index = 0
-    current_index = 0
-    for item in items:
-        cause = list(item)
-        current_id = cause[0]
-
-
-        if len(result) == 0:
-            result.append(cause[1] * cause[2])
-            previous_id = current_id
-            continue
-
-        if current_id == previous_id:
-            result[current_result_index] =  result[current_result_index] * cause[2]
-            current_index = current_index + 1
-        else:
-            result.append(cause[1] * cause[2])
-            current_result_index = current_result_index + 1
-
-        
-        previous_id = current_id
-
-
-    final_result = 0
-    for i in result:
-        final_result = final_result + i
-
-    top = Toplevel()
-    cause_freq_list = list()
-    cause_freq_res = ""
-    print_records = ""
-    for record in result:
-        print_records += str(record) +"\n"
-    records_label = Label(top, text=print_records)
-    records_label.grid(row=5, column=2, columnspan=2)
-
-
-
-
-
-def bowtie():
-    pass
-
-    
-
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
@@ -888,9 +784,6 @@ query.grid(row=4, column=2)
 frame = LabelFrame(root, padx=10, pady=10, relief=SUNKEN, bd=5)
 frame.grid(padx=10, pady=20)
 
-bow_tie = Button(root, text="Create Bow Tie Diagram", command=bowtie)
-bow_tie.grid(row=0, column=0, padx=10, pady=10)
-
 event = Button(root, text="Create Event", bg="orange", command=new_event)
 event.grid(row=1, column=0, padx=10, pady=10)
 
@@ -908,27 +801,6 @@ consequence_barrier.grid(row=5, column=0, padx=10, pady=10)
 
 draw_diagram = Button(root, text="Draw Diagram")
 draw_diagram.grid(row=6, column=0, padx=10, pady=10)
-
-
-
-
-
-
-
-calculate_cause_freq = Button(root, text="Calculate Cause Frequency", command=calculate_cause_freq)
-calculate_cause_freq.grid(row=7, column=1, padx=10, pady=10)
-
-calculate_event_freq = Button(root, text="Calculate Event Frequency", command=calculate_event_freq)
-calculate_event_freq.grid(row=7, column=2, padx=10, pady=10)
-
-display_cause_freq = Button(root, text="Display Cause Frequencies")
-display_cause_freq.grid(row=9, column=1, padx=10, pady=10)
-
-display_event_freq = Button(root, text="Display Event Frequency")
-display_event_freq.grid(row=9, column=2, padx=10, pady=10)
-
-compute = Button(root, text="COMPUTE", width=40)
-compute.grid(row=10, column=1, padx=10, pady=10)
 
 
 mainloop()
