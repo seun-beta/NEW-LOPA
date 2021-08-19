@@ -359,7 +359,7 @@ def delete():
     global clicked
     global entry
 
-    conn, cur = db_conn()
+
 
     gotten_id = clicked.get().lower() + "_id"
     print(gotten_id)
@@ -395,10 +395,10 @@ def query():
 
 
 def update():
-    conn, cur = db_conn()
+
 
     if clicked.get() == "Event":
-        conn, cur = db_conn()
+
 
         cur.execute(""" UPDATE Event
               SET description = %s ,
@@ -499,7 +499,6 @@ def edit():
     top = Toplevel()
     top.title("Edit " + clicked.get())
 
-    conn, cur = db_conn()
     if clicked.get() == "Event":
 
         event_description_editor = Entry(top, width=30)
