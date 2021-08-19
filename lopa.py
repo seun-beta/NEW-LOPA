@@ -758,10 +758,10 @@ entry = Entry(root, width=30)
 entry.grid(row=1, column=2)
 
 edit = Button(root, text="Edit Entry", command=edit, height = 2, width = 23)
-edit.grid(row=1, column=2, padx=20, pady=20)
+edit.grid(row=2, column=2, padx=20, pady=20)
 
 delete = Button(root, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
-delete.grid(row=2, column=2, padx=20, pady=20)
+delete.grid(row=3, column=2, padx=20, pady=20)
 
 
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
@@ -769,10 +769,10 @@ clicked_query = StringVar(root)
 clicked_query.set(query_list[0])
 
 query_drop = OptionMenu(root, clicked_query, *query_list)
-query_drop.grid(row=4, column=1, padx=20, pady=20)
+query_drop.grid(row=5, column=1, padx=20, pady=20)
 
 query = Button(root, text="Query", fg="blue", command=query, height = 2, width = 23)
-query.grid(row=4, column=2, padx=20, pady=20)
+query.grid(row=5, column=2, padx=20, pady=20)
 
 
 # Buttons for inputing data
