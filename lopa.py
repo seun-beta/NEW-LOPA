@@ -5,10 +5,10 @@ from datetime import *
 import mysql.connector
 from db import create_table
 
-
+# Initialize table creation 
 create_table()
 
-
+# Connection to MySQL Database hosted on Azure 
 def db_conn():
     global conn 
     global cur
@@ -25,20 +25,19 @@ def db_conn():
 
 db_conn()
 
-
-
 root = Tk()
-root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
+root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 root.geometry("700x500")
 root.config(background='#394867')
 
+
 def new_event():
     
     global save_event
     top = Toplevel(bg="orange")
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 
     event_label = Label(top, text="CREATE EVENT")
     event_label.grid(row=0, column=0, columnspan=2)
@@ -86,8 +85,6 @@ def new_event():
 
 
   # --------------------------------CONSEQUENCE ID Dropdown-------------------
-
-
     cur.execute("""
             SELECT consequence_id, description FROM Consequence;
                 """)
@@ -106,13 +103,9 @@ def new_event():
     else:
         clicked_consequence.set(consequence_id_list[0])
 
-
-       
+   
     consequence_id_drop = OptionMenu(top, clicked_consequence, *consequence_id_list)
     consequence_id_drop.grid(row=1, column=5, pady=10, padx=40)
-
-
-
 
 
     def save_event():
@@ -134,13 +127,9 @@ def new_event():
     
 
 
-
-
-
-
 def new_cause():
     top = Toplevel(bg="blue")
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 
     event_label = Label(top, text="CAUSE")
     event_label.grid(row=0, column=0, columnspan=2)
@@ -194,7 +183,7 @@ def new_cause():
 
 def new_cause_barrier():
     top = Toplevel()
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 
     event_label = Label(top, text="CAUSE BARRIER")
     event_label.grid(row=0, column=0, columnspan=2)
@@ -260,7 +249,7 @@ def new_cause_barrier():
 
 def new_consequence():
     top = Toplevel(bg="red")
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 
     event_label = Label(top, text="CONSEQUENCE")
     event_label.grid(row=0, column=0, columnspan=2)
@@ -306,7 +295,7 @@ def new_consequence():
 
 def new_consequence_barrier():
     top = Toplevel()
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis | Developer: seunfunmi.adegoke@gmail.com")
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 
     event_label = Label(top, text="CONSEQUENCE BARRIER")
     event_label.grid(row=0, column=0, columnspan=2)
@@ -798,26 +787,5 @@ cause_barrier.grid(row=4, column=0, padx=10, pady=10)
 
 consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier)
 consequence_barrier.grid(row=5, column=0, padx=10, pady=10)
-
-
-def diagram():
-    from tkinterweb import HtmlFrame #import the HTML browser
-    try:
-        import tkinter as tk #python3
-    except ImportError:
-        import Tkinter as tk #python2
-
-        root = tk.Tk() #create the tkinter window
-        frame = HtmlFrame(root) #create HTML browser
-
-        frame.load_website("http://tkhtml.tcl.tk/tkhtml.html") #load a website
-        frame.grid(fill="both", expand=True) #attach the HtmlFrame widget to the parent window
-        root.mainloop()
-
-draw_diagram = Button(root, text="Draw Diagram", command=diagram)
-draw_diagram.grid(row=6, column=0, padx=10, pady=10)
-
-
-
 
 mainloop()
