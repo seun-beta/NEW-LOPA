@@ -1,13 +1,9 @@
 import mysql.connector
+import sqlite3
 
 
 def create_table():
-    conn = mysql.connector.connect(
-        host="lopasvr.mysql.database.azure.com",
-        user="lopasvr_user@lopasvr",
-        password="l0p@$vr_u$er",
-        database="lopaproject"
-    )
+    conn = sqlite3.connect("lopa.db")
 
     cur = conn.cursor()
 
