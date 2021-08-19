@@ -757,10 +757,10 @@ drop.grid(row=1, column=1)
 entry = Entry(root, width=30)
 entry.grid(row=0, column=2)
 
-edit = Button(root, text="Edit Entry", width=25, command=edit, height = 2, width = 23)
+edit = Button(root, text="Edit Entry", command=edit, height = 2, width = 23)
 edit.grid(row=1, column=2, padx=20, pady=20)
 
-delete = Button(root, text="Delete Entry", width=25, bg="red", command=delete, height = 2, width = 23)
+delete = Button(root, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
 delete.grid(row=2, column=2, padx=20, pady=20)
 
 
@@ -771,7 +771,7 @@ clicked_query.set(query_list[0])
 query_drop = OptionMenu(root, clicked_query, *query_list)
 query_drop.grid(row=4, column=1, padx=20, pady=20)
 
-query = Button(root, text="Query", width=25, fg="blue", command=query, height = 2, width = 23)
+query = Button(root, text="Query", fg="blue", command=query, height = 2, width = 23)
 query.grid(row=4, column=2, padx=20, pady=20)
 
 
