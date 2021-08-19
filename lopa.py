@@ -3,6 +3,8 @@ from PIL import ImageTk, Image
 import sqlite3
 from datetime import *
 import mysql.connector
+import tkinter.ttk
+
 from db import create_table
 
 # Initialize table creation 
@@ -743,20 +745,23 @@ def edit():
     conn.commit()
     conn.close()
 
+
+# Query, Delete and Edit
+
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
 drop = OptionMenu(root, clicked, *lopa_list)
-drop.grid(row=0, column=1)
+drop.grid(row=1, column=1)
 
 entry = Entry(root, width=30)
 entry.grid(row=0, column=2)
 
-edit = Button(root, text="Edit Entry", width=25, command=edit)
-edit.grid(row=1, column=2)
+edit = Button(root, text="Edit Entry", width=25, command=edit, height = 2, width = 23)
+edit.grid(row=1, column=2, padx=20, pady=20)
 
-delete = Button(root, text="Delete Entry", width=25, fg="red", command=delete)
-delete.grid(row=2, column=2)
+delete = Button(root, text="Delete Entry", width=25, bg="red", command=delete, height = 2, width = 23)
+delete.grid(row=2, column=2, padx=20, pady=20)
 
 
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
@@ -764,27 +769,28 @@ clicked_query = StringVar(root)
 clicked_query.set(query_list[0])
 
 query_drop = OptionMenu(root, clicked_query, *query_list)
-query_drop.grid(row=4, column=1)
+query_drop.grid(row=4, column=1, padx=20, pady=20)
 
-query = Button(root, text="Query", width=25, fg="blue", command=query)
-query.grid(row=4, column=2)
+query = Button(root, text="Query", width=25, fg="blue", command=query, height = 2, width = 23)
+query.grid(row=4, column=2, padx=20, pady=20)
 
-frame = LabelFrame(root, padx=10, pady=10, relief=SUNKEN, bd=5)
-frame.grid(padx=10, pady=20)
 
-event = Button(root, text="Create Event", bg="orange", command=new_event)
-event.grid(row=1, column=0, padx=10, pady=10)
+# Buttons for inputing data
+event = Button(root, text="Create Event", bg="orange", command=new_event, height = 2, width = 23)
+event.grid(row=1, column=0, padx=20, pady=20)
 
-cause = Button(root, text="Create Cause", bg="blue", command=new_cause)
-cause.grid(row=2, column=0, padx=10, pady=10)
+cause = Button(root, text="Create Cause", bg="blue",fg="white", command=new_cause, height = 2, width = 23)
+cause.grid(row=2, column=0, padx=20, pady=20)
 
-consequence = Button(root, text="Create Consequence", bg="red", command=new_consequence)
-consequence.grid(row=3, column=0, padx=10, pady=10)
+consequence = Button(root, text="Create Consequence", bg="red", fg="white", command=new_consequence, height = 2, width = 23)
+consequence.grid(row=3, column=0, padx=20, pady=20)
 
-cause_barrier = Button(root, text="Create Cause Barrier", command=new_cause_barrier)
-cause_barrier.grid(row=4, column=0, padx=10, pady=10)
+cause_barrier = Button(root, text="Create Cause Barrier", command=new_cause_barrier, height = 2, width = 23)
+cause_barrier.grid(row=4, column=0, padx=20, pady=20)
 
-consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier)
-consequence_barrier.grid(row=5, column=0, padx=10, pady=10)
+consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier, height = 2, width = 23)
+consequence_barrier.grid(row=5, column=0, padx=20, pady=20)
+
+# Add vertical lines 
 
 mainloop()
