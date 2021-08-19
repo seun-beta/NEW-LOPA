@@ -31,7 +31,7 @@ root = Tk()
 root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-root.geometry("700x500")
+root.geometry("900x1000")
 root.config(background='#394867')
 
 
@@ -752,10 +752,10 @@ lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barr
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
 drop = OptionMenu(root, clicked, *lopa_list)
-drop.grid(row=1, column=1)
+drop.grid(row=1, column=1, padx=20, pady=20)
 
 entry = Entry(root, width=30)
-entry.grid(row=0, column=2)
+entry.grid(row=1, column=2)
 
 edit = Button(root, text="Edit Entry", command=edit, height = 2, width = 23)
 edit.grid(row=1, column=2, padx=20, pady=20)
@@ -777,19 +777,19 @@ query.grid(row=4, column=2, padx=20, pady=20)
 
 # Buttons for inputing data
 event = Button(root, text="Create Event", bg="orange", command=new_event, height = 2, width = 23)
-event.grid(row=1, column=0, padx=20, pady=20)
+event.grid(row=1, column=0, padx=(20,60), pady=20)
 
 cause = Button(root, text="Create Cause", bg="blue",fg="white", command=new_cause, height = 2, width = 23)
-cause.grid(row=2, column=0, padx=20, pady=20)
+cause.grid(row=2, column=0, padx=(20,60), pady=20)
 
 consequence = Button(root, text="Create Consequence", bg="red", fg="white", command=new_consequence, height = 2, width = 23)
-consequence.grid(row=3, column=0, padx=20, pady=20)
+consequence.grid(row=3, column=0, padx=(20,60), pady=20)
 
 cause_barrier = Button(root, text="Create Cause Barrier", command=new_cause_barrier, height = 2, width = 23)
-cause_barrier.grid(row=4, column=0, padx=20, pady=20)
+cause_barrier.grid(row=4, column=0, padx=(20,60), pady=20)
 
 consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier, height = 2, width = 23)
-consequence_barrier.grid(row=5, column=0, padx=20, pady=20)
+consequence_barrier.grid(row=5, column=0, padx=(20,60), pady=20)
 
 # Add vertical lines 
 
