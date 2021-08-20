@@ -192,7 +192,7 @@ def new_cause_barrier():
 
     def save_cause_barrier():
     
-        cur.execute("INSERT INTO Cause_Barrier VALUES (null, ?, ?, ?)",(
+        cur.execute("""INSERT INTO "Cause Barrier" VALUES (null, ?, ?, ?)""",(
             cause_barrier_description.get(),
             cause_barrier_pfd.get(),
             clicked_cause.get())
@@ -260,7 +260,7 @@ def new_consequence():
 
     def save_consequence():
 
-        cur.execute("INSERT INTO Consequence VALUES (null,?, ?, ?)",(
+        cur.execute("""INSERT INTO "Consequence Barrier" VALUES (null,?, ?, ?)""",(
             consequence_description.get(),
             consequence_target_frequency.get(),
             clicked_event.get())
@@ -329,7 +329,7 @@ def new_consequence_barrier():
 
     def save_consequence_barrier():
         
-        cur.execute("INSERT INTO Consequence_Barrier VALUES (null, ?, ?, ?)",(
+        cur.execute("""INSERT INTO "Consequence Barrier" VALUES (null, ?, ?, ?)""",(
            consequence_barrier_description.get(),
            consequence_barrier_pfd.get(),
            clicked_consequence.get())
@@ -416,9 +416,9 @@ def update():
 
         conn.commit()
 
-    elif clicked.get() == "Cause_Barrier":
+    elif clicked.get() == "Cause Barrier":
 
-        cur.execute(""" UPDATE Cause_Barrier
+        cur.execute(""" UPDATE "Cause Barrier"
               SET description = ? ,
                   pfd = ? ,
                   cause_id = ?
@@ -446,9 +446,9 @@ def update():
 
         conn.commit()
 
-    elif clicked.get() == "Consequence_Barrier":
+    elif clicked.get() == "Consequence Barrier":
 
-        cur.execute(""" UPDATE Consequence_Barrier
+        cur.execute(""" UPDATE "Consequence Barrier"
               SET description = ? ,
                   pfd = ? ,
                   consequence_id = ?
@@ -602,7 +602,7 @@ def edit():
             # event_id_editor.insert(0, record[3])
 
 
-    elif clicked.get() == "Cause_Barrier":
+    elif clicked.get() == "Cause Barrier":
 
         cause_barrier_description_editor_label = Label(top, text="Description")
         cause_barrier_description_editor_label.grid(row=0, column=0, padx=10, pady=10)
@@ -644,7 +644,7 @@ def edit():
         cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = " + entry.get())
+        cur.execute("""SELECT description, pfd FROM "Cause Barrier" WHERE cause_barrier_id = """ + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -676,7 +676,7 @@ def edit():
             consequence_target_frequency_editor.insert(0, record[2])  
 
 
-    elif clicked.get() == "Consequence_Barrier": 
+    elif clicked.get() == "Consequence Barrier": 
 
         consequence_barrier_description_label_editor = Label(top, text="Description:")
         consequence_barrier_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
@@ -708,7 +708,7 @@ def edit():
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("SELECT consequence_id FROM Consequence_Barrier WHERE consequence_barrier_id = " + entry.get())
+            cur.execute("""SELECT consequence_id FROM "Consequence Barrier" WHERE consequence_barrier_id = """ + entry.get())
             consequence = cur.fetchone()
  
             clicked_consequence_editor.set(consequence[0])
@@ -719,7 +719,7 @@ def edit():
         consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = " + entry.get())
+        cur.execute("""SELECT description, pfd FROM "Consequence Barrier" WHERE consequence_barrier_id = """ + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -748,10 +748,10 @@ entry = Entry(root, width=30)
 entry.grid(row=1, column=2)
 
 edit = Button(root, text="Edit Entry", command=edit, height = 2, width = 23)
-edit.grid(row=2, column=2, padx=20, pady=20)
+edit.grid(row=2, column=2, padx=80, pady=20)
 
 delete = Button(root, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
-delete.grid(row=3, column=2, padx=20, pady=20)
+delete.grid(row=3, column=2, padx=80, pady=20)
 
 
 query_list = ["Event", "Cause", "Cause Barrier", "Consequence", "Consequence Barrier"]
@@ -762,7 +762,7 @@ query_drop = OptionMenu(root, clicked_query, *query_list)
 query_drop.grid(row=5, column=1, padx=20, pady=20)
 
 query = Button(root, text="Query", fg="blue", command=query, height = 2, width = 23)
-query.grid(row=5, column=2, padx=20, pady=20)
+query.grid(row=5, column=2, padx=80, pady=20)
 
 
 # Buttons for inputing data
