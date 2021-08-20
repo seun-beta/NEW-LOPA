@@ -8,15 +8,15 @@ def create_table():
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Event (
                 event_id INT AUTO_INCREMENT PRIMARY KEY,
-                description TEXT)
+                description TEXT,
+                target_frequency REAL)
     """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
                 cause_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
                 initial_frequency REAL,
-                event_id INT,
-                target_frequency REAL)
+                event_id INT)
     """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
@@ -29,9 +29,8 @@ def create_table():
     cur.execute("""CREATE TABLE IF NOT EXISTS Consequence (
                 consequence_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
-                initial_frequency REAL,
-                event_id INT
-                target_frequency REAL)
+                target_frequency REAL,
+                event_id INT)
     """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
