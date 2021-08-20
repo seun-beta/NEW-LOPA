@@ -80,8 +80,8 @@ def new_cause():
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
     top.geometry("900x500")
 
-    cause_label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
-    cause_label.grid(row=0, column=2, columnspan=2)
+    label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
+    label.grid(row=0, column=2, columnspan=2)
 
     cause_description_label = Label(top, text="Description:")
     cause_description_label.grid(row=1, column=0, padx=10, pady=10)
@@ -103,9 +103,11 @@ def new_cause():
     event_id_data = cur.fetchall()
     event_id_list = list()
 
+
     for i in event_id_data:
         data = list(i)
-        event_id_list.append(data[1])
+        event_id_list.append(data[0])
+        
 
     clicked_event = StringVar()
     if len(event_id_list) < 1:
@@ -142,8 +144,6 @@ def new_cause():
     save_cause.grid(row=3, column=2, columnspan=2)
 
 
-
-
 def new_cause_barrier():
     top = Toplevel()
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
@@ -176,7 +176,7 @@ def new_cause_barrier():
 
     for i in cause_id_data:
         data = list(i)
-        cause_id_list.append(data[1])
+        cause_id_list.append(data[0])
 
     clicked_cause = StringVar()
     if len(cause_id_list) < 1:
@@ -219,8 +219,8 @@ def new_consequence():
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
     top.geometry("900x500")
 
-    event_label = Label(top, text="CREATE CONSEQUENCE", font=('serif', 14, 'bold'))
-    event_label.grid(row=0, column=2, columnspan=2)
+    label = Label(top, text="CREATE CONSEQUENCE", font=('serif', 14, 'bold'))
+    label.grid(row=0, column=2, columnspan=2)
 
 
     consequence_description_label = Label(top, text="Description:")
@@ -246,7 +246,7 @@ def new_consequence():
 
     for i in event_id_data:
         data = list(i)
-        event_id_list.append(data[1])
+        event_id_list.append(data[0])
 
     clicked_event = StringVar()
     if len(event_id_list) < 1:
@@ -260,14 +260,15 @@ def new_consequence():
     event_id_drop = OptionMenu(top, clicked_event, *event_id_list)
     event_id_drop.grid(row=1, column=4, pady=10, padx=40)
 
-
+    # ---------------Save CONSEQUENCE-------------------
     def save_consequence():
 
-        cur.execute("""INSERT INTO Consequence_Barrier VALUES (null,%s, %s, %s)""",(
+        cur.execute("""INSERT INTO Consequence VALUES (null,%s, %s, %s)""",(
             consequence_description.get(),
             consequence_target_frequency.get(),
             clicked_event.get())
         )
+
 
         success = Label(top, text="Added record successfully", fg="green")
         success.grid(row=5, column=2, columnspan=2)
@@ -314,7 +315,7 @@ def new_consequence_barrier():
 
     for i in consequence_id_data:
         data = list(i)
-        consequence_id_list.append(data[1])
+        consequence_id_list.append(data[0])
 
     clicked_consequence = StringVar()
     if len(consequence_id_list) < 1:
@@ -419,9 +420,9 @@ def update():
 
         conn.commit()
 
-    elif clicked.get() == "Cause Barrier":
+    elif clicked.get() == "Cause_Barrier":
 
-        cur.execute(""" UPDATE `Cause Barrier`
+        cur.execute(""" UPDATE Cause_Barrier
               SET description = %s ,
                   pfd = %s ,
                   cause_id = %s
@@ -449,9 +450,9 @@ def update():
 
         conn.commit()
 
-    elif clicked.get() == "Consequence Barrier":
+    elif clicked.get() == "Consequence_Barrier":
 
-        cur.execute(""" UPDATE Consequence Barrier
+        cur.execute(""" UPDATE Consequence_Barrier
               SET description = %s ,
                   pfd = %s ,
                   consequence_id = %s
@@ -605,7 +606,7 @@ def edit():
             # event_id_editor.insert(0, record[3])
 
 
-    elif clicked.get() == "Cause Barrier":
+    elif clicked.get() == "Cause_Barrier":
 
         cause_barrier_description_editor_label = Label(top, text="Description")
         cause_barrier_description_editor_label.grid(row=0, column=0, padx=10, pady=10)
@@ -647,7 +648,7 @@ def edit():
         cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("""SELECT description, pfd FROM `Cause Barrier` WHERE cause_barrier_id = """ + entry.get())
+        cur.execute("""SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = """ + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -679,7 +680,7 @@ def edit():
             consequence_target_frequency_editor.insert(0, record[2])  
 
 
-    elif clicked.get() == "Consequence Barrier": 
+    elif clicked.get() == "Consequence_Barrier": 
 
         consequence_barrier_description_label_editor = Label(top, text="Description:")
         consequence_barrier_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
@@ -711,7 +712,7 @@ def edit():
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("""SELECT consequence_id FROM `Consequence Barrier` WHERE consequence_barrier_id = """ + entry.get())
+            cur.execute("""SELECT consequence_id FROM Consequence_Barrier WHERE consequence_barrier_id = """ + entry.get())
             consequence = cur.fetchone()
  
             clicked_consequence_editor.set(consequence[0])
@@ -722,7 +723,7 @@ def edit():
         consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("""SELECT description, pfd FROM `Consequence Barrier` WHERE consequence_barrier_id = """ + entry.get())
+        cur.execute("""SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = """ + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -740,7 +741,7 @@ def edit():
 
 # Query, Delete and Edit
 
-lopa_list = ["Event", "Cause", "Cause Barrier", "Consequence", "Consequence Barrier"]
+lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
 drop = OptionMenu(root, clicked, *lopa_list)
@@ -757,7 +758,7 @@ delete = Button(root, text="Delete Entry", bg="red", command=delete, height = 2,
 delete.grid(row=3, column=2, padx=80, pady=20)
 
 
-query_list = ["Event", "Cause", "Cause Barrier", "Consequence", "Consequence Barrier"]
+query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked_query = StringVar(root)
 clicked_query.set(query_list[0])
 
