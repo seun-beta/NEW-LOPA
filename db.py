@@ -4,15 +4,11 @@ import sqlite3
 
 def create_table():
     conn = sqlite3.connect("lopa.db")
-
     cur = conn.cursor()
-
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Event (
                 event_id INT AUTO_INCREMENT PRIMARY KEY,
-                description TEXT,
-                cause_id INT,
-                consequence_id INT)
+                description TEXT)
     """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
@@ -34,6 +30,7 @@ def create_table():
                 consequence_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
                 initial_frequency REAL,
+                event_id INT
                 target_frequency REAL)
     """)
 
