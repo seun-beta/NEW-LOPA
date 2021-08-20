@@ -365,7 +365,10 @@ def query():
     top = Toplevel()
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
     top.geometry("900x500")
-    top.title(clicked_query.get())
+    label = Label(top, text="Data from " + clicked_query.get() + " Table", font=("serif", 14, "bold"))
+    label.grid(row=0, column=2)
+
+
 
 
     cur.execute("SELECT * FROM " + clicked_query.get())
