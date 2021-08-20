@@ -214,48 +214,69 @@ def new_cause_barrier():
 def new_consequence():
     top = Toplevel(bg="red")
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("900x500")
 
-    event_label = Label(top, text="CONSEQUENCE")
-    event_label.grid(row=0, column=0, columnspan=2)
+    event_label = Label(top, text="CREATE CONSEQUENCE", font=('serif', 14, 'bold'))
+    event_label.grid(row=0, column=2, columnspan=2)
 
 
     consequence_description_label = Label(top, text="Description:")
     consequence_description_label.grid(row=1, column=0, padx=10, pady=10)
     consequence_description = Entry(top, width=30)
     consequence_description.grid(row=1, column=1, padx=10, pady=10)
-
-    consequence_initial_frequency_label = Label(top, text="Initial Frequency:")
-    consequence_initial_frequency_label.grid(row=2, column=0, padx=10, pady=10)
-    consequence_initial_frequency = Entry(top, width=30)
-    consequence_initial_frequency.grid(row=2, column=1, padx=10, pady=10)
     
     consequence_target_frequency_label = Label(top, text="Target Frequency:")
-    consequence_target_frequency_label.grid(row=3, column=0, padx=10, pady=10)
+    consequence_target_frequency_label.grid(row=2, column=0, padx=10, pady=10)
     consequence_target_frequency = Entry(top, width=30)
-    consequence_target_frequency.grid(row=3, column=1, padx=10, pady=10)
+    consequence_target_frequency.grid(row=2, column=1, padx=10, pady=10)
+
+
+    # --------------------------------EVENT ID Dropdown-------------------
+    event_id_label = Label(top, text="Event ID:")
+    event_id_label.grid(row=1, column=3, padx=20, pady=20)
+    cur.execute("""
+            SELECT event_id, description FROM Event;
+                """)
+
+    event_id_data = cur.fetchall()
+    event_id_list = list()
+
+    for i in event_id_data:
+        data = list(i)
+        event_id_list.append(data[1])
+
+    clicked_event = StringVar()
+    if len(event_id_list) < 1:
+        clicked_event.set("Create Event First")
+        event_id_list = ["Create Event First"]
+        
+    else:
+        clicked_event.set(event_id_list[0])
+
+        
+    event_id_drop = OptionMenu(top, clicked_event, *event_id_list)
+    event_id_drop.grid(row=1, column=4, pady=10, padx=40)
 
 
     def save_consequence():
 
         cur.execute("INSERT INTO Consequence VALUES (null,?, ?, ?)",(
             consequence_description.get(),
-            consequence_initial_frequency.get(),
-            consequence_target_frequency.get()
-        )
+            consequence_target_frequency.get(),
+            clicked_event.get())
         )
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=5, column=1, columnspan=2)
+        success.grid(row=5, column=2, columnspan=2)
         conn.commit()
 
 
         consequence_description.delete(0, END)
-        consequence_initial_frequency.delete(0, END)
         consequence_target_frequency.delete(0, END)
 
 
     save_consequence = Button(top, text="Save", width=20, command=save_consequence)
-    save_consequence.grid(row=4, column=1, columnspan=2)
+    save_consequence.grid(row=4, column=2, columnspan=2)
 
 def new_consequence_barrier():
     top = Toplevel()
