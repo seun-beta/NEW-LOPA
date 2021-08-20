@@ -7,7 +7,7 @@ import tkinter.ttk
 
 from db import create_table
 
-# Initialize table creation 
+# Initialize db table creation 
 create_table()
 
 # Connection to MySQL Database hosted on Azure 
@@ -23,10 +23,10 @@ def db_conn():
 db_conn()
 
 root = Tk()
-root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis")
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-root.geometry("900x1000")
+root.geometry("1200x700")
 root.config(background='#394867')
 
 
@@ -35,29 +35,34 @@ def new_event():
     global save_event
     top = Toplevel(bg="orange")
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("500x500")
 
-    event_label = Label(top, text="CREATE EVENT")
-    event_label.grid(row=0, column=0, columnspan=2)
+    event_label = Label(top, text="CREATE EVENT", font=('serif', 14, 'bold'))
+    event_label.grid(row=0, column=1, columnspan=2)
 
-
-
-    event_description_label = Label(top, text="Description")
+    # --------------Input UI----------------------------
+    event_description_label = Label(top, text="Description:")
     event_description_label.grid(row=1, column=0, padx=10, pady=10)
 
     event_description = Entry(top, width=30)
     event_description.grid(row=1, column=1, padx=10, pady=10)
 
+    
+    event_target_freq_label = Label(top, text="Target Frequency: ")
+    event_target_freq_label.grid(row=2, column=0, padx=10, pady=10)
 
-
+    event_target_freq = Entry(top, width=30)
+    event_target_freq.grid(row=2, column=1, padx=10, pady=10)
 
     
     def save_event():
 
-        cur.execute("INSERT INTO Event VALUES (null, %s)",(
-                    event_description.get()))
+        cur.execute("INSERT INTO Event VALUES (null, ?, ?)",(
+                    event_description.get(),
+                    event_target_freq.get()))
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=4, column=3)
+        success.grid(row=4, column=1)
         conn.commit()
         event_description.delete(0, END)
     
@@ -70,9 +75,10 @@ def new_event():
 def new_cause():
     top = Toplevel(bg="blue")
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("500x500")
 
-    event_label = Label(top, text="CAUSE")
-    event_label.grid(row=0, column=0, columnspan=2)
+    event_label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
+    event_label.grid(row=0, column=1, columnspan=2)
 
     cause_description_label = Label(top, text="Description:")
     cause_description_label.grid(row=1, column=0, padx=10, pady=10)
@@ -84,20 +90,39 @@ def new_cause():
     cause_initial_frequency = Entry(top, width=30)
     cause_initial_frequency.grid(row=2, column=1, padx=10, pady=10)
 
-    cause_target_frequency_label = Label(top, text="Target Frequency:")
-    cause_target_frequency_label.grid(row=4, column=0, padx=10, pady=10)
-    cause_target_frequency = Entry(top, width=30)
-    cause_target_frequency.grid(row=4, column=1, padx=10, pady=10)
-
+    # --------------------------------CAUSE ID Dropdown-------------------
+    
     event_id_label = Label(top, text="Event ID:")
-    event_id_label.grid(row=5, column=0, padx=10, pady=10)
-    event_id = Entry(top, width=30)
-    event_id.insert(0, 1)
-    event_id.grid(row=5, column=1, padx=10, pady=10)
+    event_id_label.grid(row=1, column=3, padx=20, pady=20)
+    cur.execute("""
+            SELECT event_id, description FROM Event;
+                """)
+
+    cause_id_data = cur.fetchall()
+    cause_id_list = list()
+
+    for i in cause_id_data:
+        data = list(i)
+        cause_id_list.append(data[0])
+
+    clicked_cause = StringVar()
+    if len(cause_id_list) < 1:
+        clicked_cause.set("Create Cause First")
+        cause_id_list = ["Create Cause First"]
+        
+    else:
+        clicked_cause.set(cause_id_list[0])
+
+        
+    cause_id_drop = OptionMenu(top, clicked_cause, *cause_id_list)
+    cause_id_drop.grid(row=1, column=3, pady=10, padx=40)
+
+
+
 
     def save_cause():
 
-        cur.execute("INSERT INTO Cause VALUES (null, %s, %s, %s, %s)",(
+        cur.execute("INSERT INTO Cause VALUES (null, ?, ?, ?, ?)",(
             cause_description.get(),
             cause_initial_frequency.get(),
             cause_target_frequency.get(),
@@ -168,7 +193,7 @@ def new_cause_barrier():
 
     def save_cause_barrier():
     
-        cur.execute("INSERT INTO Cause_Barrier VALUES (null, %s, %s, %s)",(
+        cur.execute("INSERT INTO Cause_Barrier VALUES (null, ?, ?, ?)",(
             cause_barrier_description.get(),
             cause_barrier_pfd.get(),
             clicked_cause.get())
@@ -213,7 +238,7 @@ def new_consequence():
 
     def save_consequence():
 
-        cur.execute("INSERT INTO Consequence VALUES (null,%s, %s, %s)",(
+        cur.execute("INSERT INTO Consequence VALUES (null,?, ?, ?)",(
             consequence_description.get(),
             consequence_initial_frequency.get(),
             consequence_target_frequency.get()
@@ -279,7 +304,7 @@ def new_consequence_barrier():
 
     def save_consequence_barrier():
         
-        cur.execute("INSERT INTO Consequence_Barrier VALUES (null, %s, %s, %s)",(
+        cur.execute("INSERT INTO Consequence_Barrier VALUES (null, ?, ?, ?)",(
            consequence_barrier_description.get(),
            consequence_barrier_pfd.get(),
            clicked_consequence.get())
@@ -341,10 +366,10 @@ def update():
 
 
         cur.execute(""" UPDATE Event
-              SET description = %s ,
-                  cause_id = %s ,
-                  consequence_id = %s
-              WHERE event_id = %s """, (
+              SET description = ? ,
+                  cause_id = ? ,
+                  consequence_id = ?
+              WHERE event_id = ? """, (
             event_description_editor.get(),
             clicked_cause_editor.get(),
             clicked_consequence_editor.get(),
@@ -353,10 +378,10 @@ def update():
         conn.commit() 
     elif clicked.get() == "Cause":
         cur.execute(""" UPDATE Cause
-              SET description = %s ,
-                  initial_frequency = %s ,
-                  target_frequency = %s
-              WHERE cause_id = %s """, (
+              SET description = ? ,
+                  initial_frequency = ? ,
+                  target_frequency = ?
+              WHERE cause_id = ? """, (
         cause_description_editor.get(),
         cause_initial_frequency_editor.get(),
         cause_target_frequency_editor.get(),
@@ -368,10 +393,10 @@ def update():
     elif clicked.get() == "Cause_Barrier":
 
         cur.execute(""" UPDATE Cause_Barrier
-              SET description = %s ,
-                  pfd = %s ,
-                  cause_id = %s
-              WHERE cause_barrier_id = %s """, (
+              SET description = ? ,
+                  pfd = ? ,
+                  cause_id = ?
+              WHERE cause_barrier_id = ? """, (
         cause_barrier_description_editor.get(),
         cause_barrier_pfd_editor.get(),
         clicked_cause_editor.get(),
@@ -383,10 +408,10 @@ def update():
     elif clicked.get() == "Consequence":
 
         cur.execute(""" UPDATE Consequence
-              SET description = %s ,
-                  initial_frequency = %s ,
-                  target_frequency = %s
-              WHERE consequence_id = %s """, (
+              SET description = ? ,
+                  initial_frequency = ? ,
+                  target_frequency = ?
+              WHERE consequence_id = ? """, (
         consequence_description_editor.get(),
         consequence_initial_frequency_editor.get(),
         consequence_target_frequency_editor.get(),
@@ -398,10 +423,10 @@ def update():
     elif clicked.get() == "Consequence_Barrier":
 
         cur.execute(""" UPDATE Consequence_Barrier
-              SET description = %s ,
-                  pfd = %s ,
-                  consequence_id = %s
-              WHERE consequence_barrier_id = %s """, (
+              SET description = ? ,
+                  pfd = ? ,
+                  consequence_id = ?
+              WHERE consequence_barrier_id = ? """, (
         consequence_barrier_description_editor.get(),
         consequence_barrier_pfd_editor.get(),
         clicked_consequence_editor.get(),
