@@ -35,7 +35,7 @@ def new_event():
     global save_event
     top = Toplevel(bg="orange")
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
-    top.geometry("500x500")
+    top.geometry("900x500")
 
     event_label = Label(top, text="CREATE EVENT", font=('serif', 14, 'bold'))
     event_label.grid(row=0, column=1, columnspan=2)
@@ -75,10 +75,10 @@ def new_event():
 def new_cause():
     top = Toplevel(bg="blue")
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
-    top.geometry("500x500")
+    top.geometry("900x500")
 
-    event_label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
-    event_label.grid(row=0, column=1, columnspan=2)
+    cause_label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
+    cause_label.grid(row=0, column=2, columnspan=2)
 
     cause_description_label = Label(top, text="Description:")
     cause_description_label.grid(row=1, column=0, padx=10, pady=10)
@@ -90,44 +90,40 @@ def new_cause():
     cause_initial_frequency = Entry(top, width=30)
     cause_initial_frequency.grid(row=2, column=1, padx=10, pady=10)
 
-    # --------------------------------CAUSE ID Dropdown-------------------
-    
+    # --------------------------------EVENT ID Dropdown-------------------
     event_id_label = Label(top, text="Event ID:")
     event_id_label.grid(row=1, column=3, padx=20, pady=20)
     cur.execute("""
             SELECT event_id, description FROM Event;
                 """)
 
-    cause_id_data = cur.fetchall()
-    cause_id_list = list()
+    event_id_data = cur.fetchall()
+    event_id_list = list()
 
-    for i in cause_id_data:
+    for i in event_id_data:
         data = list(i)
-        cause_id_list.append(data[0])
+        event_id_list.append(data[1])
 
-    clicked_cause = StringVar()
-    if len(cause_id_list) < 1:
-        clicked_cause.set("Create Cause First")
-        cause_id_list = ["Create Cause First"]
+    clicked_event = StringVar()
+    if len(event_id_list) < 1:
+        clicked_event.set("Create Event First")
+        event_id_list = ["Create Event First"]
         
     else:
-        clicked_cause.set(cause_id_list[0])
+        clicked_event.set(event_id_list[0])
 
         
-    cause_id_drop = OptionMenu(top, clicked_cause, *cause_id_list)
-    cause_id_drop.grid(row=1, column=3, pady=10, padx=40)
+    event_id_drop = OptionMenu(top, clicked_event, *event_id_list)
+    event_id_drop.grid(row=1, column=4, pady=10, padx=40)
 
 
-
-
+    # ---------------Save CAUSE-------------------
     def save_cause():
 
-        cur.execute("INSERT INTO Cause VALUES (null, ?, ?, ?, ?)",(
+        cur.execute("INSERT INTO Cause VALUES (null, ?, ?, ?)",(
             cause_description.get(),
             cause_initial_frequency.get(),
-            cause_target_frequency.get(),
-            event_id.get()
-        )
+            clicked_event.get())
         )
 
         success = Label(top, text="Added record successfully", fg="green")
@@ -141,7 +137,7 @@ def new_cause():
         
 
     save_cause = Button(top, text="Save", width=20, command=save_cause)
-    save_cause.grid(row=6, column=1, columnspan=2)
+    save_cause.grid(row=6, column=2, columnspan=2)
 
 
 
