@@ -397,15 +397,15 @@ def update():
 
         cur.execute(""" UPDATE Event
               SET description = %s ,
-                  cause_id = %s ,
-                  consequence_id = %s
+                  target_frequency = %s
               WHERE event_id = %s """, (
             event_description_editor.get(),
-            clicked_cause_editor.get(),
-            clicked_consequence_editor.get(),
+            event_target_frequency_editor.get(),
             entry.get()
             ))
         conn.commit() 
+
+    
     elif clicked.get() == "Cause":
         cur.execute(""" UPDATE Cause
               SET description = %s ,
@@ -471,8 +471,7 @@ def edit():
     global editor
     global top
 
-    global clicked_cause_editor
-    global clicked_consequence_editor
+    global event_target_frequency_editor
     global event_description_editor
 
     global cause_initial_frequency_editor
@@ -492,30 +491,33 @@ def edit():
     global clicked_consequence_editor
 
     top = Toplevel()
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("900x500")
     top.title("Edit " + clicked.get())
 
     if clicked.get() == "Event":
 
-        event_description_editor = Entry(top, width=30)
-        event_description_editor.grid(row=1, column=1, padx=20)
-
-    
-        # Create labels
         event_description_label_editor = Label(top, text="Description:")
         event_description_label_editor.grid(row=1, column=0)
 
-        event_target_freq_editor = Entry(top, width=30)
-        event_target_freq_editor.grid(row=2, column=1, padx=20)
+        event_description_editor = Entry(top, width=30)
+        event_description_editor.grid(row=1, column=1, padx=20)
 
 
-        cur.execute("SELECT description FROM Event WHERE event_id = " + entry.get())
+        event_target_frequency_label_editor = Label(top, text="Target Frequency:")
+        event_target_frequency_label_editor.grid(row=2, column=0, padx=20)
+
+        event_target_frequency_editor = Entry(top, width=30)
+        event_target_frequency_editor.grid(row=2, column=1, padx=20)
+
+
+        cur.execute("SELECT description, target_frequency FROM Event WHERE event_id = " + entry.get())
         records = cur.fetchall()
 
         for record in records:
-            if len(record) < 1:
-                event_description_editor.insert(0, "No Record  with id= "+ entry.get() +" in Database, please create one")
-            else:
-                event_description_editor.insert(0, record[0])
+            event_description_editor.insert(0, record[0])
+            event_target_frequency_editor.insert(0, record[1])
+
 
     elif clicked.get() == "Cause":
         
@@ -529,27 +531,44 @@ def edit():
         cause_initial_frequency_editor = Entry(top, width=30)
         cause_initial_frequency_editor.grid(row=1, column=1, padx=10, pady=10)
 
-        cause_target_frequency_label_editor = Label(top, text="Target Frequency:")
-        cause_target_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
-        cause_target_frequency_editor = Entry(top, width=30)
-        cause_target_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
-        event_id_label_editor = Label(top, text="Event ID:")
+        cause_event_id_label_editor = Label(top, text="Event ID:")
+        cause_event_id_label_editor.grid(row=0, column=2, padx=10, pady=10)
 
-        """
-        event_id_label_editor.grid(row=3, column=0, padx=10, pady=10)
-        event_id_editor = Entry(top, width=30)
-        event_id_editor.insert(0, 1)
-        event_id_editor.grid(row=3, column=1, padx=10, pady=10)
-        """
-        
+    
 
-        cur.execute("SELECT description, initial_frequency, target_frequency FROM Cause WHERE cause_id = " + entry.get())
+        #-------------Event Dropdown------------------
+        cur.execute("""
+                SELECT event_id, description FROM Event;
+                    """)
+
+        event_id_data = cur.fetchall()
+        event_id_list = list()
+
+        for i in event_id_data:
+            data = list(i)
+            event_id_list.append(data[0])
+
+        clicked_event_editor = StringVar()
+        if len(event_id_list) < 1:
+            clicked_event_editor.set("Create Event First")
+            event_id_list = ["Create Event First"]
+            
+        else:
+            cur.execute("SELECT event_id FROM Cause WHERE event_id = " + entry.get())
+            event = cur.fetchone()
+            clicked_event_editor.set(event[0])
+
+            
+        event_id_drop = OptionMenu(top, clicked_event_editor, *event_id_list)
+        event_id_drop.grid(row=1, column=3, pady=10, padx=40)
+
+
+        cur.execute("SELECT description, initial_frequency FROM Cause WHERE cause_id = " + entry.get())
         records = cur.fetchall()
         for record in records:
             cause_description_editor.insert(0, record[0])
             cause_initial_frequency_editor.insert(0, record[1])
-            cause_target_frequency_editor.insert(0, record[2])
-            # event_id_editor.insert(0, record[3])
+
 
 
     elif clicked.get() == "Cause_Barrier":
