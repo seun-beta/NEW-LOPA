@@ -144,9 +144,11 @@ def new_cause():
 def new_cause_barrier():
     top = Toplevel()
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("900x500")
 
-    event_label = Label(top, text="CAUSE BARRIER")
-    event_label.grid(row=0, column=0, columnspan=2)
+
+    label = Label(top, text="CAUSE BARRIER", font=('serif', 14, 'bold'))
+    label.grid(row=0, column=2, columnspan=2)
 
 
 
@@ -160,6 +162,8 @@ def new_cause_barrier():
     cause_barrier_pfd = Entry(top, width=30)
     cause_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
 
+
+    # -------------CAUSE ID Dropdown----------------------
     cur.execute("""
             SELECT cause_id, description FROM Cause;
                 """)
