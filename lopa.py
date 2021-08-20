@@ -363,7 +363,7 @@ def delete():
 
 
     delete_success = Label(root, text=clicked.get() + " Item  with ID " + entry.get() + " sucessfully deleted", fg="green")
-    delete_success.grid(row=3, column=2)
+    delete_success.grid(row=4, column=2)
 
 def query():
     top = Toplevel()
@@ -499,67 +499,13 @@ def edit():
         event_description_editor = Entry(top, width=30)
         event_description_editor.grid(row=1, column=1, padx=20)
 
-    # --------------------------------CAUSE ID Dropdown-------------------
-        cur.execute("""
-            SELECT cause_id, description FROM Cause;
-                """)
-
-        cause_id_data_editor = cur.fetchall()
-        cause_id_list_editor = list()
-
-        for i in cause_id_data_editor:
-            data = list(i)
-            cause_id_list_editor.append(data[0])
-
-        clicked_cause_editor = StringVar()
-        if len(cause_id_list_editor) < 1:
-            clicked_cause_editor.set("Create Cause First")
-            cause_id_list_editor = ["Create Cause First"]
-            
-        else:
-            cur.execute("SELECT cause_id FROM Event WHERE event_id = " + entry.get())
-            cause = cur.fetchone()
- 
-            clicked_cause_editor.set(cause[0])
-
-        cause_id_editor = Label(top, text="Cause ID:")
-        cause_id_editor.grid(row=1, column=2, padx=10, pady=10)
-            
-        cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
-        cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
-
-
-        # --------------------------------CONSEQUENCE ID Dropdown-------------------
-        cur.execute("""SELECT consequence_id, description FROM Consequence;
-                    """)
-        consequence_id_data_editor = cur.fetchall()
-
-        consequence_id_list_editor = list()
-        for i in consequence_id_data_editor:
-            data = list(i)
-            consequence_id_list_editor.append(data[0])
-
-
-        clicked_consequence_editor = StringVar()
-        if len(consequence_id_list_editor) < 1:
-            clicked_consequence_editor.set("Create Consequence First")
-            consequence_id_list_editor = ["Create Consequence First"]
-            
-        else:
-            cur.execute("SELECT consequence_id FROM Event WHERE event_id = " + entry.get())
-            consequence = cur.fetchone()
- 
-            clicked_consequence_editor.set(consequence[0])
-
-        consequence_id_editor = Label(top, text="Consequence ID:")
-        consequence_id_editor.grid(row=1, column=4, pady=10)
-        
-        consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
-        consequence_id_drop_editor.grid(row=1, column=5, pady=10, padx=40)
-
+    
         # Create labels
         event_description_label_editor = Label(top, text="Description:")
         event_description_label_editor.grid(row=1, column=0)
+
+        event_target_freq_editor = Entry(top, width=30)
+        event_target_freq_editor.grid(row=2, column=1, padx=20)
 
 
         cur.execute("SELECT description FROM Event WHERE event_id = " + entry.get())
