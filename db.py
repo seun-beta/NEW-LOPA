@@ -1,15 +1,18 @@
 import mysql.connector
-import sqlite3
-
 
 def create_table():
-    conn = sqlite3.connect("lopa.db")
+    conn = mysql.connector.connect(
+        host="lopasvr.mysql.database.azure.com",
+        user="lopasvr_user@lopasvr",
+        password="l0p@$vr_u$er",
+        database="lopaproject"
+    )
     cur = conn.cursor()
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Event (
                 event_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
-                target_frequency REAL)
+                target_frequency REAL);
     """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
@@ -19,7 +22,7 @@ def create_table():
                 event_id INT)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Cause Barrier" (
+    cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
                 cause_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
                 pfd REAL,
@@ -33,7 +36,7 @@ def create_table():
                 event_id INT)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS "Consequence Barrier" (
+    cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
                 consequence_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
                 pfd REAL,
