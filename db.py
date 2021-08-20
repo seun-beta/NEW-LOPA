@@ -19,7 +19,7 @@ def create_table():
                 event_id INT)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
+    cur.execute("""CREATE TABLE IF NOT EXISTS "Cause Barrier" (
                 cause_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
                 pfd REAL,
@@ -33,7 +33,7 @@ def create_table():
                 event_id INT)
     """)
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
+    cur.execute("""CREATE TABLE IF NOT EXISTS "Consequence Barrier" (
                 consequence_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
                 description TEXT,
                 pfd REAL,
