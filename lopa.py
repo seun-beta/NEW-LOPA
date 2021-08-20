@@ -147,7 +147,7 @@ def new_cause_barrier():
     top.geometry("900x500")
 
 
-    label = Label(top, text="CAUSE BARRIER", font=('serif', 14, 'bold'))
+    label = Label(top, text="CREATE CAUSE BARRIER", font=('serif', 14, 'bold'))
     label.grid(row=0, column=2, columnspan=2)
 
 
@@ -173,7 +173,7 @@ def new_cause_barrier():
 
     for i in cause_id_data:
         data = list(i)
-        cause_id_list.append(data[0])
+        cause_id_list.append(data[1])
 
     clicked_cause = StringVar()
     if len(cause_id_list) < 1:
@@ -199,7 +199,7 @@ def new_cause_barrier():
         )
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=4, column=1, columnspan=2)
+        success.grid(row=4, column=2, columnspan=2)
         conn.commit()
 
         cause_barrier_description.delete(0, END)
@@ -208,7 +208,7 @@ def new_cause_barrier():
 
 
     save_cause_barrier = Button(top, text="Save", width=20, command=save_cause_barrier)
-    save_cause_barrier.grid(row=3, column=1, columnspan=2)
+    save_cause_barrier.grid(row=3, column=2, columnspan=2)
 
 
 def new_consequence():
