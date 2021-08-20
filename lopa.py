@@ -278,12 +278,15 @@ def new_consequence():
     save_consequence = Button(top, text="Save", width=20, command=save_consequence)
     save_consequence.grid(row=4, column=2, columnspan=2)
 
+
+
 def new_consequence_barrier():
     top = Toplevel()
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("900x500")
 
-    event_label = Label(top, text="CONSEQUENCE BARRIER")
-    event_label.grid(row=0, column=0, columnspan=2)
+    label = Label(top, text="CONSEQUENCE BARRIER", font=("serif", 14, "bold"))
+    label.grid(row=0, column=2, columnspan=2)
 
 
     consequence_barrier_description_label = Label(top, text="Description:")
@@ -297,6 +300,8 @@ def new_consequence_barrier():
     consequence_barrier_pfd = Entry(top, width=30)
     consequence_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
 
+
+    # ------------- CONSEQUENCE ID Dropdown---------------------------
     cur.execute("""
             SELECT consequence_id, description FROM Consequence;
                 """)
@@ -306,7 +311,7 @@ def new_consequence_barrier():
 
     for i in consequence_id_data:
         data = list(i)
-        consequence_id_list.append(data[0])
+        consequence_id_list.append(data[1])
 
     clicked_consequence = StringVar()
     if len(consequence_id_list) < 1:
@@ -344,8 +349,6 @@ def delete():
     global clicked
     global entry
 
-
-
     gotten_id = clicked.get().lower() + "_id"
     print(gotten_id)
 
@@ -360,7 +363,10 @@ def delete():
 
 def query():
     top = Toplevel()
+    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.geometry("900x500")
     top.title(clicked_query.get())
+
 
     cur.execute("SELECT * FROM " + clicked_query.get())
     records = cur.fetchall()
