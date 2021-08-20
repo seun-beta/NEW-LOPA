@@ -127,17 +127,16 @@ def new_cause():
         )
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=7, column=1, columnspan=2)
+        success.grid(row=4, column=2, columnspan=2)
         conn.commit()
 
         cause_description.delete(0, END)
         cause_initial_frequency.delete(0, END)
-        cause_target_frequency.delete(0, END)
 
         
 
     save_cause = Button(top, text="Save", width=20, command=save_cause)
-    save_cause.grid(row=6, column=2, columnspan=2)
+    save_cause.grid(row=3, column=2, columnspan=2)
 
 
 
