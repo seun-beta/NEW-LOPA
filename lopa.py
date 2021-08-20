@@ -199,7 +199,7 @@ def new_cause_barrier():
         )
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=4, column=2, columnspan=2)
+        success.grid(row=4, column=1, columnspan=2)
         conn.commit()
 
         cause_barrier_description.delete(0, END)
@@ -208,7 +208,7 @@ def new_cause_barrier():
 
 
     save_cause_barrier = Button(top, text="Save", width=20, command=save_cause_barrier)
-    save_cause_barrier.grid(row=3, column=2, columnspan=2)
+    save_cause_barrier.grid(row=3, column=1, columnspan=2)
 
 
 def new_consequence():
