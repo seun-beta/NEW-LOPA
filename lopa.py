@@ -365,10 +365,10 @@ def query():
     top = Toplevel()
     top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
     top.geometry("900x500")
+
+
     label = Label(top, text="Data from " + clicked_query.get() + " Table", font=("serif", 14, "bold"))
     label.grid(row=0, column=2)
-
-
 
 
     cur.execute("SELECT * FROM " + clicked_query.get())
@@ -380,11 +380,9 @@ def query():
             records_label.grid(row=5, column=2, columnspan=2)
     else:
         for record in records:
-            print_records += str(record[0]) +" "+ str(record[1]) + "       "+ "\t" + str(record[2]) +"\n"
+            print_records += str(record[0]) + "       |        "+ str(record[1]) + "      |       "+ "" + str(record[2]) +"\n"
             records_label = Label(top, text=print_records)
             records_label.grid(row=5, column=2, columnspan=2)
-
-    conn.commit()
 
 
 
