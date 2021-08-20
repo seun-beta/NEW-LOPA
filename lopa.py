@@ -388,7 +388,6 @@ def query():
 
 def update():
 
-
     if clicked.get() == "Event":
 
 
@@ -738,7 +737,7 @@ def edit():
 
 # Query, Delete and Edit
 
-lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
+lopa_list = ["Event", "Cause", "Cause Barrier", "Consequence", "Consequence Barrier"]
 clicked = StringVar(root)
 clicked.set(lopa_list[0])
 drop = OptionMenu(root, clicked, *lopa_list)
@@ -755,7 +754,7 @@ delete = Button(root, text="Delete Entry", bg="red", command=delete, height = 2,
 delete.grid(row=3, column=2, padx=20, pady=20)
 
 
-query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
+query_list = ["Event", "Cause", "Cause Barrier", "Consequence", "Consequence Barrier"]
 clicked_query = StringVar(root)
 clicked_query.set(query_list[0])
 
