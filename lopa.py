@@ -65,6 +65,7 @@ def new_event():
         success.grid(row=4, column=1)
         conn.commit()
         event_description.delete(0, END)
+        event_target_freq.delete(0, END)
     
 
     save_event = Button(top, text="Save", width=20, command=save_event)
