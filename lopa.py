@@ -1,9 +1,7 @@
 from tkinter import *
-from PIL import ImageTk, Image
-import sqlite3
 from datetime import *
 import mysql.connector
-import tkinter.ttk
+
 
 from db import create_table
 
@@ -14,8 +12,12 @@ create_table()
 def db_conn():
     global conn 
     global cur
-    conn = sqlite3.connect("lopa.db")
-
+    conn = mysql.connector.connect(
+        host="lopasvr.mysql.database.azure.com",
+        user="lopasvr_user@lopasvr",
+        password="l0p@$vr_u$er",
+        database="lopaproject"
+    )
     cur = conn.cursor()
     
     return conn, cur
@@ -57,7 +59,7 @@ def new_event():
     
     def save_event():
 
-        cur.execute("INSERT INTO Event VALUES (null, ?, ?)",(
+        cur.execute("INSERT INTO Event VALUES (null, %s, %s)",(
                     event_description.get(),
                     event_target_freq.get()))
 
@@ -121,7 +123,7 @@ def new_cause():
     # ---------------Save CAUSE-------------------
     def save_cause():
 
-        cur.execute("INSERT INTO Cause VALUES (null, ?, ?, ?)",(
+        cur.execute("INSERT INTO Cause VALUES (null, %s, %s, %s)",(
             cause_description.get(),
             cause_initial_frequency.get(),
             clicked_event.get())
@@ -193,7 +195,7 @@ def new_cause_barrier():
 
     def save_cause_barrier():
     
-        cur.execute("""INSERT INTO "Cause Barrier" VALUES (null, ?, ?, ?)""",(
+        cur.execute("""INSERT INTO Cause_Barrier VALUES (null, %s, %s, %s)""",(
             cause_barrier_description.get(),
             cause_barrier_pfd.get(),
             clicked_cause.get())
@@ -261,7 +263,7 @@ def new_consequence():
 
     def save_consequence():
 
-        cur.execute("""INSERT INTO "Consequence Barrier" VALUES (null,?, ?, ?)""",(
+        cur.execute("""INSERT INTO Consequence_Barrier VALUES (null,%s, %s, %s)""",(
             consequence_description.get(),
             consequence_target_frequency.get(),
             clicked_event.get())
@@ -330,7 +332,7 @@ def new_consequence_barrier():
 
     def save_consequence_barrier():
         
-        cur.execute("""INSERT INTO "Consequence Barrier" VALUES (null, ?, ?, ?)""",(
+        cur.execute("""INSERT INTO Consequence_Barrier VALUES (null, %s, %s, %s)""",(
            consequence_barrier_description.get(),
            consequence_barrier_pfd.get(),
            clicked_consequence.get())
@@ -393,10 +395,10 @@ def update():
 
 
         cur.execute(""" UPDATE Event
-              SET description = ? ,
-                  cause_id = ? ,
-                  consequence_id = ?
-              WHERE event_id = ? """, (
+              SET description = %s ,
+                  cause_id = %s ,
+                  consequence_id = %s
+              WHERE event_id = %s """, (
             event_description_editor.get(),
             clicked_cause_editor.get(),
             clicked_consequence_editor.get(),
@@ -405,10 +407,10 @@ def update():
         conn.commit() 
     elif clicked.get() == "Cause":
         cur.execute(""" UPDATE Cause
-              SET description = ? ,
-                  initial_frequency = ? ,
-                  target_frequency = ?
-              WHERE cause_id = ? """, (
+              SET description = %s ,
+                  initial_frequency = %s ,
+                  target_frequency = %s
+              WHERE cause_id = %s """, (
         cause_description_editor.get(),
         cause_initial_frequency_editor.get(),
         cause_target_frequency_editor.get(),
@@ -419,11 +421,11 @@ def update():
 
     elif clicked.get() == "Cause Barrier":
 
-        cur.execute(""" UPDATE "Cause Barrier"
-              SET description = ? ,
-                  pfd = ? ,
-                  cause_id = ?
-              WHERE cause_barrier_id = ? """, (
+        cur.execute(""" UPDATE `Cause Barrier`
+              SET description = %s ,
+                  pfd = %s ,
+                  cause_id = %s
+              WHERE cause_barrier_id = %s """, (
         cause_barrier_description_editor.get(),
         cause_barrier_pfd_editor.get(),
         clicked_cause_editor.get(),
@@ -435,10 +437,10 @@ def update():
     elif clicked.get() == "Consequence":
 
         cur.execute(""" UPDATE Consequence
-              SET description = ? ,
-                  initial_frequency = ? ,
-                  target_frequency = ?
-              WHERE consequence_id = ? """, (
+              SET description = %s ,
+                  initial_frequency = %s ,
+                  target_frequency = %s
+              WHERE consequence_id = %s """, (
         consequence_description_editor.get(),
         consequence_initial_frequency_editor.get(),
         consequence_target_frequency_editor.get(),
@@ -449,11 +451,11 @@ def update():
 
     elif clicked.get() == "Consequence Barrier":
 
-        cur.execute(""" UPDATE "Consequence Barrier"
-              SET description = ? ,
-                  pfd = ? ,
-                  consequence_id = ?
-              WHERE consequence_barrier_id = ? """, (
+        cur.execute(""" UPDATE Consequence Barrier
+              SET description = %s ,
+                  pfd = %s ,
+                  consequence_id = %s
+              WHERE consequence_barrier_id = %s """, (
         consequence_barrier_description_editor.get(),
         consequence_barrier_pfd_editor.get(),
         clicked_consequence_editor.get(),
@@ -645,7 +647,7 @@ def edit():
         cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("""SELECT description, pfd FROM "Cause Barrier" WHERE cause_barrier_id = """ + entry.get())
+        cur.execute("""SELECT description, pfd FROM `Cause Barrier` WHERE cause_barrier_id = """ + entry.get())
         records = cur.fetchall()
 
         for record in records:
@@ -709,7 +711,7 @@ def edit():
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("""SELECT consequence_id FROM "Consequence Barrier" WHERE consequence_barrier_id = """ + entry.get())
+            cur.execute("""SELECT consequence_id FROM `Consequence Barrier` WHERE consequence_barrier_id = """ + entry.get())
             consequence = cur.fetchone()
  
             clicked_consequence_editor.set(consequence[0])
@@ -720,7 +722,7 @@ def edit():
         consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("""SELECT description, pfd FROM "Consequence Barrier" WHERE consequence_barrier_id = """ + entry.get())
+        cur.execute("""SELECT description, pfd FROM `Consequence Barrier` WHERE consequence_barrier_id = """ + entry.get())
         records = cur.fetchall()
 
         for record in records:
