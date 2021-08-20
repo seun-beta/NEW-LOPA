@@ -12,6 +12,5 @@ def create_table():
     cur = conn.cursor()
     
     cur.execute("CREATE DATABASE lopaproject")
-
 create_table()
 
