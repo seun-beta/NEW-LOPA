@@ -26,6 +26,7 @@
 - [Installation](#installation)
 - [Built Using](#built_using)
 - [Contributing](../CONTRIBUTING.md)
+- [Download and Test](#download)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
@@ -82,7 +83,11 @@ Please install and set up the following packages first. Ugrade if you find the p
 - [Tkinter](https://docs.python.org/3/library/tkinter.html) - GUI
 - [Pillow](https://pillow.readthedocs.io/en/stable/) - Imaging Library
 - [SQLite](https://sqlite.org/index.html) - Database
-- [PyInstaller](https://www.pyinstaller.org/) - Package Bundler
+- [PyInstaller](https://www.pyinstaller.org/) - Package 
+
+##  Download and Test <a name = "download"></a>
+
+### You can download LOPA [Here](https://drive.google.com/drive/folders/1y2T7R9kxkuOEUZ_290CJfswaklXoTGDB?usp=sharing)
 
 ## ✍️ Authors <a name = "authors"></a>
 
