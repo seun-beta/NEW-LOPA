@@ -1,12 +1,58 @@
 from tkinter import *
 from datetime import *
 import mysql.connector
+import webbrowser
 
 
-from db import create_table
 
-# Initialize db table creation 
-create_table()
+# Create Tables 
+
+conn = mysql.connector.connect(
+    host="lopasvr.mysql.database.azure.com",
+    user="lopasvr_user@lopasvr",
+    password="l0p@$vr_u$er",
+    database="lopaproject"
+)
+cur = conn.cursor()
+
+cur.execute("""CREATE TABLE IF NOT EXISTS Event (
+            event_id INT AUTO_INCREMENT PRIMARY KEY,
+            description TEXT,
+            target_frequency REAL);
+""")
+
+cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
+            cause_id INT AUTO_INCREMENT PRIMARY KEY,
+            description TEXT,
+            initial_frequency REAL,
+            event_id INT)
+""")
+
+cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
+            cause_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
+            description TEXT,
+            pfd REAL,
+            cause_id INT)
+""")
+
+cur.execute("""CREATE TABLE IF NOT EXISTS Consequence (
+            consequence_id INT AUTO_INCREMENT PRIMARY KEY,
+            description TEXT,
+            target_frequency REAL,
+            event_id INT)
+""")
+
+cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
+            consequence_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
+            description TEXT,
+            pfd REAL,
+            consequence_id INT)
+""")
+
+conn.commit()
+
+
+
 
 # Connection to MySQL Database hosted on Azure 
 def db_conn():
@@ -802,6 +848,16 @@ cause_barrier.grid(row=4, column=0, padx=(20,60), pady=20)
 consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier, height = 2, width = 23)
 consequence_barrier.grid(row=5, column=0, padx=(20,60), pady=20)
 
-# Add vertical lines 
+# Open Bowtie Diagram  
+
+
+new = 1
+url = "https://lopa-web-bow-tie.azurewebsites.net/"
+
+def openweb():
+    webbrowser.open(url,new=new)
+
+bowtie = Button(root, text = "Draw Bowtie Diagram",command=openweb, height = 2, width = 23, bg="green")
+bowtie.grid(row=6, column=0, padx=(20,60), pady=20)
 
 mainloop()
