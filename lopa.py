@@ -391,20 +391,8 @@ def query():
 
 
 def update():
-    global cur
-    global conn
-    conn = mysql.connector.connect(
-        host="lopasvr.mysql.database.azure.com",
-        user="lopasvr_user@lopasvr",
-        password="l0p@$vr_u$er",
-        database="lopaproject"
-    )
-    cur = conn.cursor()
-
 
     if clicked.get() == "Event":
-
-
 
         cur.execute(""" UPDATE Event
               SET description = %s ,
@@ -421,11 +409,11 @@ def update():
         cur.execute(""" UPDATE Cause
               SET description = %s ,
                   initial_frequency = %s ,
-                  target_frequency = %s
+                  event_id = %s
               WHERE cause_id = %s """, (
         cause_description_editor.get(),
         cause_initial_frequency_editor.get(),
-        cause_target_frequency_editor.get(),
+        clicked_event_editor1.get(),
         entry.get()
         ))
 
@@ -488,7 +476,7 @@ def edit():
 
     global cause_description_editor
     global cause_initial_frequency_editor
-    global clicked_event_editor
+    global clicked_event_editor1
 
     global cause_barrier_description_editor
     global cause_barrier_pfd_editor
@@ -510,6 +498,7 @@ def edit():
         top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+        label.grid(row=0, column=1)
 
         event_description_label_editor = Label(top, text="Description:")
         event_description_label_editor.grid(row=1, column=0)
@@ -539,19 +528,20 @@ def edit():
         top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+        label.grid(row=0, column=1)
 
         cause_description_label_editor = Label(top, text="Description:")
-        cause_description_label_editor.grid(row=0, column=0, padx=10, pady=10)
+        cause_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
         cause_description_editor = Entry(top, width=30)
-        cause_description_editor.grid(row=0, column=1, padx=10, pady=10)
+        cause_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
         cause_initial_frequency_label_editor = Label(top, text="Initial Frequency:")
-        cause_initial_frequency_label_editor.grid(row=1, column=0, padx=10, pady=10)
+        cause_initial_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
         cause_initial_frequency_editor = Entry(top, width=30)
-        cause_initial_frequency_editor.grid(row=1, column=1, padx=10, pady=10)
+        cause_initial_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
 
         cause_event_id_label_editor = Label(top, text="Event ID:")
-        cause_event_id_label_editor.grid(row=0, column=2, padx=10, pady=10)
+        cause_event_id_label_editor.grid(row=1, column=2, padx=10, pady=10)
 
     
 
@@ -560,26 +550,26 @@ def edit():
                 SELECT event_id, description FROM Event;
                     """)
 
-        event_id_data = cur.fetchall()
-        event_id_list = list()
+        event_id_data_editor1 = cur.fetchall()
+        event_id_list_editor1 = list()
 
-        for i in event_id_data:
-            data = list(i)
-            event_id_list.append(data[0])
+        for i in event_id_data_editor1:
+            data1 = list(i)
+            event_id_list_editor1.append(data1[0])
 
-        clicked_event_editor = StringVar()
-        if len(event_id_list) < 1:
-            clicked_event_editor.set("Create Event First")
-            event_id_list = ["Create Event First"]
+        clicked_event_editor1 = StringVar()
+        if len(event_id_list_editor1) < 1:
+            clicked_event_editor1.set("Create Event First")
+            event_id_list_editor1 = ["Create Event First"]
             
         else:
-            cur.execute("SELECT event_id FROM Cause WHERE event_id = " + entry.get())
-            event = cur.fetchone()
-            clicked_event_editor.set(event[0])
+            cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + entry.get())
+            event1 = cur.fetchone()
+            clicked_event_editor1.set(event1[0])
 
             
-        event_id_drop = OptionMenu(top, clicked_event_editor, *event_id_list)
-        event_id_drop.grid(row=0, column=3, pady=10, padx=40)
+        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_id_list_editor1)
+        event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
 
 
         cur.execute("SELECT description, initial_frequency FROM Cause WHERE cause_id = " + entry.get())
@@ -596,16 +586,17 @@ def edit():
         top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+        label.grid(row=0, column=1)
 
         cause_barrier_description_editor_label = Label(top, text="Description")
-        cause_barrier_description_editor_label.grid(row=0, column=0, padx=10, pady=10)
+        cause_barrier_description_editor_label.grid(row=1, column=0, padx=10, pady=10)
         cause_barrier_description_editor = Entry(top, width=30)
-        cause_barrier_description_editor.grid(row=0, column=1, padx=10, pady=10)
+        cause_barrier_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
         cause_barrier_pfd_label_editor = Label(top, text="PFD")
-        cause_barrier_pfd_label_editor.grid(row=1, column=0, padx=10, pady=10)
+        cause_barrier_pfd_label_editor.grid(row=2, column=0, padx=10, pady=10)
         cause_barrier_pfd_editor = Entry(top, width=30)
-        cause_barrier_pfd_editor.grid(row=1, column=1, padx=10, pady=10)
+        cause_barrier_pfd_editor.grid(row=2, column=1, padx=10, pady=10)
 
 
     # --------------------------------CAUSE ID Dropdown-------------------
@@ -626,7 +617,7 @@ def edit():
             cause_id_list_editor = ["Create Cause First"]
             
         else:
-            cur.execute("SELECT cause_id FROM Event WHERE event_id = " + entry.get())
+            cur.execute("SELECT cause_id FROM Cause WHERE cause_id = " + entry.get())
             cause = cur.fetchone()
  
             clicked_cause_editor.set(cause[0])
@@ -649,6 +640,7 @@ def edit():
         top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+        label.grid(row=0, column=1)
 
         consequence_description_label_editor = Label(top, text="Description:")
         consequence_description_label_editor.grid(row=0, column=0, padx=10, pady=10)
@@ -678,6 +670,7 @@ def edit():
         top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+        label.grid(row=0, column=1)
 
         consequence_barrier_description_label_editor = Label(top, text="Description:")
         consequence_barrier_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
@@ -730,10 +723,10 @@ def edit():
 
 
     edit_button = Button(top, text="Save Record", command=update)
-    edit_button.grid(row=5, column=2, columnspan=2, ipadx=100, padx=10, pady=10)  
+    edit_button.grid(row=5, column=1, columnspan=2, ipadx=100, padx=10, pady=10)  
 
     conn.commit()
-    conn.close()
+
 
 
 # Query, Delete and Edit
