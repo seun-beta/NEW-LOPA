@@ -484,7 +484,7 @@ def edit():
 
     global consequence_description_editor
     global consequence_initial_frequency_editor
-    global consequence_target_frequency_editor
+    global clicked_event_editor2
 
     global consequence_barrier_description_editor
     global consequence_barrier_pfd_editor
@@ -636,6 +636,7 @@ def edit():
             cause_barrier_pfd_editor.insert(0, record[1])
 
     elif clicked.get() == "Consequence": 
+
         top = Toplevel(bg="red")
         top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
         top.geometry("900x500")
@@ -643,19 +644,46 @@ def edit():
         label.grid(row=0, column=1)
 
         consequence_description_label_editor = Label(top, text="Description:")
-        consequence_description_label_editor.grid(row=0, column=0, padx=10, pady=10)
+        consequence_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
         consequence_description_editor = Entry(top, width=30)
-        consequence_description_editor.grid(row=0, column=1, padx=10, pady=10)
+        consequence_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
         consequence_initial_frequency_label_editor = Label(top, text="Initial Frequency:")
-        consequence_initial_frequency_label_editor.grid(row=1, column=0, padx=10, pady=10)
+        consequence_initial_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
         consequence_initial_frequency_editor = Entry(top, width=30)
-        consequence_initial_frequency_editor.grid(row=1, column=1, padx=10, pady=10)
+        consequence_initial_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
 
-        consequence_target_frequency_label_editor = Label(top, text="Target Frequency:")
-        consequence_target_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
-        consequence_target_frequency_editor = Entry(top, width=30)
-        consequence_target_frequency_editor.grid(row=2, column=1, padx=10, pady=10) 
+        consequence_event_id_label_editor = Label(top, text="Event ID:")
+        consequence_event_id_label_editor.grid(row=1, column=2, padx=10, pady=10)
+
+    
+
+        #-------------Event Dropdown------------------
+        cur.execute("""
+                SELECT event_id, description FROM Event;
+                    """)
+
+        event_id_data_editor1 = cur.fetchall()
+        event_id_list_editor1 = list()
+
+        for i in event_id_data_editor1:
+            data1 = list(i)
+            event_id_list_editor1.append(data1[0])
+
+        clicked_event_editor1 = StringVar()
+        if len(event_id_list_editor1) < 1:
+            clicked_event_editor1.set("Create Event First")
+            event_id_list_editor1 = ["Create Event First"]
+            
+        else:
+            cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + entry.get())
+            event1 = cur.fetchone()
+            clicked_event_editor1.set(event1[0])
+
+            
+        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_id_list_editor1)
+        event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
+
 
         cur.execute("SELECT description, initial_frequency, target_frequency FROM Consequence WHERE consequence_id = " + entry.get())
         records = cur.fetchall()
