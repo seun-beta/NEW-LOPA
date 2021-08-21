@@ -485,9 +485,10 @@ def edit():
     global event_target_frequency_editor
     global event_description_editor
 
-    global cause_initial_frequency_editor
+
     global cause_description_editor
-    global cause_target_frequency_editor
+    global cause_initial_frequency_editor
+    global clicked_event_editor
 
     global cause_barrier_description_editor
     global cause_barrier_pfd_editor
@@ -578,7 +579,7 @@ def edit():
 
             
         event_id_drop = OptionMenu(top, clicked_event_editor, *event_id_list)
-        event_id_drop.grid(row=1, column=3, pady=10, padx=40)
+        event_id_drop.grid(row=0, column=3, pady=10, padx=40)
 
 
         cur.execute("SELECT description, initial_frequency FROM Cause WHERE cause_id = " + entry.get())
