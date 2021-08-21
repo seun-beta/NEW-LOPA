@@ -438,12 +438,12 @@ def update():
 
         cur.execute(""" UPDATE Consequence
               SET description = %s ,
-                  initial_frequency = %s ,
-                  target_frequency = %s
+                  target_frequency = %s,
+                  event_id = %s
               WHERE consequence_id = %s """, (
         consequence_description_editor.get(),
-        consequence_initial_frequency_editor.get(),
         consequence_target_frequency_editor.get(),
+        clicked_event_editor2.get(),
         entry.get()
         ))
 
@@ -483,7 +483,7 @@ def edit():
     global clicked_cause_editor
 
     global consequence_description_editor
-    global consequence_initial_frequency_editor
+    global consequence_target_frequency_editor
     global clicked_event_editor2
 
     global consequence_barrier_description_editor
@@ -648,10 +648,10 @@ def edit():
         consequence_description_editor = Entry(top, width=30)
         consequence_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
-        consequence_initial_frequency_label_editor = Label(top, text="Initial Frequency:")
-        consequence_initial_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
-        consequence_initial_frequency_editor = Entry(top, width=30)
-        consequence_initial_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
+        consequence_target_frequency_label_editor = Label(top, text="Target Frequency:")
+        consequence_target_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
+        consequence_target_frequency_editor = Entry(top, width=30)
+        consequence_target_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
 
         consequence_event_id_label_editor = Label(top, text="Event ID:")
         consequence_event_id_label_editor.grid(row=1, column=2, padx=10, pady=10)
@@ -676,7 +676,7 @@ def edit():
             event_id_list_editor2 = ["Create Event First"]
             
         else:
-            cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + entry.get())
+            cur.execute("SELECT event_id FROM Consequence WHERE consequence_id = " + entry.get())
             event2 = cur.fetchone()
             clicked_event_editor2.set(event2[0])
 
@@ -685,11 +685,11 @@ def edit():
         event_id_drop_editor2.grid(row=1, column=3, pady=10, padx=40)
 
 
-        cur.execute("SELECT description, initial_frequency, target_frequency FROM Consequence WHERE consequence_id = " + entry.get())
+        cur.execute("SELECT description, target_frequency FROM Consequence WHERE consequence_id = " + entry.get())
         records = cur.fetchall()
         for record in records:
             consequence_description_editor.insert(0, record[0])
-            consequence_initial_frequency_editor.insert(0, record[1])
+            consequence_target_frequency_editor.insert(0, record[1])
 
 
     elif clicked.get() == "Consequence_Barrier": 
