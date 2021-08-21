@@ -391,8 +391,19 @@ def query():
 
 
 def update():
+    global cur
+    global conn
+    conn = mysql.connector.connect(
+        host="lopasvr.mysql.database.azure.com",
+        user="lopasvr_user@lopasvr",
+        password="l0p@$vr_u$er",
+        database="lopaproject"
+    )
+    cur = conn.cursor()
+
 
     if clicked.get() == "Event":
+
 
 
         cur.execute(""" UPDATE Event
@@ -490,12 +501,14 @@ def edit():
     global consequence_barrier_pfd_editor
     global clicked_consequence_editor
 
-    top = Toplevel()
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
-    top.geometry("900x500")
-    top.title("Edit " + clicked.get())
+
+
 
     if clicked.get() == "Event":
+        top = Toplevel(bg="orange")
+        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.geometry("900x500")
+        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
 
         event_description_label_editor = Label(top, text="Description:")
         event_description_label_editor.grid(row=1, column=0)
@@ -520,7 +533,12 @@ def edit():
 
 
     elif clicked.get() == "Cause":
-        
+
+        top = Toplevel(bg="blue")
+        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.geometry("900x500")
+        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+
         cause_description_label_editor = Label(top, text="Description:")
         cause_description_label_editor.grid(row=0, column=0, padx=10, pady=10)
         cause_description_editor = Entry(top, width=30)
@@ -573,6 +591,11 @@ def edit():
 
     elif clicked.get() == "Cause_Barrier":
 
+        top = Toplevel()
+        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.geometry("900x500")
+        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
+
         cause_barrier_description_editor_label = Label(top, text="Description")
         cause_barrier_description_editor_label.grid(row=0, column=0, padx=10, pady=10)
         cause_barrier_description_editor = Entry(top, width=30)
@@ -621,6 +644,10 @@ def edit():
             cause_barrier_pfd_editor.insert(0, record[1])
 
     elif clicked.get() == "Consequence": 
+        top = Toplevel(bg="red")
+        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.geometry("900x500")
+        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
 
         consequence_description_label_editor = Label(top, text="Description:")
         consequence_description_label_editor.grid(row=0, column=0, padx=10, pady=10)
@@ -646,6 +673,10 @@ def edit():
 
 
     elif clicked.get() == "Consequence_Barrier": 
+        top = Toplevel()
+        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.geometry("900x500")
+        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
 
         consequence_barrier_description_label_editor = Label(top, text="Description:")
         consequence_barrier_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
