@@ -663,26 +663,26 @@ def edit():
                 SELECT event_id, description FROM Event;
                     """)
 
-        event_id_data_editor1 = cur.fetchall()
-        event_id_list_editor1 = list()
+        event_id_data_editor2 = cur.fetchall()
+        event_id_list_editor2 = list()
 
-        for i in event_id_data_editor1:
-            data1 = list(i)
-            event_id_list_editor1.append(data1[0])
+        for i in event_id_data_editor2:
+            data2 = list(i)
+            event_id_list_editor2.append(data2[0])
 
-        clicked_event_editor1 = StringVar()
-        if len(event_id_list_editor1) < 1:
-            clicked_event_editor1.set("Create Event First")
-            event_id_list_editor1 = ["Create Event First"]
+        clicked_event_editor2 = StringVar()
+        if len(event_id_list_editor2) < 1:
+            clicked_event_editor2.set("Create Event First")
+            event_id_list_editor2 = ["Create Event First"]
             
         else:
             cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + entry.get())
-            event1 = cur.fetchone()
-            clicked_event_editor1.set(event1[0])
+            event2 = cur.fetchone()
+            clicked_event_editor2.set(event2[0])
 
             
-        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_id_list_editor1)
-        event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
+        event_id_drop_editor2 = OptionMenu(top, clicked_event_editor2, *event_id_list_editor2)
+        event_id_drop_editor2.grid(row=1, column=3, pady=10, padx=40)
 
 
         cur.execute("SELECT description, initial_frequency, target_frequency FROM Consequence WHERE consequence_id = " + entry.get())
@@ -690,7 +690,6 @@ def edit():
         for record in records:
             consequence_description_editor.insert(0, record[0])
             consequence_initial_frequency_editor.insert(0, record[1])
-            consequence_target_frequency_editor.insert(0, record[2])  
 
 
     elif clicked.get() == "Consequence_Barrier": 
