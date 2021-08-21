@@ -617,7 +617,7 @@ def edit():
             cause_id_list_editor = ["Create Cause First"]
             
         else:
-            cur.execute("SELECT cause_id FROM Cause WHERE cause_id = " + entry.get())
+            cur.execute("SELECT cause_id FROM Cause_Barrier WHERE cause_barrier_id = " + entry.get())
             cause = cur.fetchone()
  
             clicked_cause_editor.set(cause[0])
