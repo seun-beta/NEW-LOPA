@@ -71,7 +71,7 @@ def db_conn():
 db_conn()
 
 root = Tk()
-root.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis")
+root.title("Layer of Protection Analysis")
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 root.geometry("1200x700")
@@ -82,7 +82,7 @@ def new_event():
     
     global save_event
     top = Toplevel(bg="orange")
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
 
     event_label = Label(top, text="CREATE EVENT", font=('serif', 14, 'bold'))
@@ -123,7 +123,7 @@ def new_event():
 
 def new_cause():
     top = Toplevel(bg="blue")
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
 
     label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
@@ -192,7 +192,7 @@ def new_cause():
 
 def new_cause_barrier():
     top = Toplevel()
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
 
 
@@ -262,7 +262,7 @@ def new_cause_barrier():
 
 def new_consequence():
     top = Toplevel(bg="red")
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
 
     label = Label(top, text="CREATE CONSEQUENCE", font=('serif', 14, 'bold'))
@@ -332,7 +332,7 @@ def new_consequence():
 
 def new_consequence_barrier():
     top = Toplevel()
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
 
     label = Label(top, text="CONSEQUENCE BARRIER", font=("serif", 14, "bold"))
@@ -413,7 +413,7 @@ def delete():
 
 def query():
     top = Toplevel()
-    top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+    top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
 
 
@@ -541,7 +541,7 @@ def edit():
 
     if clicked.get() == "Event":
         top = Toplevel(bg="orange")
-        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
         label.grid(row=0, column=1)
@@ -571,7 +571,7 @@ def edit():
     elif clicked.get() == "Cause":
 
         top = Toplevel(bg="blue")
-        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
         label.grid(row=0, column=1)
@@ -629,7 +629,7 @@ def edit():
     elif clicked.get() == "Cause_Barrier":
 
         top = Toplevel()
-        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
         label.grid(row=0, column=1)
@@ -684,7 +684,7 @@ def edit():
     elif clicked.get() == "Consequence": 
 
         top = Toplevel(bg="red")
-        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
         label.grid(row=0, column=1)
@@ -740,7 +740,7 @@ def edit():
 
     elif clicked.get() == "Consequence_Barrier": 
         top = Toplevel()
-        top.title(f"{datetime.now():%a, %b %d %Y} | Layer of Protection Analysis ")
+        top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
         label.grid(row=0, column=1)
