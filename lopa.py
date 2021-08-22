@@ -1,5 +1,6 @@
 from tkinter import *
 from datetime import *
+from tkinter.ttk import Treeview
 import mysql.connector
 import webbrowser
 
@@ -68,7 +69,7 @@ def db_conn():
     
     return conn, cur
 
-db_conn()
+db_conn() 
 
 root = Tk()
 root.title("Layer of Protection Analysis")
@@ -415,10 +416,15 @@ def query():
     top = Toplevel()
     top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
+    tree = Treeview(top, column=("#1", "#2", "#3"), show='headings')
+    tree.heading("#1", text="s/n")
+    tree.heading("#2", text="Description")
+    tree.heading("#3", text="Initial Frequency")
 
+    tree.grid(row=1)
 
     label = Label(top, text="Data from " + clicked_query.get() + " Table", font=("serif", 14, "bold"))
-    label.grid(row=0, column=2)
+    label.grid(row=0)
 
 
     cur.execute("SELECT * FROM " + clicked_query.get())
@@ -426,13 +432,17 @@ def query():
 
     print_records = ""
     if len(records) < 1:
-            records_label = Label(top, text="No Data is present in the "+ clicked_query.get() + " Table", font=('serif', 14, 'bold'))
-            records_label.grid(row=5, column=2, columnspan=2)
+        count =0
+        records_label = Label(top, text="No Data is present in the "+ clicked_query.get() + " Table", font=('serif', 14, 'bold'))
+        records_label.grid(row=5, column=2, columnspan=2)
     else:
+        count = 0
         for record in records:
-            print_records += str(record[0]) + "       |        "+ str(record[1]) + "      |       "+ "" + str(record[2]) +"\n"
-            records_label = Label(top, text=print_records)
-            records_label.grid(row=5, column=2, columnspan=2)
+            count += 1
+            tree.insert('', END, values=(str(count), str(record[1]), str(record[2])))
+            # print_records += str(record[0]) + "       |        "+ str(record[1]) + "      |       "+ "" + str(record[2]) +"\n"
+            # records_label = Label(top, text=print_records)
+            # records_label.grid(row=5, column=2, columnspan=2)
 
 
 
