@@ -70,7 +70,7 @@ def db_conn():
     
     return conn, cur
 
-def add_scrollable(widgetFrame: Toplevel, height:int, width:int, color= ""):
+def add_scrollable(widgetFrame: Toplevel, height:int, width:int, color= "white"):
     widgetFrame.title("Layer of Protection Analysis")
     scrollcanvas = Canvas(widgetFrame, bg=color, height=height, width=width)
     scrollbar = Scrollbar(widgetFrame, orient="horizontal", width=18, command=canvas.xview)
@@ -110,7 +110,7 @@ def new_event():
     top = Toplevel(bg=color)
     top.title("Layer of Protection Analysis ")
     cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
-    newentrylabelframe = LabelFrame(cv, text="CREATE EVENT", background=color, foreground="white")
+    newentrylabelframe = LabelFrame(cv, text="Create Event", background=color, foreground="white")
     newentrylabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
     
     # --------------Input UI----------------------------
@@ -219,22 +219,24 @@ def new_cause():
 def new_cause_barrier():
     top = Toplevel()
     top.title("Layer of Protection Analysis ")
-    top.geometry("500x500")
+    cv = add_scrollable(widgetFrame=top, height=400, width=400)
+    newentrylabelframe = LabelFrame(cv, text="Create Cause Barrier")
+    newentrylabelframe.grid(row=0, column=0, columnspan=2, rowspan=6, padx=20, pady=20)
 
 
-    label = Label(top, text="CREATE CAUSE BARRIER", font=('serif', 14, 'bold'))
+    label = Label(newentrylabelframe, text="CREATE CAUSE BARRIER", font=('serif', 14, 'bold'))
     label.grid(row=0, column=1, columnspan=2)
 
 
 
-    cause_barrier_description_label = Label(top, text="Description")
+    cause_barrier_description_label = Label(newentrylabelframe, text="Description")
     cause_barrier_description_label.grid(row=2, column=0, padx=10, pady=10)
-    cause_barrier_description = Entry(top, width=30)
+    cause_barrier_description = Entry(newentrylabelframe, width=30)
     cause_barrier_description.grid(row=2, column=1, padx=10, pady=10)
 
-    cause_barrier_pfd_label = Label(top, text="PFD")
+    cause_barrier_pfd_label = Label(newentrylabelframe, text="PFD")
     cause_barrier_pfd_label.grid(row=3, column=0, padx=10, pady=10)
-    cause_barrier_pfd = Entry(top, width=30)
+    cause_barrier_pfd = Entry(newentrylabelframe, width=30)
     cause_barrier_pfd.grid(row=3, column=1, padx=10, pady=10)
 
 
@@ -262,10 +264,10 @@ def new_cause_barrier():
     else:
         clicked_cause.set(cause_name_list[0])
 
-    cause_id = Label(top, text="Cause:")
+    cause_id = Label(newentrylabelframe, text="Cause:")
     cause_id.grid(row=1, column=0, padx=10, pady=10)
         
-    cause_id_drop = OptionMenu(top, clicked_cause, *cause_dict.keys())
+    cause_id_drop = OptionMenu(newentrylabelframe, clicked_cause, *cause_dict.keys())
     cause_id_drop.grid(row=1, column=1, pady=10, padx=40)
 
 
@@ -277,7 +279,7 @@ def new_cause_barrier():
             cause_dict[clicked_cause.get()])
         )
 
-        success = Label(top, text="Added record successfully", fg="green")
+        success = Label(newentrylabelframe, text="Added record successfully", fg="green")
         success.grid(row=5, column=1, columnspan=2, pady=10)
         conn.commit()
 
@@ -287,33 +289,33 @@ def new_cause_barrier():
 
 
 
-    save_cause_barrier = Button(top, text="Save", width=20, command=save_cause_barrier)
+    save_cause_barrier = Button(newentrylabelframe, text="Save", width=20, command=save_cause_barrier)
     save_cause_barrier.grid(row=4, column=1, columnspan=2, pady=10)
 
 
 def new_consequence():
     db_conn()
-    top = Toplevel(bg="red")
+    color="red"
+    top = Toplevel(bg=color)
     top.title("Layer of Protection Analysis ")
-    top.geometry("500x500")
+    cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
+    newentrylabelframe = LabelFrame(cv, text="Create Consequence", background=color, foreground="white")
+    newentrylabelframe.grid(row=0, column=0, columnspan=2, rowspan=6, padx=20, pady=20)
 
-    label = Label(top, text="CREATE CONSEQUENCE", font=('serif', 14, 'bold'), background='red', foreground='white')
-    label.grid(row=0, column=1, columnspan=2)
 
-
-    consequence_description_label = Label(top, text="Description:", background='red', foreground='white')
+    consequence_description_label = Label(newentrylabelframe, text="Description:", background=color, foreground='white')
     consequence_description_label.grid(row=2, column=0, padx=10, pady=10)
-    consequence_description = Entry(top, width=30)
+    consequence_description = Entry(newentrylabelframe, width=30)
     consequence_description.grid(row=2, column=1, padx=10, pady=10)
     
-    consequence_target_frequency_label = Label(top, text="Target Frequency:", background='red', foreground='white')
+    consequence_target_frequency_label = Label(newentrylabelframe, text="Target Frequency:", background=color, foreground='white')
     consequence_target_frequency_label.grid(row=3, column=0, padx=10, pady=10)
-    consequence_target_frequency = Entry(top, width=30)
+    consequence_target_frequency = Entry(newentrylabelframe, width=30)
     consequence_target_frequency.grid(row=3, column=1, padx=10, pady=10)
 
 
     # --------------------------------EVENT ID Dropdown-------------------
-    event_id_label = Label(top, text="Event:", background='red', foreground='white')
+    event_id_label = Label(newentrylabelframe, text="Event:", background=color, foreground='white')
     event_id_label.grid(row=1, column=0, padx=20, pady=20)
     cur.execute("""
             SELECT event_id, description FROM Event;
@@ -338,7 +340,7 @@ def new_consequence():
         clicked_event.set(event_name_list[0])
 
         
-    event_id_drop = OptionMenu(top, clicked_event, *event_dict.keys())
+    event_id_drop = OptionMenu(newentrylabelframe, clicked_event, *event_dict.keys())
     event_id_drop.grid(row=1, column=1, pady=10, padx=40)
 
     # ---------------Save CONSEQUENCE-------------------
@@ -351,7 +353,7 @@ def new_consequence():
         )
 
 
-        success = Label(top, text="Added record successfully", fg="green")
+        success = Label(newentrylabelframe, text="Added record successfully", fg="green")
         success.grid(row=5, column=1, columnspan=2, pady=10)
         conn.commit()
 
@@ -360,7 +362,7 @@ def new_consequence():
         consequence_target_frequency.delete(0, END)
 
 
-    save_consequence = Button(top, text="Save", width=20, command=save_consequence)
+    save_consequence = Button(newentrylabelframe, text="Save", width=20, command=save_consequence)
     save_consequence.grid(row=4, column=1, columnspan=2, pady=10)
 
 
@@ -369,21 +371,20 @@ def new_consequence_barrier():
     db_conn()
     top = Toplevel()
     top.title("Layer of Protection Analysis ")
-    top.geometry("900x500")
+    cv = add_scrollable(widgetFrame=top, height=400, width=400)
+    newentrylabelframe = LabelFrame(cv, text="Create Consequence Barrier")
+    newentrylabelframe.grid(row=0, column=0, columnspan=2, rowspan=6, padx=20, pady=20)
 
-    label = Label(top, text="CONSEQUENCE BARRIER", font=("serif", 14, "bold"))
-    label.grid(row=0, column=1, columnspan=2)
 
-
-    consequence_barrier_description_label = Label(top, text="Description:")
+    consequence_barrier_description_label = Label(newentrylabelframe, text="Description:")
     consequence_barrier_description_label.grid(row=2, column=0, padx=10, pady=10)
-    consequence_barrier_description = Entry(top, width=30)
+    consequence_barrier_description = Entry(newentrylabelframe, width=30)
     consequence_barrier_description.grid(row=2, column=1, padx=10, pady=10)
 
 
-    consequence_barrier_pfd_label = Label(top, text="PFD:")
+    consequence_barrier_pfd_label = Label(newentrylabelframe, text="PFD:")
     consequence_barrier_pfd_label.grid(row=3, column=0, padx=10, pady=10)
-    consequence_barrier_pfd = Entry(top, width=30)
+    consequence_barrier_pfd = Entry(newentrylabelframe, width=30)
     consequence_barrier_pfd.grid(row=3, column=1, padx=10, pady=10)
 
 
@@ -409,10 +410,10 @@ def new_consequence_barrier():
     else:
         clicked_consequence.set(consequence_name_list[0])
 
-    consequence_id = Label(top, text="Consequence:")
+    consequence_id = Label(newentrylabelframe, text="Consequence:")
     consequence_id.grid(row=1, column=0, padx=10, pady=10)
         
-    consequence_id_drop = OptionMenu(top, clicked_consequence, *consequence_dict.keys())
+    consequence_id_drop = OptionMenu(newentrylabelframe, clicked_consequence, *consequence_dict.keys())
     consequence_id_drop.grid(row=1, column=1, pady=10, padx=10)
 
 
@@ -424,14 +425,14 @@ def new_consequence_barrier():
            consequence_dict[clicked_consequence.get()])
         )
 
-        success = Label(top, text="Added record successfully", fg="green")
+        success = Label(newentrylabelframe, text="Added record successfully", fg="green")
         success.grid(row=4, column=1, columnspan=2, pady=10)
         conn.commit()
         success.after(5000, success.destroy)
         consequence_barrier_description.delete(0, END)
         consequence_barrier_pfd.delete(0, END)
 
-    save_consequence_barrier = Button(top, text="Save", width=20, command=save_consequence_barrier)
+    save_consequence_barrier = Button(newentrylabelframe, text="Save", width=20, command=save_consequence_barrier)
     save_consequence_barrier.grid(row=4, column=1, columnspan=2)
 
 def delete():
