@@ -271,48 +271,51 @@ def new_consequence():
     db_conn()
     top = Toplevel(bg="red")
     top.title("Layer of Protection Analysis ")
-    top.geometry("900x500")
+    top.geometry("500x500")
 
     label = Label(top, text="CREATE CONSEQUENCE", font=('serif', 14, 'bold'))
-    label.grid(row=0, column=2, columnspan=2)
+    label.grid(row=0, column=1, columnspan=2)
 
 
     consequence_description_label = Label(top, text="Description:")
-    consequence_description_label.grid(row=1, column=0, padx=10, pady=10)
+    consequence_description_label.grid(row=2, column=0, padx=10, pady=10)
     consequence_description = Entry(top, width=30)
-    consequence_description.grid(row=1, column=1, padx=10, pady=10)
+    consequence_description.grid(row=2, column=1, padx=10, pady=10)
     
     consequence_target_frequency_label = Label(top, text="Target Frequency:")
-    consequence_target_frequency_label.grid(row=2, column=0, padx=10, pady=10)
+    consequence_target_frequency_label.grid(row=3, column=0, padx=10, pady=10)
     consequence_target_frequency = Entry(top, width=30)
-    consequence_target_frequency.grid(row=2, column=1, padx=10, pady=10)
+    consequence_target_frequency.grid(row=3, column=1, padx=10, pady=10)
 
 
     # --------------------------------EVENT ID Dropdown-------------------
-    event_id_label = Label(top, text="Event ID:")
-    event_id_label.grid(row=1, column=3, padx=20, pady=20)
+    event_id_label = Label(top, text="Event:")
+    event_id_label.grid(row=1, column=0, padx=20, pady=20)
     cur.execute("""
             SELECT event_id, description FROM Event;
                 """)
 
     event_id_data = cur.fetchall()
     event_id_list = list()
+    event_name_list = list()
 
     for i in event_id_data:
         data = list(i)
         event_id_list.append(data[0])
+        event_name_list.append(data[1])
 
+    event_dict = dict(zip(event_name_list, event_id_list))
     clicked_event = StringVar()
     if len(event_id_list) < 1:
         clicked_event.set("Create Event First")
         event_id_list = ["Create Event First"]
         
     else:
-        clicked_event.set(event_id_list[0])
+        clicked_event.set(event_name_list[0])
 
         
-    event_id_drop = OptionMenu(top, clicked_event, *event_id_list)
-    event_id_drop.grid(row=1, column=4, pady=10, padx=40)
+    event_id_drop = OptionMenu(top, clicked_event, *event_dict.keys())
+    event_id_drop.grid(row=1, column=1, pady=10, padx=40)
 
     # ---------------Save CONSEQUENCE-------------------
     def save_consequence():
@@ -320,21 +323,21 @@ def new_consequence():
         cur.execute("""INSERT INTO Consequence VALUES (null,%s, %s, %s)""",(
             consequence_description.get(),
             consequence_target_frequency.get(),
-            clicked_event.get())
+            event_dict[clicked_event.get()])
         )
 
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=5, column=2, columnspan=2)
+        success.grid(row=5, column=1, columnspan=2, pady=10)
         conn.commit()
 
-
+        success.after(5000, success.destroy)
         consequence_description.delete(0, END)
         consequence_target_frequency.delete(0, END)
 
 
     save_consequence = Button(top, text="Save", width=20, command=save_consequence)
-    save_consequence.grid(row=4, column=2, columnspan=2)
+    save_consequence.grid(row=4, column=1, columnspan=2, pady=10)
 
 
 
@@ -345,19 +348,19 @@ def new_consequence_barrier():
     top.geometry("900x500")
 
     label = Label(top, text="CONSEQUENCE BARRIER", font=("serif", 14, "bold"))
-    label.grid(row=0, column=2, columnspan=2)
+    label.grid(row=0, column=1, columnspan=2)
 
 
     consequence_barrier_description_label = Label(top, text="Description:")
-    consequence_barrier_description_label.grid(row=1, column=0, padx=10, pady=10)
+    consequence_barrier_description_label.grid(row=2, column=0, padx=10, pady=10)
     consequence_barrier_description = Entry(top, width=30)
-    consequence_barrier_description.grid(row=1, column=1, padx=10, pady=10)
+    consequence_barrier_description.grid(row=2, column=1, padx=10, pady=10)
 
 
     consequence_barrier_pfd_label = Label(top, text="PFD:")
-    consequence_barrier_pfd_label.grid(row=2, column=0, padx=10, pady=10)
+    consequence_barrier_pfd_label.grid(row=3, column=0, padx=10, pady=10)
     consequence_barrier_pfd = Entry(top, width=30)
-    consequence_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
+    consequence_barrier_pfd.grid(row=3, column=1, padx=10, pady=10)
 
 
     # ------------- CONSEQUENCE ID Dropdown---------------------------
@@ -367,11 +370,14 @@ def new_consequence_barrier():
 
     consequence_id_data = cur.fetchall()
     consequence_id_list = list()
+    consequence_name_list = list()
 
     for i in consequence_id_data:
         data = list(i)
         consequence_id_list.append(data[0])
+        consequence_name_list.append(data[1])
 
+    consequence_dict = dict(zip(consequence_name_list, consequence_id_list))
     clicked_consequence = StringVar()
     if len(consequence_id_list) < 1:
         clicked_consequence.set("Create Consequence First")
@@ -379,11 +385,11 @@ def new_consequence_barrier():
     else:
         clicked_consequence.set(consequence_id_list[0])
 
-    consequence_id = Label(top, text="Consequence ID:")
-    consequence_id.grid(row=1, column=2, padx=10, pady=10)
+    consequence_id = Label(top, text="Consequence:")
+    consequence_id.grid(row=1, column=0, padx=10, pady=10)
         
-    consequence_id_drop = OptionMenu(top, clicked_consequence, *consequence_id_list)
-    consequence_id_drop.grid(row=1, column=3, pady=10, padx=40)
+    consequence_id_drop = OptionMenu(top, clicked_consequence, *consequence_dict.keys())
+    consequence_id_drop.grid(row=1, column=1, pady=10, padx=10)
 
 
     def save_consequence_barrier():
@@ -391,13 +397,13 @@ def new_consequence_barrier():
         cur.execute("""INSERT INTO Consequence_Barrier VALUES (null, %s, %s, %s)""",(
            consequence_barrier_description.get(),
            consequence_barrier_pfd.get(),
-           clicked_consequence.get())
+           consequence_dict[clicked_consequence.get()])
         )
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=4, column=1, columnspan=2)
+        success.grid(row=4, column=1, columnspan=2, pady=10)
         conn.commit()
-
+        success.after(5000, success.destroy)
         consequence_barrier_description.delete(0, END)
         consequence_barrier_pfd.delete(0, END)
 
