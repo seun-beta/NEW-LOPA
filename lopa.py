@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import *
 from datetime import *
 from tkinter.ttk import Style, Treeview
@@ -418,12 +419,12 @@ def delete():
     print(gotten_id)
 
 
-    cur.execute("DELETE FROM "+clicked.get()+ " WHERE " + gotten_id + " = " + entry.get())
+    cur.execute("DELETE FROM "+clicked.get()+ " WHERE " + gotten_id + " = " + str(entry_dict[clicked_entry.get()]))
 
     conn.commit()
 
 
-    delete_success = Label(root, text=clicked.get() + " Item  with ID " + entry.get() + " sucessfully deleted", fg="green")
+    delete_success = Label(root, text=clicked.get() + " Item  with ID " + str(entry_dict[clicked_entry.get()]) + " sucessfully deleted", fg="green")
     delete_success.grid(row=4, column=2)
 
 def query():
@@ -475,7 +476,7 @@ def update():
               WHERE event_id = %s """, (
             event_description_editor.get(),
             event_target_frequency_editor.get(),
-            entry.get()
+            str(entry_dict[clicked_entry.get()])
             ))
         conn.commit() 
 
@@ -489,7 +490,7 @@ def update():
         cause_description_editor.get(),
         cause_initial_frequency_editor.get(),
         clicked_event_editor1.get(),
-        entry.get()
+        str(entry_dict[clicked_entry.get()])
         ))
 
         conn.commit()
@@ -504,7 +505,7 @@ def update():
         cause_barrier_description_editor.get(),
         cause_barrier_pfd_editor.get(),
         clicked_cause_editor.get(),
-        entry.get()
+        str(entry_dict[clicked_entry.get()])
         ))
 
         conn.commit()
@@ -519,7 +520,7 @@ def update():
         consequence_description_editor.get(),
         consequence_target_frequency_editor.get(),
         clicked_event_editor2.get(),
-        entry.get()
+        str(entry_dict[clicked_entry.get()])
         ))
 
         conn.commit()
@@ -534,14 +535,14 @@ def update():
         consequence_barrier_description_editor.get(),
         consequence_barrier_pfd_editor.get(),
         clicked_consequence_editor.get(),
-        entry.get()
+        str(entry_dict[clicked_entry.get()])
         ))
 
         conn.commit()
     top.destroy()
 
 
-def edit():
+def edit_entry():
     global editor
     global top
 
@@ -567,6 +568,9 @@ def edit():
 
     db_conn()
 
+    print(entry_dict)
+    print(clicked_entry.get())
+    print(clicked_entry.get()+": "+str(entry_dict[clicked_entry.get()]))
 
 
     if clicked.get() == "Event":
@@ -590,7 +594,7 @@ def edit():
         event_target_frequency_editor.grid(row=2, column=1, padx=20)
 
 
-        cur.execute("SELECT description, target_frequency FROM Event WHERE event_id = " + entry.get())
+        cur.execute("SELECT description, target_frequency FROM Event WHERE event_id = " + str(entry_dict[clicked_entry.get()]))
         records = cur.fetchall()
 
         for record in records:
@@ -639,7 +643,7 @@ def edit():
             event_id_list_editor1 = ["Create Event First"]
             
         else:
-            cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + entry.get())
+            cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + str(entry_dict[clicked_entry.get()]))
             event1 = cur.fetchone()
             clicked_event_editor1.set(event1[0])
 
@@ -648,7 +652,7 @@ def edit():
         event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
 
 
-        cur.execute("SELECT description, initial_frequency FROM Cause WHERE cause_id = " + entry.get())
+        cur.execute("SELECT description, initial_frequency FROM Cause WHERE cause_id = " + str(entry_dict[clicked_entry.get()]))
         records = cur.fetchall()
         for record in records:
             cause_description_editor.insert(0, record[0])
@@ -693,7 +697,7 @@ def edit():
             cause_id_list_editor = ["Create Cause First"]
             
         else:
-            cur.execute("SELECT cause_id FROM Cause_Barrier WHERE cause_barrier_id = " + entry.get())
+            cur.execute("SELECT cause_id FROM Cause_Barrier WHERE cause_barrier_id = " + str(entry_dict[clicked_entry.get()]))
             cause = cur.fetchone()
  
             clicked_cause_editor.set(cause[0])
@@ -704,7 +708,7 @@ def edit():
         cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("""SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = """ + entry.get())
+        cur.execute("""SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
         records = cur.fetchall()
 
         for record in records:
@@ -752,7 +756,7 @@ def edit():
             event_id_list_editor2 = ["Create Event First"]
             
         else:
-            cur.execute("SELECT event_id FROM Consequence WHERE consequence_id = " + entry.get())
+            cur.execute("SELECT event_id FROM Consequence WHERE consequence_id = " + str(entry_dict[clicked_entry.get()]))
             event2 = cur.fetchone()
             clicked_event_editor2.set(event2[0])
 
@@ -761,7 +765,7 @@ def edit():
         event_id_drop_editor2.grid(row=1, column=3, pady=10, padx=40)
 
 
-        cur.execute("SELECT description, target_frequency FROM Consequence WHERE consequence_id = " + entry.get())
+        cur.execute("SELECT description, target_frequency FROM Consequence WHERE consequence_id = " + str(entry_dict[clicked_entry.get()]))
         records = cur.fetchall()
         for record in records:
             consequence_description_editor.insert(0, record[0])
@@ -805,7 +809,7 @@ def edit():
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("""SELECT consequence_id FROM Consequence_Barrier WHERE consequence_barrier_id = """ + entry.get())
+            cur.execute("""SELECT consequence_id FROM Consequence_Barrier WHERE consequence_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
             consequence = cur.fetchone()
  
             clicked_consequence_editor.set(consequence[0])
@@ -816,7 +820,7 @@ def edit():
         consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
-        cur.execute("""SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = """ + entry.get())
+        cur.execute("""SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
         records = cur.fetchall()
 
         for record in records:
@@ -831,34 +835,102 @@ def edit():
     conn.commit()
 
 
+def view_dropdown(event):
+    db_conn()
+    global entry_dict
+    cur.execute("""
+            SELECT """+clicked.get().lower() +"""_id, description FROM """+clicked.get())
 
+    entry_id_data = cur.fetchall()
+    # print(entry_id_data)
+
+    entry_id_list = list()
+    entry_name_list = list()
+    clicked_entry.set("")
+    entry_select_drop['menu'].delete(0, 'end')
+    for i in entry_id_data:
+        data = list(i)
+        entry_id_list.append(data[0])
+        entry_name_list.append(data[1])
+        entry_select_drop['menu'].add_command(label=data[1], command=tk._setit(clicked_entry, data[1],))
+    clicked_entry.set(entry_name_list[0])
+    entry_dict = dict(zip(entry_name_list, entry_id_list))
+    print(entry_dict)
+    # dict.fromkeys(event_id_list, "In stock")
+    
+    if len(entry_id_list) < 1:
+        clicked_entry.set("Create Event First")
+        event_id_list = ["Create Event First"]
+
+        
+    else:
+        clicked_entry.set(entry_name_list[0])
+    
+    # entry_select_drop = OptionMenu(editlabelframe, clicked_event, *entry_dict.keys())
+    # entry_select_drop.grid(row=2, column=2)
+
+
+def load_initial_entry():
+    db_conn()
+    global entry_select_drop
+    global entry_dict
+    global drop
+    global clicked
+    global clicked_entry
+
+    cur.execute("""
+            SELECT event_id, description FROM """+ clicked.get())
+
+    entry_id_data = cur.fetchall()
+    entry_id_list = list()
+    entry_name_list = list()
+
+    clicked_entry = StringVar(editlabelframe)
+
+    for i in entry_id_data:
+        data = list(i)
+        entry_id_list.append(data[0])
+        entry_name_list.append(data[1])
+    entry_dict = dict(zip(entry_name_list, entry_id_list))
+    
+    # dict.fromkeys(event_id_list, "In stock")
+    if len(entry_id_list) < 1:
+        clicked_entry.set("Create Event First")
+        entry_name_list = ["Create Event First"]
+        
+    else:
+        clicked_entry.set(entry_name_list[0])
+    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_dict.keys())
+    entry_select_drop.grid(row=2, column=2)
 # Query, Delete and Edit
 
+
+global editlabelframe
 
 editlabelframe = LabelFrame(root, text="Edit/Delete existing entries", background='#394867', foreground="white")
 editlabelframe.grid(row=1, column=1, columnspan=3, rowspan=4, padx=20, pady=20)
 
+clicked_entry = StringVar(editlabelframe)
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
+
 clicked = StringVar(editlabelframe)
 clicked.set(lopa_list[0])
-drop = OptionMenu(editlabelframe, clicked, *lopa_list)
+drop = OptionMenu(editlabelframe, clicked, *lopa_list, command=view_dropdown)
 drop.grid(row=2, column=1, padx=20, pady=20)
 
 
-entry = Entry(editlabelframe, width=30)
-entry.grid(row=2, column=2)
+load_initial_entry()
 
-edit = Button(editlabelframe, text="Edit Entry", command=edit, height = 2, width = 23)
+edit = Button(editlabelframe, text="Edit Entry", command=edit_entry, height = 2, width = 23)
 edit.grid(row=3, column=2, padx=80, pady=20)
 
 delete = Button(editlabelframe, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
 delete.grid(row=4, column=2, padx=80, pady=20)
 
-
 querylabelframe = LabelFrame(root, text="View previous entries", background='#394867', foreground="white")
 querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
-clicked_query = StringVar(root)
+clicked_query = StringVar(querylabelframe)
 clicked_query.set(query_list[0])
 
 query_drop = OptionMenu(querylabelframe, clicked_query, *query_list)
