@@ -1,6 +1,6 @@
 from tkinter import *
 from datetime import *
-from tkinter.ttk import Treeview
+from tkinter.ttk import Style, Treeview
 import mysql.connector
 import webbrowser
 
@@ -105,7 +105,7 @@ def new_event():
 
     
     def save_event():
-
+        db_conn()
         cur.execute("INSERT INTO Event VALUES (null, %s, %s)",(
                     event_description.get(),
                     event_target_freq.get()))
@@ -123,96 +123,98 @@ def new_event():
 
 
 def new_cause():
+    db_conn()
     top = Toplevel(bg="blue")
+    top.geometry("500x500")
     top.title("Layer of Protection Analysis ")
-    top.geometry("900x500")
 
     label = Label(top, text="CREATE CAUSE", font=('serif', 14, 'bold'))
-    label.grid(row=0, column=2, columnspan=2)
+    label.grid(row=0, column=1, columnspan=2)
 
     cause_description_label = Label(top, text="Description:")
-    cause_description_label.grid(row=1, column=0, padx=10, pady=10)
+    cause_description_label.grid(row=2, column=0, padx=10, pady=10)
     cause_description = Entry(top, width=30)
-    cause_description.grid(row=1, column=1, padx=10, pady=10)
+    cause_description.grid(row=2, column=1, padx=10, pady=10)
 
     cause_initial_frequency_label = Label(top, text="Initial Frequency:")
-    cause_initial_frequency_label.grid(row=2, column=0, padx=10, pady=10)
+    cause_initial_frequency_label.grid(row=3, column=0, padx=10, pady=10)
     cause_initial_frequency = Entry(top, width=30)
-    cause_initial_frequency.grid(row=2, column=1, padx=10, pady=10)
+    cause_initial_frequency.grid(row=3, column=1, padx=10, pady=10)
 
     # --------------------------------EVENT ID Dropdown-------------------
     event_id_label = Label(top, text="Event ID:")
-    event_id_label.grid(row=1, column=3, padx=20, pady=20)
+    event_id_label.grid(row=1, column=0, padx=10, pady=10)
     cur.execute("""
             SELECT event_id, description FROM Event;
                 """)
 
     event_id_data = cur.fetchall()
     event_id_list = list()
+    event_name_list = list()
 
 
     for i in event_id_data:
         data = list(i)
         event_id_list.append(data[0])
-        
-
+        event_name_list.append(data[1])
+    event_dict = dict(zip(event_name_list, event_id_list))
+    
+    # dict.fromkeys(event_id_list, "In stock")
     clicked_event = StringVar()
     if len(event_id_list) < 1:
         clicked_event.set("Create Event First")
         event_id_list = ["Create Event First"]
         
     else:
-        clicked_event.set(event_id_list[0])
+        clicked_event.set(event_name_list[0])
 
         
-    event_id_drop = OptionMenu(top, clicked_event, *event_id_list)
-    event_id_drop.grid(row=1, column=4, pady=10, padx=40)
-
+    event_id_drop = OptionMenu(top, clicked_event, *event_dict.keys())
+    event_id_drop.grid(row=1, column=1, pady=10, padx=5)
 
     # ---------------Save CAUSE-------------------
     def save_cause():
-
+        db_conn()
         cur.execute("INSERT INTO Cause VALUES (null, %s, %s, %s)",(
             cause_description.get(),
             cause_initial_frequency.get(),
-            clicked_event.get())
-        )
+            event_dict[clicked_event.get()]
+        ))
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=4, column=2, columnspan=2)
+        success.grid(row=6, column=1, columnspan=2, pady=10)
         conn.commit()
-
+        success.after(5000, success.destroy)
         cause_description.delete(0, END)
         cause_initial_frequency.delete(0, END)
 
-        
-
     save_cause = Button(top, text="Save", width=20, command=save_cause)
-    save_cause.grid(row=3, column=2, columnspan=2)
+    save_cause.grid(row=5, column=1, columnspan=2, pady=10)
 
 
 def new_cause_barrier():
     top = Toplevel()
     top.title("Layer of Protection Analysis ")
-    top.geometry("900x500")
+    top.geometry("500x500")
 
 
     label = Label(top, text="CREATE CAUSE BARRIER", font=('serif', 14, 'bold'))
-    label.grid(row=0, column=2, columnspan=2)
+    label.grid(row=0, column=1, columnspan=2)
 
 
 
     cause_barrier_description_label = Label(top, text="Description")
-    cause_barrier_description_label.grid(row=1, column=0, padx=10, pady=10)
+    cause_barrier_description_label.grid(row=2, column=0, padx=10, pady=10)
     cause_barrier_description = Entry(top, width=30)
-    cause_barrier_description.grid(row=1, column=1, padx=10, pady=10)
+    cause_barrier_description.grid(row=2, column=1, padx=10, pady=10)
 
     cause_barrier_pfd_label = Label(top, text="PFD")
-    cause_barrier_pfd_label.grid(row=2, column=0, padx=10, pady=10)
+    cause_barrier_pfd_label.grid(row=3, column=0, padx=10, pady=10)
     cause_barrier_pfd = Entry(top, width=30)
-    cause_barrier_pfd.grid(row=2, column=1, padx=10, pady=10)
+    cause_barrier_pfd.grid(row=3, column=1, padx=10, pady=10)
 
 
+    db_conn()
     # -------------CAUSE ID Dropdown----------------------
     cur.execute("""
             SELECT cause_id, description FROM Cause;
@@ -220,48 +222,53 @@ def new_cause_barrier():
 
     cause_id_data = cur.fetchall()
     cause_id_list = list()
+    cause_name_list = list()
 
     for i in cause_id_data:
         data = list(i)
         cause_id_list.append(data[0])
+        cause_name_list.append(data[1])
 
     clicked_cause = StringVar()
+    cause_dict = dict(zip(cause_name_list, cause_id_list))
     if len(cause_id_list) < 1:
         clicked_cause.set("Create Cause First")
         cause_id_list = ["Create Cause First"]
         
     else:
-        clicked_cause.set(cause_id_list[0])
+        clicked_cause.set(cause_name_list[0])
 
     cause_id = Label(top, text="Cause ID:")
-    cause_id.grid(row=1, column=2, padx=10, pady=10)
+    cause_id.grid(row=1, column=0, padx=10, pady=10)
         
-    cause_id_drop = OptionMenu(top, clicked_cause, *cause_id_list)
-    cause_id_drop.grid(row=1, column=3, pady=10, padx=40)
+    cause_id_drop = OptionMenu(top, clicked_cause, *cause_dict.keys())
+    cause_id_drop.grid(row=1, column=1, pady=10, padx=40)
 
 
     def save_cause_barrier():
-    
+        db_conn()
         cur.execute("""INSERT INTO Cause_Barrier VALUES (null, %s, %s, %s)""",(
             cause_barrier_description.get(),
             cause_barrier_pfd.get(),
-            clicked_cause.get())
+            cause_dict[clicked_cause.get()])
         )
 
         success = Label(top, text="Added record successfully", fg="green")
-        success.grid(row=4, column=1, columnspan=2)
+        success.grid(row=5, column=1, columnspan=2, pady=10)
         conn.commit()
 
+        success.after(5000, success.destroy)
         cause_barrier_description.delete(0, END)
         cause_barrier_pfd.delete(0, END)
 
 
 
     save_cause_barrier = Button(top, text="Save", width=20, command=save_cause_barrier)
-    save_cause_barrier.grid(row=3, column=1, columnspan=2)
+    save_cause_barrier.grid(row=4, column=1, columnspan=2, pady=10)
 
 
 def new_consequence():
+    db_conn()
     top = Toplevel(bg="red")
     top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
@@ -332,6 +339,7 @@ def new_consequence():
 
 
 def new_consequence_barrier():
+    db_conn()
     top = Toplevel()
     top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
@@ -399,7 +407,7 @@ def new_consequence_barrier():
 def delete():
     global clicked
     global entry
-
+    db_conn()
     gotten_id = clicked.get().lower() + "_id"
     print(gotten_id)
 
@@ -413,6 +421,7 @@ def delete():
     delete_success.grid(row=4, column=2)
 
 def query():
+    db_conn()
     top = Toplevel()
     top.title("Layer of Protection Analysis ")
     top.geometry("900x500")
@@ -447,7 +456,7 @@ def query():
 
 
 def update():
-
+    db_conn()
     if clicked.get() == "Event":
 
         cur.execute(""" UPDATE Event
@@ -546,6 +555,7 @@ def edit():
     global consequence_barrier_pfd_editor
     global clicked_consequence_editor
 
+    db_conn()
 
 
 
