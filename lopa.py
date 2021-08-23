@@ -434,8 +434,12 @@ def query():
     tree = Treeview(top, column=("#1", "#2", "#3"), show='headings')
     tree.heading("#1", text="s/n")
     tree.heading("#2", text="Description")
-    tree.heading("#3", text="Initial Frequency")
-
+    if clicked_query.get() == 'Event' or clicked_query.get() == 'Consequence':
+        tree.heading("#3", text="Target Frequency")
+    elif clicked_query.get() == 'Cause':
+        tree.heading("#3", text="Initial Frequency")
+    else:
+        tree.heading("#3", text="PFD")
     tree.grid(row=1)
 
     label = Label(top, text="Data from " + clicked_query.get() + " Table", font=("serif", 14, "bold"))
