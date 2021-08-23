@@ -75,7 +75,7 @@ root = Tk()
 root.title("Layer of Protection Analysis")
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-root.geometry("1200x700")
+root.geometry("900x700")
 root.config(background='#394867')
 
 
@@ -142,7 +142,7 @@ def new_cause():
     cause_initial_frequency.grid(row=3, column=1, padx=10, pady=10)
 
     # --------------------------------EVENT ID Dropdown-------------------
-    event_id_label = Label(top, text="Event ID:")
+    event_id_label = Label(top, text="Event:")
     event_id_label.grid(row=1, column=0, padx=10, pady=10)
     cur.execute("""
             SELECT event_id, description FROM Event;
@@ -238,7 +238,7 @@ def new_cause_barrier():
     else:
         clicked_cause.set(cause_name_list[0])
 
-    cause_id = Label(top, text="Cause ID:")
+    cause_id = Label(top, text="Cause:")
     cause_id.grid(row=1, column=0, padx=10, pady=10)
         
     cause_id_drop = OptionMenu(top, clicked_cause, *cause_dict.keys())
@@ -616,7 +616,7 @@ def edit():
         cause_initial_frequency_editor = Entry(top, width=30)
         cause_initial_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
 
-        cause_event_id_label_editor = Label(top, text="Event ID:")
+        cause_event_id_label_editor = Label(top, text="Event:")
         cause_event_id_label_editor.grid(row=1, column=2, padx=10, pady=10)
 
     
@@ -698,7 +698,7 @@ def edit():
  
             clicked_cause_editor.set(cause[0])
 
-        cause_id_editor = Label(top, text="Cause ID:")
+        cause_id_editor = Label(top, text="Cause")
         cause_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
         cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_id_list_editor)
@@ -729,7 +729,7 @@ def edit():
         consequence_target_frequency_editor = Entry(top, width=30)
         consequence_target_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
 
-        consequence_event_id_label_editor = Label(top, text="Event ID:")
+        consequence_event_id_label_editor = Label(top, text="Event")
         consequence_event_id_label_editor.grid(row=1, column=2, padx=10, pady=10)
 
     
@@ -810,7 +810,7 @@ def edit():
  
             clicked_consequence_editor.set(consequence[0])
 
-        consequence_id_editor = Label(top, text="Consequence ID:")
+        consequence_id_editor = Label(top, text="Consequence")
         consequence_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
         consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
@@ -834,52 +834,63 @@ def edit():
 
 # Query, Delete and Edit
 
+
+editlabelframe = LabelFrame(root, text="Edit/Delete existing entries", background='#394867', foreground="white")
+editlabelframe.grid(row=1, column=1, columnspan=3, rowspan=4, padx=20, pady=20)
+
 lopa_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
-clicked = StringVar(root)
+clicked = StringVar(editlabelframe)
 clicked.set(lopa_list[0])
-drop = OptionMenu(root, clicked, *lopa_list)
-drop.grid(row=1, column=1, padx=20, pady=20)
+drop = OptionMenu(editlabelframe, clicked, *lopa_list)
+drop.grid(row=2, column=1, padx=20, pady=20)
 
 
-entry = Entry(root, width=30)
-entry.grid(row=1, column=2)
+entry = Entry(editlabelframe, width=30)
+entry.grid(row=2, column=2)
 
-edit = Button(root, text="Edit Entry", command=edit, height = 2, width = 23)
-edit.grid(row=2, column=2, padx=80, pady=20)
+edit = Button(editlabelframe, text="Edit Entry", command=edit, height = 2, width = 23)
+edit.grid(row=3, column=2, padx=80, pady=20)
 
-delete = Button(root, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
-delete.grid(row=3, column=2, padx=80, pady=20)
+delete = Button(editlabelframe, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
+delete.grid(row=4, column=2, padx=80, pady=20)
 
 
+querylabelframe = LabelFrame(root, text="View previous entries", background='#394867', foreground="white")
+querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked_query = StringVar(root)
 clicked_query.set(query_list[0])
 
-query_drop = OptionMenu(root, clicked_query, *query_list)
-query_drop.grid(row=5, column=1, padx=20, pady=20)
+query_drop = OptionMenu(querylabelframe, clicked_query, *query_list)
+query_drop.grid(row=5, column=2, padx=20, pady=20)
 
-query = Button(root, text="Query", fg="blue", command=query, height = 2, width = 23)
-query.grid(row=5, column=2, padx=80, pady=20)
+query = Button(querylabelframe, text="Query", fg="blue", command=query, height = 2, width = 23)
+query.grid(row=5, column=3, padx=80, pady=20)
 
 
+createlabelframe = LabelFrame(root, text="Create new Entries", background='#394867', foreground="white")
+createlabelframe.grid(row=0, column=0, rowspan=6, padx=20)
 # Buttons for inputing data
-event = Button(root, text="Create Event", bg="orange", command=new_event, height = 2, width = 23)
-event.grid(row=1, column=0, padx=(20,60), pady=20)
+event = Button(createlabelframe, text="Create Event", background="orange", foreground="white", command=new_event, height = 2, width = 23)
+event.grid(row=2, column=0, padx=(20,60), pady=20)
 
-cause = Button(root, text="Create Cause", bg="blue",fg="white", command=new_cause, height = 2, width = 23)
-cause.grid(row=2, column=0, padx=(20,60), pady=20)
+cause = Button(createlabelframe, text="Create Cause", background="blue",foreground="white", command=new_cause, height = 2, width = 23)
+cause.grid(row=3, column=0, padx=(20,60), pady=20)
 
-consequence = Button(root, text="Create Consequence", bg="red", fg="white", command=new_consequence, height = 2, width = 23)
-consequence.grid(row=3, column=0, padx=(20,60), pady=20)
+consequence = Button(createlabelframe, text="Create Consequence", bg="red", fg="white", command=new_consequence, height = 2, width = 23)
+consequence.grid(row=4, column=0, padx=(20,60), pady=20)
 
-cause_barrier = Button(root, text="Create Cause Barrier", command=new_cause_barrier, height = 2, width = 23)
-cause_barrier.grid(row=4, column=0, padx=(20,60), pady=20)
+cause_barrier = Button(createlabelframe, text="Create Cause Barrier", command=new_cause_barrier, height = 2, width = 23)
+cause_barrier.grid(row=5, column=0, padx=(20,60), pady=20)
 
-consequence_barrier = Button(root, text="Create Consequence Barrier", command=new_consequence_barrier, height = 2, width = 23)
-consequence_barrier.grid(row=5, column=0, padx=(20,60), pady=20)
+consequence_barrier = Button(createlabelframe, text="Create Consequence Barrier", command=new_consequence_barrier, height = 2, width = 23)
+consequence_barrier.grid(row=6, column=0, padx=(20,60), pady=20)
 
 # Open Bowtie Diagram  
 
+
+weblabelframe = LabelFrame(root, text="View all entries on the web", background='#394867', foreground="white")
+weblabelframe.grid(row=7, column=0, padx=20, pady=20)
 
 new = 1
 url = "https://lopa-web-bow-tie.azurewebsites.net/"
@@ -887,7 +898,7 @@ url = "https://lopa-web-bow-tie.azurewebsites.net/"
 def openweb():
     webbrowser.open(url,new=new)
 
-bowtie = Button(root, text = "Draw Bowtie Diagram",command=openweb, height = 2, width = 23, bg="green")
-bowtie.grid(row=6, column=0, padx=(20,60), pady=20)
+bowtie = Button(weblabelframe, text = "Draw Bowtie Diagram",command=openweb, height = 2, width = 23, bg="green")
+bowtie.grid(row=7, column=0, padx=(20,60), pady=20)
 
 mainloop()
