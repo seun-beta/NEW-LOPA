@@ -406,7 +406,7 @@ def new_consequence_barrier():
         clicked_consequence.set("Create Consequence First")
         consequence_id_list = ["Create Consequence First"]
     else:
-        clicked_consequence.set(consequence_id_list[0])
+        clicked_consequence.set(consequence_name_list[0])
 
     consequence_id = Label(top, text="Consequence:")
     consequence_id.grid(row=1, column=0, padx=10, pady=10)
@@ -431,7 +431,7 @@ def new_consequence_barrier():
         consequence_barrier_pfd.delete(0, END)
 
     save_consequence_barrier = Button(top, text="Save", width=20, command=save_consequence_barrier)
-    save_consequence_barrier.grid(row=3, column=1, columnspan=2)
+    save_consequence_barrier.grid(row=4, column=1, columnspan=2)
 
 def delete():
     global clicked
