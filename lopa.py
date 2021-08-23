@@ -72,13 +72,24 @@ def db_conn():
 
 db_conn() 
 
-root = Tk()
+root = tk.Tk()
 root.title("Layer of Protection Analysis")
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-root.geometry("900x700")
-root.config(background='#394867')
+canvas = tk.Canvas(root, bg="#394867", height=700, width=500)
+scrollbar = tk.Scrollbar(root, orient="horizontal", width=18, command=canvas.xview)
+canvas.configure(scrollregion=(0,0,700,700), xscrollcommand=scrollbar.set)
 
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+
+canvas.grid(column=0, row=0, sticky="nsew")
+scrollbar.grid(row=1, column=0, sticky="ew")
+
+# this adds tick-marks every 100 pixels so that you can
+# see the canvas scroll
+for x in range(0, 2001, 100):
+    anchor = "sw" if x < 100 else ("se" if x==2000 else "s")
+    canvas.create_line(x, 700, x, 690, fill="red")
+    canvas.create_text(x, 680, text=x, anchor=anchor)
 
 def new_event():
     
@@ -424,7 +435,7 @@ def delete():
     conn.commit()
 
 
-    delete_success = Label(root, text=clicked.get() + " Item  with ID " + str(entry_dict[clicked_entry.get()]) + " sucessfully deleted", fg="green")
+    delete_success = Label(canvas, text=clicked.get() + " Item  with ID " + str(entry_dict[clicked_entry.get()]) + " sucessfully deleted", fg="green")
     delete_success.grid(row=4, column=2)
 
 def query():
@@ -907,7 +918,7 @@ def load_initial_entry():
 
 global editlabelframe
 
-editlabelframe = LabelFrame(root, text="Edit/Delete existing entries", background='#394867', foreground="white")
+editlabelframe = LabelFrame(canvas, text="Edit/Delete existing entries", background='#394867', foreground="white")
 editlabelframe.grid(row=1, column=1, columnspan=3, rowspan=4, padx=20, pady=20)
 
 clicked_entry = StringVar(editlabelframe)
@@ -927,7 +938,7 @@ edit.grid(row=3, column=2, padx=80, pady=20)
 delete = Button(editlabelframe, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
 delete.grid(row=4, column=2, padx=80, pady=20)
 
-querylabelframe = LabelFrame(root, text="View previous entries", background='#394867', foreground="white")
+querylabelframe = LabelFrame(canvas, text="View previous entries", background='#394867', foreground="white")
 querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked_query = StringVar(querylabelframe)
@@ -940,7 +951,7 @@ query = Button(querylabelframe, text="Query", fg="blue", command=query, height =
 query.grid(row=5, column=3, padx=80, pady=20)
 
 
-createlabelframe = LabelFrame(root, text="Create new Entries", background='#394867', foreground="white")
+createlabelframe = LabelFrame(canvas, text="Create new Entries", background='#394867', foreground="white")
 createlabelframe.grid(row=0, column=0, rowspan=6, padx=20)
 # Buttons for inputing data
 event = Button(createlabelframe, text="Create Event", background="orange", foreground="white", command=new_event, height = 2, width = 23)
@@ -961,7 +972,7 @@ consequence_barrier.grid(row=6, column=0, padx=(20,60), pady=20)
 # Open Bowtie Diagram  
 
 
-weblabelframe = LabelFrame(root, text="View all entries on the web", background='#394867', foreground="white")
+weblabelframe = LabelFrame(canvas, text="View all entries on the web", background='#394867', foreground="white")
 weblabelframe.grid(row=7, column=0, padx=20, pady=20)
 
 new = 1
