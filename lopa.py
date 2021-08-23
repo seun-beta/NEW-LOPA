@@ -513,7 +513,7 @@ def update():
               WHERE cause_id = %s """, (
         cause_description_editor.get(),
         cause_initial_frequency_editor.get(),
-        clicked_event_editor1.get(),
+        str(event_dict1[clicked_event_editor1.get()]),
         str(entry_dict[clicked_entry.get()])
         ))
 
@@ -577,6 +577,7 @@ def edit_entry():
     global cause_description_editor
     global cause_initial_frequency_editor
     global clicked_event_editor1
+    global event_dict1
 
     global cause_barrier_description_editor
     global cause_barrier_pfd_editor
@@ -656,23 +657,26 @@ def edit_entry():
 
         event_id_data_editor1 = cur.fetchall()
         event_id_list_editor1 = list()
+        event_name_list_editor1 = list()
 
         for i in event_id_data_editor1:
             data1 = list(i)
             event_id_list_editor1.append(data1[0])
+            event_name_list_editor1.append(data1[1])
 
         clicked_event_editor1 = StringVar()
+        event_dict1 = dict(zip(event_name_list_editor1, event_id_list_editor1))
         if len(event_id_list_editor1) < 1:
             clicked_event_editor1.set("Create Event First")
             event_id_list_editor1 = ["Create Event First"]
             
         else:
-            cur.execute("SELECT event_id FROM Cause WHERE cause_id = " + str(entry_dict[clicked_entry.get()]))
+            cur.execute("SELECT E.event_id, E.description FROM Cause as C INNER JOIN Event as E ON C.event_id = E.event_id WHERE C.cause_id = " + str(entry_dict[clicked_entry.get()]))
             event1 = cur.fetchone()
-            clicked_event_editor1.set(event1[0])
+            clicked_event_editor1.set(event1[1])
 
             
-        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_id_list_editor1)
+        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_dict1.keys())
         event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
 
 
