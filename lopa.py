@@ -543,7 +543,7 @@ def update():
               WHERE consequence_id = %s """, (
         consequence_description_editor.get(),
         consequence_target_frequency_editor.get(),
-        clicked_event_editor2.get(),
+        str(event_dict2[clicked_event_editor2.get()]),
         str(entry_dict[clicked_entry.get()])
         ))
 
@@ -558,7 +558,7 @@ def update():
               WHERE consequence_barrier_id = %s """, (
         consequence_barrier_description_editor.get(),
         consequence_barrier_pfd_editor.get(),
-        clicked_consequence_editor.get(),
+        str(consequence_dict[clicked_consequence_editor.get()]),
         str(entry_dict[clicked_entry.get()])
         ))
 
@@ -587,10 +587,12 @@ def edit_entry():
     global consequence_description_editor
     global consequence_target_frequency_editor
     global clicked_event_editor2
+    global event_dict2
 
     global consequence_barrier_description_editor
     global consequence_barrier_pfd_editor
     global clicked_consequence_editor
+    global consequence_dict
 
     db_conn()
 
@@ -769,6 +771,7 @@ def edit_entry():
 
     
 
+
         #-------------Event Dropdown------------------
         cur.execute("""
                 SELECT event_id, description FROM Event;
@@ -776,23 +779,27 @@ def edit_entry():
 
         event_id_data_editor2 = cur.fetchall()
         event_id_list_editor2 = list()
+        event_name_list_editor2 = list()
 
         for i in event_id_data_editor2:
             data2 = list(i)
             event_id_list_editor2.append(data2[0])
+            event_name_list_editor2.append(data2[1])
 
         clicked_event_editor2 = StringVar()
+        event_dict2 = dict(zip(event_name_list_editor2, event_id_list_editor2))
         if len(event_id_list_editor2) < 1:
             clicked_event_editor2.set("Create Event First")
             event_id_list_editor2 = ["Create Event First"]
             
         else:
-            cur.execute("SELECT event_id FROM Consequence WHERE consequence_id = " + str(entry_dict[clicked_entry.get()]))
+            cur.execute("SELECT E.event_id, E.description FROM Consequence as Co INNER JOIN Event as E ON Co.event_id = E.event_id WHERE Co.consequence_id = " + str(entry_dict[clicked_entry.get()]))
             event2 = cur.fetchone()
-            clicked_event_editor2.set(event2[0])
+            clicked_event_editor2.set(event2[1])
+
 
             
-        event_id_drop_editor2 = OptionMenu(top, clicked_event_editor2, *event_id_list_editor2)
+        event_id_drop_editor2 = OptionMenu(top, clicked_event_editor2, *event_dict2.keys())
         event_id_drop_editor2.grid(row=1, column=3, pady=10, padx=40)
 
 
@@ -829,26 +836,28 @@ def edit_entry():
 
         consequence_id_data_editor = cur.fetchall()
         consequence_id_list_editor = list()
+        consequence_name_list_editor = list()
 
         for i in consequence_id_data_editor:
             data = list(i)
             consequence_id_list_editor.append(data[0])
+            consequence_name_list_editor.append(data[1])
 
         clicked_consequence_editor = StringVar()
+        consequence_dict = dict(zip(consequence_name_list_editor, consequence_id_list_editor))
         if len(consequence_id_list_editor) < 1:
             clicked_consequence_editor.set("Create Consequence First")
             consequence_id_list_editor = ["Create Consequence First"]
             
         else:
-            cur.execute("""SELECT consequence_id FROM Consequence_Barrier WHERE consequence_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
-            consequence = cur.fetchone()
- 
-            clicked_consequence_editor.set(consequence[0])
+            cur.execute("SELECT Con.consequence_id, Con.description FROM Consequence_Barrier as ConB INNER JOIN Consequence as Con ON ConB.consequence_id = Con.consequence_id WHERE ConB.consequence_barrier_id = " + str(entry_dict[clicked_entry.get()]))
+            consequence1 = cur.fetchone()
+            clicked_consequence_editor.set(consequence1[1])
 
         consequence_id_editor = Label(top, text="Consequence")
         consequence_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
-        consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_id_list_editor)
+        consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_dict.keys())
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
         cur.execute("""SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
