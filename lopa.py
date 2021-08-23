@@ -85,7 +85,8 @@ def add_scrollable(widgetFrame: Toplevel, height:int, width:int, color= ""):
 
 root = Tk()
 root.title("Layer of Protection Analysis")
-canvas = Canvas(root, bg="#394867", height=700, width=500)
+tkintercolor = '#394867'
+canvas = Canvas(root, bg=tkintercolor, height=700, width=500)
 scrollbar = Scrollbar(root, orient="horizontal", width=18, command=canvas.xview)
 canvas.configure(scrollregion=(0,0,700,700), xscrollcommand=scrollbar.set)
 
@@ -929,7 +930,7 @@ def load_initial_entry():
 
 global editlabelframe
 
-editlabelframe = LabelFrame(canvas, text="Edit/Delete existing entries", background='#394867', foreground="white")
+editlabelframe = LabelFrame(canvas, text="Edit/Delete existing entries", background=tkintercolor, foreground="white")
 editlabelframe.grid(row=1, column=1, columnspan=3, rowspan=4, padx=20, pady=20)
 
 clicked_entry = StringVar(editlabelframe)
@@ -949,7 +950,7 @@ edit.grid(row=3, column=2, padx=80, pady=20)
 delete = Button(editlabelframe, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
 delete.grid(row=4, column=2, padx=80, pady=20)
 
-querylabelframe = LabelFrame(canvas, text="View previous entries", background='#394867', foreground="white")
+querylabelframe = LabelFrame(canvas, text="View previous entries", background=tkintercolor, foreground="white")
 querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
 clicked_query = StringVar(querylabelframe)
@@ -962,7 +963,7 @@ query = Button(querylabelframe, text="Query", fg="blue", command=query, height =
 query.grid(row=5, column=3, padx=80, pady=20)
 
 
-createlabelframe = LabelFrame(canvas, text="Create new Entries", background='#394867', foreground="white")
+createlabelframe = LabelFrame(canvas, text="Create new Entries", background=tkintercolor, foreground="white")
 createlabelframe.grid(row=0, column=0, rowspan=6, padx=20)
 # Buttons for inputing data
 event = Button(createlabelframe, text="Create Event", background="orange", foreground="white", command=new_event, height = 2, width = 23)
@@ -983,7 +984,7 @@ consequence_barrier.grid(row=6, column=0, padx=(20,60), pady=20)
 # Open Bowtie Diagram  
 
 
-weblabelframe = LabelFrame(canvas, text="View all entries on the web", background='#394867', foreground="white")
+weblabelframe = LabelFrame(canvas, text="View all entries on the web", background=tkintercolor, foreground="white")
 weblabelframe.grid(row=7, column=0, padx=20, pady=20)
 
 new = 1
