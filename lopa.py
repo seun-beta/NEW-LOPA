@@ -854,7 +854,6 @@ edit.grid(row=3, column=2, padx=80, pady=20)
 delete = Button(editlabelframe, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
 delete.grid(row=4, column=2, padx=80, pady=20)
 
-
 querylabelframe = LabelFrame(root, text="View previous entries", background='#394867', foreground="white")
 querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
 query_list = ["Event", "Cause", "Cause_Barrier", "Consequence", "Consequence_Barrier"]
