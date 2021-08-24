@@ -891,6 +891,7 @@ def edit_entry():
 def view_dropdown(event):
     db_conn()
     global entry_dict
+    global viewlopaDiagram
     cur.execute("""
             SELECT """+clicked.get().lower() +"""_id, description FROM """+clicked.get())
 
@@ -908,7 +909,12 @@ def view_dropdown(event):
         entry_select_drop['menu'].add_command(label=data[1], command=tk._setit(clicked_entry, data[1],))
     clicked_entry.set(entry_name_list[0])
     entry_dict = dict(zip(entry_name_list, entry_id_list))
-    print(entry_dict)
+    if(clicked.get() == "Event"):
+        viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
+        viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
+    else:
+        viewlopaDiagram.destroy()
+    # print(entry_dict)
     # dict.fromkeys(event_id_list, "In stock")
     
     if len(entry_id_list) < 1:
@@ -960,6 +966,7 @@ def load_initial_entry():
 
 
 global editlabelframe
+global viewlopaDiagram
 
 editlabelframe = LabelFrame(canvas, text="Edit/Delete existing entries", background=tkintercolor, foreground="white")
 editlabelframe.grid(row=1, column=1, columnspan=3, rowspan=4, padx=20, pady=20)
@@ -980,6 +987,17 @@ edit.grid(row=3, column=2, padx=80, pady=20)
 
 delete = Button(editlabelframe, text="Delete Entry", bg="red", command=delete, height = 2, width = 23)
 delete.grid(row=4, column=2, padx=80, pady=20)
+
+
+new = 1
+url = "http://127.0.0.1:5500/index.html?eventId="+str(entry_dict[clicked_entry.get()])
+# url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
+
+def openweb():
+    webbrowser.open(url,new=new)
+
+viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
+viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
 
 querylabelframe = LabelFrame(canvas, text="View previous entries", background=tkintercolor, foreground="white")
 querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
@@ -1018,13 +1036,5 @@ consequence_barrier.grid(row=6, column=0, padx=(20,60), pady=20)
 weblabelframe = LabelFrame(canvas, text="View all entries on the web", background=tkintercolor, foreground="white")
 weblabelframe.grid(row=7, column=0, padx=20, pady=20)
 
-new = 1
-url = "https://lopa-web-bow-tie.azurewebsites.net/"
-
-def openweb():
-    webbrowser.open(url,new=new)
-
-bowtie = Button(weblabelframe, text = "Draw Bowtie Diagram",command=openweb, height = 2, width = 23, bg="green")
-bowtie.grid(row=7, column=0, padx=(20,60), pady=20)
 
 mainloop()
