@@ -990,8 +990,8 @@ delete.grid(row=4, column=2, padx=80, pady=20)
 
 
 new = 1
-url = "http://127.0.0.1:5500/index.html?eventId="+str(entry_dict[clicked_entry.get()])
-# url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
+# url = "http://127.0.0.1:5500/index.html?eventId="+str(entry_dict[clicked_entry.get()])
+url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
 
 def openweb():
     webbrowser.open(url,new=new)
