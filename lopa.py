@@ -75,6 +75,7 @@ def view_dropdown(event):
     global entry_dict
     global viewlopaDiagram
     global openweb
+    global url
     cur.execute("""
             SELECT """+clicked.get().lower() +"""_id, description FROM """+clicked.get())
 
@@ -96,6 +97,7 @@ def view_dropdown(event):
     # dict.fromkeys(event_id_list, "In stock")
     
     def openweb():
+        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
         webbrowser.open(url,new=new)
     if len(entry_id_list) < 1:
         clicked_entry.set("Create "+clicked.get()+" First")
@@ -974,6 +976,7 @@ def load_initial_entry():
     
     
     def openweb():
+        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+ str(entry_dict[clicked_entry.get()])
         webbrowser.open(url,new=new)
     # dict.fromkeys(event_id_list, "In stock")
     if len(entry_id_list) < 1:
@@ -982,7 +985,6 @@ def load_initial_entry():
         
     else:
         clicked_entry.set(entry_name_list[0])
-        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
         viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
         viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
     print(entry_dict)
