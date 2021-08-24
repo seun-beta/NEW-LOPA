@@ -86,6 +86,7 @@ def add_scrollable(widgetFrame: Toplevel, height:int, width:int, color= "white")
 root = Tk()
 root.title("Layer of Protection Analysis")
 tkintercolor = '#394867'
+global presentTop
 canvas = Canvas(root, bg=tkintercolor, height=700, width=500)
 scrollbar = Scrollbar(root, orient="horizontal", width=18, command=canvas.xview)
 canvas.configure(scrollregion=(0,0,700,700), xscrollcommand=scrollbar.set)
@@ -193,7 +194,7 @@ def new_cause():
         clicked_event.set(event_name_list[0])
 
         
-    event_id_drop = OptionMenu(newentrylabelframe, clicked_event, *event_dict.keys())
+    event_id_drop = OptionMenu(newentrylabelframe, clicked_event, *event_name_list)
     event_id_drop.grid(row=1, column=1, pady=10, padx=5)
 
     # ---------------Save CAUSE-------------------
@@ -267,7 +268,7 @@ def new_cause_barrier():
     cause_id = Label(newentrylabelframe, text="Cause:")
     cause_id.grid(row=1, column=0, padx=10, pady=10)
         
-    cause_id_drop = OptionMenu(newentrylabelframe, clicked_cause, *cause_dict.keys())
+    cause_id_drop = OptionMenu(newentrylabelframe, clicked_cause, *cause_name_list)
     cause_id_drop.grid(row=1, column=1, pady=10, padx=40)
 
 
@@ -340,7 +341,7 @@ def new_consequence():
         clicked_event.set(event_name_list[0])
 
         
-    event_id_drop = OptionMenu(newentrylabelframe, clicked_event, *event_dict.keys())
+    event_id_drop = OptionMenu(newentrylabelframe, clicked_event, *event_name_list)
     event_id_drop.grid(row=1, column=1, pady=10, padx=40)
 
     # ---------------Save CONSEQUENCE-------------------
@@ -413,7 +414,7 @@ def new_consequence_barrier():
     consequence_id = Label(newentrylabelframe, text="Consequence:")
     consequence_id.grid(row=1, column=0, padx=10, pady=10)
         
-    consequence_id_drop = OptionMenu(newentrylabelframe, clicked_consequence, *consequence_dict.keys())
+    consequence_id_drop = OptionMenu(newentrylabelframe, clicked_consequence, *consequence_name_list)
     consequence_id_drop.grid(row=1, column=1, pady=10, padx=10)
 
 
@@ -492,6 +493,7 @@ def query():
 
 def update():
     db_conn()
+    successlabel = Label(presentTop, text="Data updated successfully", font=('serif', 14, 'bold'), foreground='green')
     if clicked.get() == "Event":
 
         cur.execute(""" UPDATE Event
@@ -516,8 +518,9 @@ def update():
         str(event_dict1[clicked_event_editor1.get()]),
         str(entry_dict[clicked_entry.get()])
         ))
-
+        successlabel.grid(row=4, column=1)
         conn.commit()
+        successlabel.after(5000, successlabel.master)
 
     elif clicked.get() == "Cause_Barrier":
 
@@ -531,9 +534,9 @@ def update():
         str(cause_dict[clicked_cause_editor.get()]),
         str(entry_dict[clicked_entry.get()])
         ))
-
+        successlabel.grid(row=4, column=1)
         conn.commit()
-
+        successlabel.after(5000, successlabel.master)
     elif clicked.get() == "Consequence":
 
         cur.execute(""" UPDATE Consequence
@@ -563,12 +566,12 @@ def update():
         ))
 
         conn.commit()
-    top.destroy()
 
 
 def edit_entry():
     global editor
-    global top
+    global topx
+    global presentTop
 
     global event_target_frequency_editor
     global event_description_editor
@@ -603,6 +606,8 @@ def edit_entry():
 
     if clicked.get() == "Event":
         top = Toplevel(bg="orange")
+        presentTop = top
+        print(presentTop)
         top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"), background='orange', foreground='white')
@@ -633,6 +638,8 @@ def edit_entry():
     elif clicked.get() == "Cause":
 
         top = Toplevel(bg="blue")
+        presentTop = top
+        print(presentTop)
         top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"), background='blue', foreground='white')
@@ -671,7 +678,7 @@ def edit_entry():
         event_dict1 = dict(zip(event_name_list_editor1, event_id_list_editor1))
         if len(event_id_list_editor1) < 1:
             clicked_event_editor1.set("Create Event First")
-            event_id_list_editor1 = ["Create Event First"]
+            event_name_list_editor1 = ["Create Event First"]
             
         else:
             cur.execute("SELECT E.event_id, E.description FROM Cause as C INNER JOIN Event as E ON C.event_id = E.event_id WHERE C.cause_id = " + str(entry_dict[clicked_entry.get()]))
@@ -679,7 +686,7 @@ def edit_entry():
             clicked_event_editor1.set(event1[1])
 
             
-        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_dict1.keys())
+        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_name_list_editor1)
         event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
 
 
@@ -694,6 +701,8 @@ def edit_entry():
     elif clicked.get() == "Cause_Barrier":
 
         top = Toplevel()
+        presentTop = top
+        print(presentTop)
         top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
@@ -751,6 +760,8 @@ def edit_entry():
     elif clicked.get() == "Consequence": 
 
         top = Toplevel(bg="red")
+        presentTop = top
+        print(presentTop)
         top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"), background='red', foreground='white')
@@ -812,6 +823,8 @@ def edit_entry():
 
     elif clicked.get() == "Consequence_Barrier": 
         top = Toplevel()
+        presentTop = top
+        print(presentTop)
         top.title("Layer of Protection Analysis ")
         top.geometry("900x500")
         label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
@@ -940,7 +953,8 @@ def load_initial_entry():
         
     else:
         clicked_entry.set(entry_name_list[0])
-    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_dict.keys())
+    print(entry_dict)
+    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_name_list)
     entry_select_drop.grid(row=2, column=2)
 # Query, Delete and Edit
 
