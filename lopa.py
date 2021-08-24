@@ -737,7 +737,7 @@ def edit_entry():
         cause_dict = dict(zip(cause_name_list_editor, cause_id_list_editor))
         if len(cause_id_list_editor) < 1:
             clicked_cause_editor.set("Create Cause First")
-            cause_id_list_editor = ["Create Cause First"]
+            cause_name_list_editor = ["Create Cause First"]
             
         else:
             cur.execute("SELECT C.cause_id, C.description FROM Cause_Barrier as Cb INNER JOIN Cause as C ON Cb.cause_id = C.cause_id WHERE Cb.cause_barrier_id = " + str(entry_dict[clicked_entry.get()]))
@@ -747,7 +747,7 @@ def edit_entry():
         cause_id_editor = Label(top, text="Cause")
         cause_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
-        cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_dict.keys())
+        cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_name_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
         cur.execute("""SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
@@ -801,7 +801,7 @@ def edit_entry():
         event_dict2 = dict(zip(event_name_list_editor2, event_id_list_editor2))
         if len(event_id_list_editor2) < 1:
             clicked_event_editor2.set("Create Event First")
-            event_id_list_editor2 = ["Create Event First"]
+            event_name_list_editor2 = ["Create Event First"]
             
         else:
             cur.execute("SELECT E.event_id, E.description FROM Consequence as Co INNER JOIN Event as E ON Co.event_id = E.event_id WHERE Co.consequence_id = " + str(entry_dict[clicked_entry.get()]))
@@ -810,7 +810,7 @@ def edit_entry():
 
 
             
-        event_id_drop_editor2 = OptionMenu(top, clicked_event_editor2, *event_dict2.keys())
+        event_id_drop_editor2 = OptionMenu(top, clicked_event_editor2, *event_name_list_editor2)
         event_id_drop_editor2.grid(row=1, column=3, pady=10, padx=40)
 
 
@@ -860,7 +860,7 @@ def edit_entry():
         consequence_dict = dict(zip(consequence_name_list_editor, consequence_id_list_editor))
         if len(consequence_id_list_editor) < 1:
             clicked_consequence_editor.set("Create Consequence First")
-            consequence_id_list_editor = ["Create Consequence First"]
+            consequence_name_list_editor = ["Create Consequence First"]
             
         else:
             cur.execute("SELECT Con.consequence_id, Con.description FROM Consequence_Barrier as ConB INNER JOIN Consequence as Con ON ConB.consequence_id = Con.consequence_id WHERE ConB.consequence_barrier_id = " + str(entry_dict[clicked_entry.get()]))
@@ -870,7 +870,7 @@ def edit_entry():
         consequence_id_editor = Label(top, text="Consequence")
         consequence_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
-        consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_dict.keys())
+        consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_name_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
         cur.execute("""SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
