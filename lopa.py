@@ -225,8 +225,6 @@ def new_cause_barrier():
     newentrylabelframe.grid(row=0, column=0, columnspan=2, rowspan=6, padx=20, pady=20)
 
 
-    label = Label(newentrylabelframe, text="CREATE CAUSE BARRIER", font=('serif', 14, 'bold'))
-    label.grid(row=0, column=1, columnspan=2)
 
 
 
