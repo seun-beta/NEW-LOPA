@@ -69,6 +69,63 @@ def db_conn():
     cur = conn.cursor()
     
     return conn, cur
+def change_bow_tie(event):
+    global url
+    global viewlopaDiagram
+    def openweb():
+        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+ str(entry_dict[clicked_entry.get()])
+        webbrowser.open(url,new=new)
+    viewlopaDiagram.destroy()
+    if(clicked.get() == "Event"):
+        viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
+        viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
+
+def view_dropdown(event):
+    db_conn()
+    global entry_dict
+    global viewlopaDiagram
+    global openweb
+    global url
+    cur.execute("""
+            SELECT """+clicked.get().lower() +"""_id, description FROM """+clicked.get())
+
+    entry_id_data = cur.fetchall()
+    # print(entry_id_data)
+
+    entry_id_list = list()
+    entry_name_list = list()
+    clicked_entry.set("")
+    entry_select_drop['menu'].delete(0, 'end')
+    for i in entry_id_data:
+        data = list(i)
+        entry_id_list.append(data[0])
+        entry_name_list.append(data[1])
+        entry_select_drop['menu'].add_command(label=data[1], command=tk._setit(clicked_entry, data[1], change_bow_tie))
+    entry_dict = dict(zip(entry_name_list, entry_id_list))
+   
+    # print(entry_dict)
+    # dict.fromkeys(event_id_list, "In stock")
+    
+    def openweb():
+        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
+        webbrowser.open(url,new=new)
+    if len(entry_id_list) < 1:
+        clicked_entry.set("Create "+clicked.get()+" First")
+        entry_name_list = ["Create Event First"]
+        if(clicked.get() == "Event"):
+            viewlopaDiagram.destroy()
+
+        
+    else:
+        clicked_entry.set(entry_name_list[0])
+        if(clicked.get() == "Event"):
+            viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
+            viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
+        else:
+            viewlopaDiagram.destroy()
+    
+    # entry_select_drop = OptionMenu(editlabelframe, clicked_event, *entry_dict.keys())
+    # entry_select_drop.grid(row=2, column=2)
 
 def add_scrollable(widgetFrame: Toplevel, height:int, width:int, color= "white"):
     widgetFrame.title("Layer of Protection Analysis")
@@ -213,7 +270,7 @@ def new_cause():
         success.after(5000, success.destroy)
         cause_description.delete(0, END)
         cause_initial_frequency.delete(0, END)
-        view_dropdown()
+        view_dropdown("")
 
     save_cause = Button(newentrylabelframe, text="Save", width=20, command=save_cause)
     save_cause.grid(row=5, column=1, columnspan=2, pady=10)
@@ -288,7 +345,7 @@ def new_cause_barrier():
         success.after(5000, success.destroy)
         cause_barrier_description.delete(0, END)
         cause_barrier_pfd.delete(0, END)
-        view_dropdown()
+        view_dropdown("")
 
 
 
@@ -363,7 +420,7 @@ def new_consequence():
         success.after(5000, success.destroy)
         consequence_description.delete(0, END)
         consequence_target_frequency.delete(0, END)
-        view_dropdown()
+        view_dropdown("")
 
 
     save_consequence = Button(newentrylabelframe, text="Save", width=20, command=save_consequence)
@@ -436,7 +493,7 @@ def new_consequence_barrier():
         success.after(5000, success.destroy)
         consequence_barrier_description.delete(0, END)
         consequence_barrier_pfd.delete(0, END)
-        view_dropdown()
+        view_dropdown("")
 
     save_consequence_barrier = Button(newentrylabelframe, text="Save", width=20, command=save_consequence_barrier)
     save_consequence_barrier.grid(row=4, column=1, columnspan=2)
@@ -458,7 +515,7 @@ def delete():
 
     delete_success = Label(canvas, text=clicked.get() + " Item  with ID " + str(entry_dict[clicked_entry.get()]) + " sucessfully deleted", fg="green")
     delete_success.grid(row=4, column=2)
-    view_dropdown()
+    view_dropdown("")
 
 def query():
     db_conn()
@@ -576,7 +633,7 @@ def update():
 
         conn.commit()
 
-    view_dropdown()
+    view_dropdown("")
 
 def edit_entry():
     global editor
@@ -897,51 +954,6 @@ def edit_entry():
 
     conn.commit()
 
-
-def view_dropdown(event):
-    db_conn()
-    global entry_dict
-    global viewlopaDiagram
-    cur.execute("""
-            SELECT """+clicked.get().lower() +"""_id, description FROM """+clicked.get())
-
-    entry_id_data = cur.fetchall()
-    # print(entry_id_data)
-
-    entry_id_list = list()
-    entry_name_list = list()
-    clicked_entry.set("")
-    entry_select_drop['menu'].delete(0, 'end')
-    for i in entry_id_data:
-        data = list(i)
-        entry_id_list.append(data[0])
-        entry_name_list.append(data[1])
-        entry_select_drop['menu'].add_command(label=data[1], command=tk._setit(clicked_entry, data[1],))
-    clicked_entry.set(entry_name_list[0])
-    entry_dict = dict(zip(entry_name_list, entry_id_list))
-   
-    # print(entry_dict)
-    # dict.fromkeys(event_id_list, "In stock")
-    
-    if len(entry_id_list) < 1:
-        clicked_entry.set("Create Event First")
-        event_id_list = ["Create Event First"]
-        if(clicked.get() == "Event"):
-            viewlopaDiagram.destroy()
-
-        
-    else:
-        clicked_entry.set(entry_name_list[0])
-        if(clicked.get() == "Event"):
-            viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
-            viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
-        else:
-            viewlopaDiagram.destroy()
-    
-    # entry_select_drop = OptionMenu(editlabelframe, clicked_event, *entry_dict.keys())
-    # entry_select_drop.grid(row=2, column=2)
-
-
 def load_initial_entry():
     db_conn()
     global entry_select_drop
@@ -951,6 +963,7 @@ def load_initial_entry():
     global clicked_entry
     global url
     global viewlopaDiagram
+    global openweb
     cur.execute("""
             SELECT event_id, description FROM """+ clicked.get())
 
@@ -968,19 +981,20 @@ def load_initial_entry():
     entry_dict = dict(zip(entry_name_list, entry_id_list))
     
     
+    def openweb():
+        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+ str(entry_dict[clicked_entry.get()])
+        webbrowser.open(url,new=new)
     # dict.fromkeys(event_id_list, "In stock")
     if len(entry_id_list) < 1:
         clicked_entry.set("Create Event First")
         entry_name_list = ["Create Event First"]
-        viewlopaDiagram.destroy()
         
     else:
         clicked_entry.set(entry_name_list[0])
-        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+str(entry_dict[clicked_entry.get()])
         viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
         viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
     print(entry_dict)
-    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_name_list)
+    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_name_list, command=change_bow_tie)
     entry_select_drop.grid(row=2, column=2)
 # Query, Delete and Edit
 
@@ -1013,12 +1027,6 @@ delete.grid(row=4, column=2, padx=80, pady=20)
 new = 1
 # url = "http://127.0.0.1:5500/index.html?eventId="+str(entry_dict[clicked_entry.get()])
 url = "https://lopa-web-bow-tie.azurewebsites.net/index.html"
-
-def openweb():
-    webbrowser.open(url,new=new)
-
-viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
-viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
 
 querylabelframe = LabelFrame(canvas, text="View previous entries", background=tkintercolor, foreground="white")
 querylabelframe.grid(row=5, column=1, columnspan=3, padx=20, pady=20)
