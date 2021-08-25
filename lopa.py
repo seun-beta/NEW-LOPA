@@ -69,6 +69,16 @@ def db_conn():
     cur = conn.cursor()
     
     return conn, cur
+def change_bow_tie(event):
+    global url
+    global viewlopaDiagram
+    def openweb():
+        url = "https://lopa-web-bow-tie.azurewebsites.net/index.html?eventId="+ str(entry_dict[clicked_entry.get()])
+        webbrowser.open(url,new=new)
+    viewlopaDiagram.destroy()
+    if(clicked.get() == "Event"):
+        viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
+        viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
 
 def view_dropdown(event):
     db_conn()
@@ -90,7 +100,7 @@ def view_dropdown(event):
         data = list(i)
         entry_id_list.append(data[0])
         entry_name_list.append(data[1])
-        entry_select_drop['menu'].add_command(label=data[1], command=tk._setit(clicked_entry, data[1],))
+        entry_select_drop['menu'].add_command(label=data[1], command=tk._setit(clicked_entry, data[1], change_bow_tie))
     entry_dict = dict(zip(entry_name_list, entry_id_list))
    
     # print(entry_dict)
@@ -946,8 +956,6 @@ def edit_entry():
 
     conn.commit()
 
-
-
 def load_initial_entry():
     db_conn()
     global entry_select_drop
@@ -988,7 +996,7 @@ def load_initial_entry():
         viewlopaDiagram = Button(editlabelframe, text="View Bow Tie for " + clicked_entry.get(), command=openweb)
         viewlopaDiagram.grid(row=5, column=2, padx=80, pady=20)
     print(entry_dict)
-    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_name_list)
+    entry_select_drop = OptionMenu(editlabelframe, clicked_entry, *entry_name_list, command=change_bow_tie)
     entry_select_drop.grid(row=2, column=2)
 # Query, Delete and Edit
 
