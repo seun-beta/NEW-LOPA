@@ -672,25 +672,25 @@ def edit_entry():
 
 
     if clicked.get() == "Event":
-        top = Toplevel(bg="orange")
-        presentTop = top
-        print(presentTop)
-        top.title("Layer of Protection Analysis ")
-        top.geometry("900x500")
-        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"), background='orange', foreground='white')
-        label.grid(row=0, column=1)
 
-        event_description_label_editor = Label(top, text="Description:", background='orange', foreground='white')
+        color = 'orange'
+        top = Toplevel(bg=color)
+        top.title("Layer of Protection Analysis ")
+        cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
+        neweditlabelframe = LabelFrame(cv, text="Edit " + clicked.get(), background=color, foreground="white")
+        neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
+
+        event_description_label_editor = Label(neweditlabelframe, text="Description:", background='orange', foreground='white')
         event_description_label_editor.grid(row=1, column=0)
 
-        event_description_editor = Entry(top, width=30)
+        event_description_editor = Entry(neweditlabelframe, width=30)
         event_description_editor.grid(row=1, column=1, padx=20)
 
 
-        event_target_frequency_label_editor = Label(top, text="Target Frequency:", background='orange', foreground='white')
+        event_target_frequency_label_editor = Label(neweditlabelframe, text="Target Frequency:", background='orange', foreground='white')
         event_target_frequency_label_editor.grid(row=2, column=0, padx=20)
 
-        event_target_frequency_editor = Entry(top, width=30)
+        event_target_frequency_editor = Entry(neweditlabelframe, width=30)
         event_target_frequency_editor.grid(row=2, column=1, padx=20)
 
 
@@ -704,13 +704,12 @@ def edit_entry():
 
     elif clicked.get() == "Cause":
 
-        top = Toplevel(bg="blue")
-        presentTop = top
-        print(presentTop)
+        color = 'blue'
+        top = Toplevel(bg=color)
         top.title("Layer of Protection Analysis ")
-        top.geometry("900x500")
-        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"), background='blue', foreground='white')
-        label.grid(row=0, column=1)
+        cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
+        neweditlabelframe = LabelFrame(cv, text="Edit Cause", background=color, foreground="white")
+        neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
         cause_description_label_editor = Label(top, text="Description:", background='blue', foreground='white')
         cause_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
@@ -767,13 +766,12 @@ def edit_entry():
 
     elif clicked.get() == "Cause_Barrier":
 
-        top = Toplevel()
-        presentTop = top
-        print(presentTop)
+        color = 'white'
+        top = Toplevel(bg=color)
         top.title("Layer of Protection Analysis ")
-        top.geometry("900x500")
-        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
-        label.grid(row=0, column=1)
+        cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
+        neweditlabelframe = LabelFrame(cv, text="Edit Cause Barrier", background=color, foreground="white")
+        neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
         cause_barrier_description_editor_label = Label(top, text="Description")
         cause_barrier_description_editor_label.grid(row=1, column=0, padx=10, pady=10)
@@ -826,13 +824,12 @@ def edit_entry():
 
     elif clicked.get() == "Consequence": 
 
-        top = Toplevel(bg="red")
-        presentTop = top
-        print(presentTop)
+        color = 'red'
+        top = Toplevel(bg=color)
         top.title("Layer of Protection Analysis ")
-        top.geometry("900x500")
-        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"), background='red', foreground='white')
-        label.grid(row=0, column=1)
+        cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
+        neweditlabelframe = LabelFrame(cv, text="Edit Consequence", background=color, foreground="white")
+        neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
         consequence_description_label_editor = Label(top, text="Description:", background='red', foreground='white')
         consequence_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
@@ -889,13 +886,13 @@ def edit_entry():
 
 
     elif clicked.get() == "Consequence_Barrier": 
-        top = Toplevel()
-        presentTop = top
-        print(presentTop)
+
+        color = 'white'
+        top = Toplevel(bg=color)
         top.title("Layer of Protection Analysis ")
-        top.geometry("900x500")
-        label = Label(top, text="Edit " + clicked.get(), font=("serif", 14, "bold"))
-        label.grid(row=0, column=1)
+        cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
+        neweditlabelframe = LabelFrame(cv, text="Edit Consequence Barrier", background=color, foreground="white")
+        neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
         consequence_barrier_description_label_editor = Label(top, text="Description:")
         consequence_barrier_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
@@ -949,7 +946,7 @@ def edit_entry():
 
 
 
-    edit_button = Button(top, text="Save Record", command=update)
+    edit_button = Button(neweditlabelframe, text="Save Record", command=update)
     edit_button.grid(row=5, column=1, columnspan=2, ipadx=100, padx=10, pady=10)  
 
     conn.commit()
