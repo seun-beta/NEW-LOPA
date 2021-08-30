@@ -711,17 +711,17 @@ def edit_entry():
         neweditlabelframe = LabelFrame(cv, text="Edit Cause", background=color, foreground="white")
         neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
-        cause_description_label_editor = Label(top, text="Description:", background='blue', foreground='white')
+        cause_description_label_editor = Label(neweditlabelframe, text="Description:", background='blue', foreground='white')
         cause_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
-        cause_description_editor = Entry(top, width=30)
+        cause_description_editor = Entry(neweditlabelframe, width=30)
         cause_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
-        cause_initial_frequency_label_editor = Label(top, text="Initial Frequency:", background='blue', foreground='white')
+        cause_initial_frequency_label_editor = Label(neweditlabelframe, text="Initial Frequency:", background='blue', foreground='white')
         cause_initial_frequency_label_editor.grid(row=2, column=0, padx=10, pady=10)
-        cause_initial_frequency_editor = Entry(top, width=30)
+        cause_initial_frequency_editor = Entry(neweditlabelframe, width=30)
         cause_initial_frequency_editor.grid(row=2, column=1, padx=10, pady=10)
 
-        cause_event_id_label_editor = Label(top, text="Event:", background='blue', foreground='white')
+        cause_event_id_label_editor = Label(neweditlabelframe, text="Event:", background='blue', foreground='white')
         cause_event_id_label_editor.grid(row=1, column=2, padx=10, pady=10)
 
     
@@ -752,7 +752,7 @@ def edit_entry():
             clicked_event_editor1.set(event1[1])
 
             
-        event_id_drop_editor1 = OptionMenu(top, clicked_event_editor1, *event_name_list_editor1)
+        event_id_drop_editor1 = OptionMenu(neweditlabelframe, clicked_event_editor1, *event_name_list_editor1)
         event_id_drop_editor1.grid(row=1, column=3, pady=10, padx=40)
 
 
