@@ -894,15 +894,15 @@ def edit_entry():
         neweditlabelframe = LabelFrame(cv, text="Edit Consequence Barrier", background=color, foreground="white")
         neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
-        consequence_barrier_description_label_editor = Label(top, text="Description:")
+        consequence_barrier_description_label_editor = Label(neweditlabelframe, text="Description:")
         consequence_barrier_description_label_editor.grid(row=1, column=0, padx=10, pady=10)
-        consequence_barrier_description_editor = Entry(top, width=30)
+        consequence_barrier_description_editor = Entry(neweditlabelframe, width=30)
         consequence_barrier_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
 
-        consequence_barrier_pfd_label_editor = Label(top, text="PFD:")
+        consequence_barrier_pfd_label_editor = Label(neweditlabelframe, text="PFD:")
         consequence_barrier_pfd_label_editor.grid(row=2, column=0, padx=10, pady=10)
-        consequence_barrier_pfd_editor = Entry(top, width=30)
+        consequence_barrier_pfd_editor = Entry(neweditlabelframe, width=30)
         consequence_barrier_pfd_editor.grid(row=2, column=1, padx=10, pady=10)
     
 
@@ -934,7 +934,7 @@ def edit_entry():
         consequence_id_editor = Label(top, text="Consequence")
         consequence_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
-        consequence_id_drop_editor = OptionMenu(top, clicked_consequence_editor, *consequence_name_list_editor)
+        consequence_id_drop_editor = OptionMenu(neweditlabelframe, clicked_consequence_editor, *consequence_name_list_editor)
         consequence_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
         cur.execute("""SELECT description, pfd FROM Consequence_Barrier WHERE consequence_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
