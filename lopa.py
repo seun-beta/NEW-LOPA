@@ -766,11 +766,11 @@ def edit_entry():
 
     elif clicked.get() == "Cause_Barrier":
 
-        color = 'white'
+        color = '#d3d3d3'
         top = Toplevel(bg=color)
         top.title("Layer of Protection Analysis ")
         cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
-        neweditlabelframe = LabelFrame(cv, text="Edit Cause Barrier", background=color, foreground="white")
+        neweditlabelframe = LabelFrame(cv, text="Edit Cause Barrier", background=color, foreground="black")
         neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
         cause_barrier_description_editor_label = Label(neweditlabelframe, text="Description")
@@ -887,11 +887,11 @@ def edit_entry():
 
     elif clicked.get() == "Consequence_Barrier": 
 
-        color = 'white'
+        color = "#d3d3d3"
         top = Toplevel(bg=color)
         top.title("Layer of Protection Analysis ")
         cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
-        neweditlabelframe = LabelFrame(cv, text="Edit Consequence Barrier", background=color, foreground="white")
+        neweditlabelframe = LabelFrame(cv, text="Edit Consequence Barrier", background=color, foreground="black")
         neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
         consequence_barrier_description_label_editor = Label(neweditlabelframe, text="Description:")
