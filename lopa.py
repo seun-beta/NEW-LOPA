@@ -773,14 +773,14 @@ def edit_entry():
         neweditlabelframe = LabelFrame(cv, text="Edit Cause Barrier", background=color, foreground="white")
         neweditlabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
 
-        cause_barrier_description_editor_label = Label(top, text="Description")
+        cause_barrier_description_editor_label = Label(neweditlabelframe, text="Description")
         cause_barrier_description_editor_label.grid(row=1, column=0, padx=10, pady=10)
-        cause_barrier_description_editor = Entry(top, width=30)
+        cause_barrier_description_editor = Entry(neweditlabelframe, width=30)
         cause_barrier_description_editor.grid(row=1, column=1, padx=10, pady=10)
 
-        cause_barrier_pfd_label_editor = Label(top, text="PFD")
+        cause_barrier_pfd_label_editor = Label(neweditlabelframe, text="PFD")
         cause_barrier_pfd_label_editor.grid(row=2, column=0, padx=10, pady=10)
-        cause_barrier_pfd_editor = Entry(top, width=30)
+        cause_barrier_pfd_editor = Entry(neweditlabelframe, width=30)
         cause_barrier_pfd_editor.grid(row=2, column=1, padx=10, pady=10)
 
 
@@ -812,7 +812,7 @@ def edit_entry():
         cause_id_editor = Label(top, text="Cause")
         cause_id_editor.grid(row=1, column=2, padx=10, pady=10)
             
-        cause_id_drop_editor = OptionMenu(top, clicked_cause_editor, *cause_name_list_editor)
+        cause_id_drop_editor = OptionMenu(neweditlabelframe, clicked_cause_editor, *cause_name_list_editor)
         cause_id_drop_editor.grid(row=1, column=3, pady=10, padx=40)
 
         cur.execute("""SELECT description, pfd FROM Cause_Barrier WHERE cause_barrier_id = """ + str(entry_dict[clicked_entry.get()]))
