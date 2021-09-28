@@ -1,0 +1,1 @@
+& C:/Users/adego/Envs//Scripts/Activate.ps1
