@@ -5,56 +5,11 @@ from tkinter.ttk import Style, Treeview
 import mysql.connector
 import webbrowser
 
-
+from db import create_table
 
 # Create Tables 
 
-conn = mysql.connector.connect(
-    host="lopasvr.mysql.database.azure.com",
-    user="lopasvr_user@lopasvr",
-    password="l0p@$vr_u$er",
-    database="lopaproject"
-)
-cur = conn.cursor()
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Event (
-            event_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            target_frequency REAL);
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
-            cause_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            initial_frequency REAL,
-            event_id INT)
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
-            cause_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            pfd REAL,
-            cause_id INT)
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Consequence (
-            consequence_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            target_frequency REAL,
-            event_id INT)
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
-            consequence_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            pfd REAL,
-            consequence_id INT)
-""")
-
-conn.commit()
-
-
-
+create_table()
 
 # Connection to MySQL Database hosted on Azure 
 def db_conn():
