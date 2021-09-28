@@ -5,70 +5,28 @@ from tkinter.ttk import Style, Treeview
 import mysql.connector
 import webbrowser
 
+from db import create_table
 
+# Create Database Tables 
 
-# Create Tables 
-
-conn = mysql.connector.connect(
-    host="lopasvr.mysql.database.azure.com",
-    user="lopasvr_user@lopasvr",
-    password="l0p@$vr_u$er",
-    database="lopaproject"
-)
-cur = conn.cursor()
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Event (
-            event_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            target_frequency REAL);
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Cause (
-            cause_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            initial_frequency REAL,
-            event_id INT)
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Cause_Barrier (
-            cause_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            pfd REAL,
-            cause_id INT)
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Consequence (
-            consequence_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            target_frequency REAL,
-            event_id INT)
-""")
-
-cur.execute("""CREATE TABLE IF NOT EXISTS Consequence_Barrier (
-            consequence_barrier_id INT AUTO_INCREMENT PRIMARY KEY,
-            description TEXT,
-            pfd REAL,
-            consequence_id INT)
-""")
-
-conn.commit()
-
-
-
+create_table()
 
 # Connection to MySQL Database hosted on Azure 
 def db_conn():
     global conn 
     global cur
     conn = mysql.connector.connect(
-        host="lopasvr.mysql.database.azure.com",
-        user="lopasvr_user@lopasvr",
-        password="l0p@$vr_u$er",
-        database="lopaproject"
+        host="HOST",
+        user="USER",
+        password="PASSWORD",
+        database="DATABASE"
     )
     cur = conn.cursor()
-    
     return conn, cur
+
+
+
+
 def change_bow_tie(event):
     global url
     global viewlopaDiagram
@@ -160,48 +118,6 @@ for x in range(0, 2001, 100):
     anchor = "sw" if x < 100 else ("se" if x==2000 else "s")
     canvas.create_line(x, 700, x, 690, fill="red")
     canvas.create_text(x, 680, text=x, anchor=anchor)
-
-def new_event():
-    
-    global save_event
-    color = 'orange'
-    top = Toplevel(bg=color)
-    top.title("Layer of Protection Analysis ")
-    cv = add_scrollable(widgetFrame=top, height=400, width=400, color=color)
-    newentrylabelframe = LabelFrame(cv, text="Create Event", background=color, foreground="white")
-    newentrylabelframe.grid(row=0, column=0, columnspan=2, rowspan=5, padx=20, pady=20)
-    
-    # --------------Input UI----------------------------
-    event_description_label = Label(newentrylabelframe, text="Description:", background=color, foreground='white')
-    event_description_label.grid(row=1, column=0, padx=10, pady=10)
-
-    event_description = Entry(newentrylabelframe, width=30)
-    event_description.grid(row=1, column=1, padx=10, pady=10)
-
-    
-    event_target_freq_label = Label(newentrylabelframe, text="Target Frequency: ", background=color, foreground='white')
-    event_target_freq_label.grid(row=2, column=0, padx=10, pady=10)
-
-    event_target_freq = Entry(newentrylabelframe, width=30)
-    event_target_freq.grid(row=2, column=1, padx=10, pady=10)
-
-    
-    def save_event():
-        db_conn()
-        cur.execute("INSERT INTO Event VALUES (null, %s, %s)",(
-                    event_description.get(),
-                    event_target_freq.get()))
-
-        success = Label(newentrylabelframe, text="Added record successfully", fg="green")
-        success.grid(row=4, column=1)
-        conn.commit()
-        event_description.delete(0, END)
-        event_target_freq.delete(0, END)
-    
-
-    save_event = Button(newentrylabelframe, text="Save", width=20, command=save_event)
-    save_event.grid(row=3, column=1)
-    
 
 
 def new_cause():
