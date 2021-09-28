@@ -92,9 +92,8 @@ Please install and set up the following packages first. Ugrade if you find the p
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@seun-beta](https://github.com/seun-beta) - Software Development
-- [@seun-beta](https://github.com/seun-beta) - Software Development
-- [@seun-beta](https://github.com/seun-beta) - Software Development
+- [Seunfunmi Adegoke](https://github.com/seun-beta) - Software Development
+- [Joshua Ayomikun](https://github.com/joshuaayomikun) - Software Development
 
 
 
